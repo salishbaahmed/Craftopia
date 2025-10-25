@@ -1,0 +1,203 @@
+/* Import Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Customer Signup Page Styles */
+.customer-signup-page {
+  min-height: 100vh;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Inter', sans-serif;
+  padding: 2rem;
+}
+
+.signup-container {
+  text-align: center;
+  width: 100%;
+  max-width: 450px;
+}
+
+/* Logo Section */
+.logo-section {
+  margin-bottom: 2rem;
+}
+
+.signup-logo {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+/* Signup Form */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+/* Name Fields */
+.name-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+/* Input Group */
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.input-field {
+  width: 100%;
+  padding: 1rem 3rem 1rem 1rem;
+  border: 2px solid #E5E7EB;
+  border-radius: 0.75rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: white;
+  box-sizing: border-box;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: #14B8A6;
+  box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
+}
+
+.input-field::placeholder {
+  color: #9CA3AF;
+}
+
+.input-icon {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.125rem;
+  pointer-events: none;
+}
+
+/* Signup Button */
+.signup-button {
+  background-color: #14B8A6;
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.signup-button:hover {
+  background-color: #0D9488;
+  transform: translateY(-1px);
+}
+
+.signup-button:active {
+  transform: translateY(0);
+}
+
+/* Login Section */
+.login-section {
+  margin-bottom: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #E5E7EB;
+}
+
+.login-text {
+  color: #6B7280;
+  font-size: 0.875rem;
+  margin-bottom: 1rem;
+}
+
+.login-link-button {
+  display: inline-block;
+  background-color: white;
+  color: #14B8A6;
+  border: 2px solid #14B8A6;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.login-link-button:hover {
+  background-color: #14B8A6;
+  color: white;
+  transform: translateY(-1px);
+}
+
+.login-link-button:active {
+  transform: translateY(0);
+}
+
+/* Back Link */
+.back-link {
+  color: #6B7280;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  color: #374151;
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+  .customer-signup-page {
+    padding: 1rem;
+  }
+  
+  .signup-logo {
+    width: 250px;
+    height: 250px;
+  }
+  
+  .name-fields {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .input-field {
+    padding: 0.875rem 2.5rem 0.875rem 0.875rem;
+    font-size: 0.875rem;
+  }
+  
+  .signup-button {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .login-link-button {
+    padding: 0.675rem 1.25rem;
+    font-size: 0.8rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .signup-logo {
+    width: 350px;
+    height: 350px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .signup-logo {
+    width: 400px;
+    height: 400px;
+  }
+}
