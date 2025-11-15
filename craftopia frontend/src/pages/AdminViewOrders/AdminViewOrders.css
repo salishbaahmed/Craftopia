@@ -1,0 +1,266 @@
+.orders-content {
+  padding: 20px;
+  background-color: #fafafa;
+  min-height: calc(100vh - 120px);
+}
+
+.orders-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.search-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border-radius: 8px;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  width: 320px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.search-icon {
+  color: #666;
+  margin-right: 8px;
+}
+
+.search-input {
+  border: none;
+  outline: none;
+  flex: 1;
+  font-size: 14px;
+  background: transparent;
+}
+
+.filter-box {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 8px 12px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.filter-icon {
+  color: #666;
+  margin-right: 8px;
+}
+
+.filter-select {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.orders-table-container {
+  background: #fff;
+  border-radius: 10px;
+  overflow-x: auto;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.orders-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 700px;
+}
+
+.orders-table th, .orders-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
+}
+
+.orders-table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #374151;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.orders-table tr:hover {
+  background-color: #f9fafb;
+}
+
+.order-id {
+  font-weight: 600;
+  color: #14B8A6;
+  font-family: 'Courier New', monospace;
+}
+
+.customer-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.customer-info strong {
+  color: #111827;
+  margin-bottom: 2px;
+}
+
+.customer-info span {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.items-info {
+  max-width: 200px;
+}
+
+.item-row {
+  font-size: 12px;
+  color: #6b7280;
+  margin-bottom: 2px;
+  padding: 2px 0;
+}
+
+.item-row:last-child {
+  margin-bottom: 0;
+}
+
+.total-amount {
+  font-weight: 600;
+  color: #059669;
+}
+
+/* Status Badges */
+.status-badge, .delivery-status-badge {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  white-space: nowrap; /* ADD THIS */
+}
+
+
+/* Order Status Colors */
+.status-pending {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.status-approved {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+.status-rejected {
+  background-color: #fee2e2;
+  color: #dc2626;
+}
+
+.status-processing {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-shipped {
+  background-color: #e0e7ff;
+  color: #4f46e5;
+}
+
+.status-out-for-delivery {
+  background-color: #f0f9ff;
+  color: #0369a1;
+}
+
+.status-delivered {
+  background-color: #f0fdf4;
+  color: #15803d;
+}
+
+/* Delivery Status Colors */
+.delivery-pending {
+  background-color: #fef3c7;
+  color: #d97706;
+}
+
+.delivery-processing {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.delivery-shipped {
+  background-color: #e0e7ff;
+  color: #4f46e5;
+}
+
+.delivery-out-for-delivery {
+  background-color: #f0f9ff;
+  color: #0369a1;
+}
+
+.delivery-delivered {
+  background-color: #d1fae5;
+  color: #059669;
+}
+
+.no-orders {
+  padding: 60px 40px;
+  text-align: center;
+  color: #6b7280;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.no-orders p {
+  font-size: 16px;
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .orders-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .search-box {
+    width: 100%;
+  }
+  
+  .filter-box {
+    width: 100%;
+  }
+}
+
+@media (max-width: 768px) {
+  .orders-content {
+    padding: 15px;
+  }
+  
+  .orders-table {
+    font-size: 13px;
+  }
+  
+  .orders-table th, .orders-table td {
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .orders-content {
+    padding: 10px;
+  }
+  
+  .customer-info span {
+    display: none;
+  }
+  
+  .items-info {
+    max-width: 120px;
+  }
+}

@@ -1,31 +1,30 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './AdminLogin.css';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Login attempted with:', { email, password });
+    navigate('/admin'); // Redirect to AdminMain page
   };
 
   return (
     <div className="admin-login-page">
       <div className="login-container">
-        {/* Logo Section */}
         <div className="logo-section">
           <img 
             src="/craftopia logo.png" 
             alt="Craftopia Logo" 
             className="login-logo"
           />
-          
         </div>
 
-        {/* Login Form */}
         <form onSubmit={handleSubmit} className="login-form">
-          {/* Email Input */}
           <div className="input-group">
             <input
               type="email"
@@ -38,7 +37,6 @@ const AdminLogin = () => {
             <span className="input-icon">✉</span>
           </div>
 
-          {/* Password Input */}
           <div className="input-group">
             <input
               type="password"
@@ -48,16 +46,14 @@ const AdminLogin = () => {
               className="input-field"
               required
             />
-            <span className="input-icon">✉</span>
+            <span className="input-icon">🔒</span>
           </div>
 
-          {/* Login Button */}
           <button type="submit" className="login-button">
             Login
           </button>
         </form>
 
-        {/* Back to Home Link */}
         <a href="/" className="back-link">
           Back to Home
         </a>
