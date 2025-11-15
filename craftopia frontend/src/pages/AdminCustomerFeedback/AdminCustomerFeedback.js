@@ -11,8 +11,7 @@ const AdminCustomerFeedback = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [ratingFilter, setRatingFilter] = useState('all');
-
-  const [feedbacks] = useState([
+  const [feedbacks, setFeedbacks] = useState([
     {
       id: 'FB-1001',
       customerName: 'Ali Raza',
@@ -22,7 +21,8 @@ const AdminCustomerFeedback = () => {
       comment: 'Excellent quality and fast delivery! The handmade ceramic vase exceeded my expectations. Will definitely order again.',
       date: '2024-03-20',
       status: 'published',
-      product: 'Handmade Ceramic Vase'
+      product: 'Handmade Ceramic Vase',
+      reply: ''
     },
     {
       id: 'FB-1002',
@@ -33,7 +33,8 @@ const AdminCustomerFeedback = () => {
       comment: 'Beautiful product but delivery was slightly delayed. The embroidered shawl is exactly as shown in pictures.',
       date: '2024-03-18',
       status: 'published',
-      product: 'Embroidered Shawl'
+      product: 'Embroidered Shawl',
+      reply: ''
     },
     {
       id: 'FB-1003',
@@ -44,7 +45,8 @@ const AdminCustomerFeedback = () => {
       comment: 'Product quality is good but packaging could be better. The wooden jewelry box had minor scratches.',
       date: '2024-03-15',
       status: 'published',
-      product: 'Wooden Jewelry Box'
+      product: 'Wooden Jewelry Box',
+      reply: ''
     },
     {
       id: 'FB-1004',
@@ -55,7 +57,8 @@ const AdminCustomerFeedback = () => {
       comment: 'Absolutely love my purchase! The wool scarf is so warm and the colors are vibrant. Great customer service!',
       date: '2024-03-12',
       status: 'published',
-      product: 'Wool Scarf'
+      product: 'Wool Scarf',
+      reply: ''
     },
     {
       id: 'FB-1005',
@@ -66,7 +69,8 @@ const AdminCustomerFeedback = () => {
       comment: 'Disappointed with the product quality. The resin art table arrived with cracks. Waiting for replacement.',
       date: '2024-03-10',
       status: 'pending',
-      product: 'Resin Art Table'
+      product: 'Resin Art Table',
+      reply: ''
     },
     {
       id: 'FB-1006',
@@ -77,9 +81,12 @@ const AdminCustomerFeedback = () => {
       comment: 'Good overall experience. The leather wallet is genuine and well-crafted. Delivery was on time.',
       date: '2024-03-08',
       status: 'published',
-      product: 'Leather Wallet'
+      product: 'Leather Wallet',
+      reply: ''
     }
   ]);
+
+  const handleLogout = () => navigate('/admin-login');
 
   const filteredFeedbacks = feedbacks.filter(feedback => {
     const matchesSearch = 
@@ -92,19 +99,14 @@ const AdminCustomerFeedback = () => {
     return matchesSearch && matchesRating;
   });
 
-  const renderStars = (rating) => {
-    return (
-      <div className="stars-container">
-        {[1, 2, 3, 4, 5].map(star => (
-          <FiStar 
-            key={star} 
-            className={`star ${star <= rating ? 'filled' : 'empty'}`}
-          />
-        ))}
-        <span className="rating-text">({rating}/5)</span>
-      </div>
-    );
-  };
+  const renderStars = (rating) => (
+    <div className="stars-container">
+      {[1, 2, 3, 4, 5].map(star => (
+        <FiStar key={star} className={`star ${star <= rating ? 'filled' : 'empty'}`} />
+      ))}
+      <span className="rating-text">({rating}/5)</span>
+    </div>
+  );
 
   const getStatusBadge = (status) => {
     const statusConfig = {
@@ -117,7 +119,22 @@ const AdminCustomerFeedback = () => {
     return <span className={`status-badge ${config.class}`}>{config.label}</span>;
   };
 
-  const handleLogout = () => navigate('/admin-login');
+  const handleReply = (id) => {
+    const replyText = prompt('Enter your reply:');
+    if (replyText !== null) {
+      setFeedbacks(prev =>
+        prev.map(fb => fb.id === id ? { ...fb, reply: replyText } : fb)
+      );
+    }
+  };
+
+  const handleArchive = (id) => {
+    if (window.confirm('Are you sure you want to archive this feedback?')) {
+      setFeedbacks(prev =>
+        prev.map(fb => fb.id === id ? { ...fb, status: 'archived' } : fb)
+      );
+    }
+  };
 
   return (
     <div className="admin-main-container">
@@ -207,7 +224,7 @@ const AdminCustomerFeedback = () => {
             ) : (
               <div className="feedback-grid">
                 {filteredFeedbacks.map(feedback => (
-                  <div key={feedback.id} className="feedback-card">
+                  <div key={feedback.id} className={`feedback-card ${feedback.status === 'archived' ? 'archived' : ''}`}>
                     <div className="feedback-header">
                       <div className="customer-info">
                         <div className="customer-avatar">
@@ -234,13 +251,14 @@ const AdminCustomerFeedback = () => {
 
                     <div className="feedback-comment">
                       <p>{feedback.comment}</p>
+                      {feedback.reply && <div className="feedback-reply"><strong>Reply:</strong> {feedback.reply}</div>}
                     </div>
 
                     <div className="feedback-footer">
                       {getStatusBadge(feedback.status)}
                       <div className="feedback-actions">
-                        <button className="action-btn reply-btn">Reply</button>
-                        <button className="action-btn archive-btn">Archive</button>
+                        <button className="action-btn reply-btn" onClick={() => handleReply(feedback.id)}>Reply</button>
+                        <button className="action-btn archive-btn" onClick={() => handleArchive(feedback.id)}>Archive</button>
                       </div>
                     </div>
                   </div>
