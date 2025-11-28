@@ -1,0 +1,517 @@
+.rewards-page {
+  background: #f8fafc;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.rewards-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  flex: 1;
+}
+
+/* Loading State */
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+}
+
+.loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid #e2e8f0;
+  border-top: 4px solid #00a884;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 20px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Header Section */
+.rewards-header {
+  margin-bottom: 40px;
+  text-align: center;
+}
+
+.header-content h1 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+}
+
+.header-content p {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* Rewards Overview Grid */
+.rewards-overview {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+/* Points Card */
+.points-card,
+.quick-actions-card {
+  background: white;
+  border-radius: 16px;
+  padding: 28px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+}
+
+.points-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.points-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00a884, #059669);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  color: white;
+}
+
+.points-info h3 {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.points-amount {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 4px 0;
+  line-height: 1;
+  color: #00a884;
+}
+
+.points-info p {
+  color: #64748b;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.points-breakdown {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid #f1f5f9;
+}
+
+.breakdown-item {
+  text-align: center;
+}
+
+.breakdown-item span {
+  display: block;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+.breakdown-item strong {
+  display: block;
+  font-size: 1.2rem;
+  color: #1e293b;
+  font-weight: 700;
+}
+
+.breakdown-item .available {
+  color: #059669;
+}
+
+/* Quick Actions Card */
+.quick-actions-card h3 {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin: 0 0 20px 0;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  justify-content: center;
+}
+
+.action-btn.primary {
+  background: #00a884;
+  color: white;
+}
+
+.action-btn.primary:hover {
+  background: #008f70;
+  transform: translateY(-2px);
+}
+
+.points-info-text {
+  background: #f0fdfa;
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid #ccfbf1;
+}
+
+.points-info-text p {
+  margin: 8px 0;
+  color: #047857;
+  font-size: 0.9rem;
+}
+
+.points-info-text p:last-child {
+  margin-bottom: 0;
+}
+
+/* Tabs Navigation */
+.tabs-navigation {
+  display: flex;
+  gap: 4px;
+  background: white;
+  padding: 8px;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+}
+
+.tab-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: none;
+  background: transparent;
+  color: #64748b;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.tab-btn:hover {
+  color: #00a884;
+  background: #f0fdfa;
+}
+
+.tab-btn.active {
+  color: #00a884;
+  background: #f0fdfa;
+  box-shadow: 0 2px 8px rgba(0, 168, 132, 0.1);
+}
+
+/* Tab Content */
+.tab-content {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f1f5f9;
+  min-height: 400px;
+}
+
+/* History Tab */
+.history-tab h3 {
+  font-size: 1.3rem;
+  color: #1e293b;
+  margin: 0 0 24px 0;
+}
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 1px solid #e2e8f0;
+}
+
+.transaction-icon {
+  flex-shrink: 0;
+}
+
+.icon-earned {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #dcfce7;
+  color: #16a34a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.icon-used {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #fee2e2;
+  color: #dc2626;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+}
+
+.transaction-details {
+  flex: 1;
+}
+
+.transaction-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.transaction-main h4 {
+  font-size: 1rem;
+  color: #1e293b;
+  margin: 0;
+}
+
+.points.earned {
+  color: #16a34a;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.points.used {
+  color: #dc2626;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.transaction-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.status.completed {
+  color: #16a34a;
+}
+
+/* Rewards Tab */
+.tab-description {
+  color: #64748b;
+  margin: 0 0 30px 0;
+  font-size: 0.95rem;
+}
+
+.rewards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.reward-card {
+  background: #f8fafc;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.reward-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+.reward-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.reward-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  background: #00a884;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  color: white;
+}
+
+.reward-points {
+  background: #1e293b;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.reward-content h4 {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin: 0 0 8px 0;
+}
+
+.reward-content p {
+  color: #64748b;
+  margin: 0 0 12px 0;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.reward-actions {
+  margin-top: 16px;
+}
+
+.redeem-btn {
+  width: 100%;
+  padding: 12px 16px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.9rem;
+}
+
+.redeem-btn.available {
+  background: #00a884;
+  color: white;
+}
+
+.redeem-btn.available:hover {
+  background: #008f70;
+}
+
+.redeem-btn.insufficient {
+  background: #e2e8f0;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .rewards-overview {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .rewards-container {
+    padding: 20px 15px;
+  }
+
+  .rewards-header {
+    text-align: left;
+  }
+
+  .header-content h1 {
+    font-size: 2rem;
+  }
+
+  .rewards-overview {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .tabs-navigation {
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1 0 calc(50% - 8px);
+  }
+
+  .rewards-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tab-content {
+    padding: 24px;
+  }
+}
+
+@media (max-width: 480px) {
+  .points-amount {
+    font-size: 2rem;
+  }
+
+  .transaction-main {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .transaction-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .points-breakdown {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+/* Focus styles for accessibility */
+.tab-btn:focus,
+.action-btn:focus,
+.redeem-btn:focus {
+  outline: 2px solid #00a884;
+  outline-offset: 2px;
+}
