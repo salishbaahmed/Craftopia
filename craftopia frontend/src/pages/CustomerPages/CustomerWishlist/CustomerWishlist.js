@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/Navbar';
 import Footer from '../../../components/Footer/Footer';
 import './CustomerWishlist.css';
-import { 
-  FiShare2, 
-  FiFilter, 
-  FiHeart, 
+import {
+  FiShare2,
+  FiFilter,
+  FiHeart,
   FiSearch,
-  FiTrash2, 
+  FiTrash2,
   FiCheck,
   FiPackage,
   FiDollarSign,

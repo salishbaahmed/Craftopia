@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/Navbar';
 import Footer from '../../../components/Footer/Footer';
 import './CustomerOrderConfirmation.css';
-import { 
-  FiCheckCircle, 
-  FiTruck, 
+import {
+  FiCheckCircle,
+  FiTruck,
   FiCalendar,
   FiMapPin,
   FiCreditCard,
@@ -24,11 +24,11 @@ const OrderConfirmation = () => {
   // Load real order data from localStorage
   useEffect(() => {
     const savedOrderData = localStorage.getItem('orderData');
-    
+
     if (savedOrderData) {
       try {
         const orderData = JSON.parse(savedOrderData);
-        
+
         // Format the order details with real data from payment
         const formattedOrderDetails = {
           orderId: orderData.orderId,
@@ -64,7 +64,7 @@ const OrderConfirmation = () => {
         // Check if order already exists in history to avoid duplicates
         const existingOrders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
         const orderAlreadyExists = existingOrders.some(order => order.orderId === orderData.orderId);
-        
+
         if (!orderAlreadyExists) {
           // Normalize and add explicit fields for status, delivery and tracking
           const orderRecord = {
@@ -91,21 +91,21 @@ const OrderConfirmation = () => {
           const savedRewardsData = localStorage.getItem('customerRewards');
           if (savedRewardsData) {
             const rewardsData = JSON.parse(savedRewardsData);
-            
+
             // Check if this order's rewards have already been processed
             const rewardHistoryEntry = (rewardsData.pointsHistory || []).find(
               h => h.description && h.description.includes(orderData.orderId)
             );
-            
+
             // Only add rewards if not already processed
             if (!rewardHistoryEntry) {
               const earnedPoints = formattedOrderDetails.rewardsEarned;
               const newAvailablePoints = rewardsData.availablePoints + earnedPoints;
-              
+
               // Update balance
               rewardsData.availablePoints = newAvailablePoints;
               rewardsData.totalPoints = newAvailablePoints;
-              
+
               // Add to history
               const newHistoryEntry = {
                 id: Date.now(),
@@ -115,16 +115,16 @@ const OrderConfirmation = () => {
                 date: new Date().toISOString(),
                 status: 'completed'
               };
-              
+
               if (!rewardsData.pointsHistory) {
                 rewardsData.pointsHistory = [];
               }
               rewardsData.pointsHistory.unshift(newHistoryEntry);
-              
+
               // If reward points were used for payment, add deduction entry
               if (orderData.paymentMethod === 'Reward Points') {
                 const deductedPoints = orderData.total;
-                
+
                 // Add a deduction entry to history
                 const deductionEntry = {
                   id: Date.now() - 1,
@@ -134,11 +134,11 @@ const OrderConfirmation = () => {
                   date: new Date().toISOString(),
                   status: 'completed'
                 };
-                
+
                 rewardsData.pointsHistory.unshift(deductionEntry);
                 rewardsData.usedPoints = (rewardsData.usedPoints || 0) + deductedPoints;
               }
-              
+
               localStorage.setItem('customerRewards', JSON.stringify(rewardsData));
               window.dispatchEvent(new Event('rewardsUpdated'));
             }
@@ -231,7 +231,7 @@ const OrderConfirmation = () => {
   return (
     <div className="order-confirmation-page">
       <Navbar />
-      
+
       <div className="confirmation-container">
         {/* Success Header */}
         <div className="success-header">
@@ -258,7 +258,7 @@ const OrderConfirmation = () => {
                   +{earnedRewards} Points
                 </div>
                 <p className="rewards-description">
-                  Your reward points have been added to your account. 
+                  Your reward points have been added to your account.
                   Use them on your next purchase!
                 </p>
                 <div className="rewards-breakdown">
@@ -289,7 +289,7 @@ const OrderConfirmation = () => {
                   </div>
                 ))}
               </div>
-              
+
               <div className="order-total">
                 <div className="total-row">
                   <span>Total Paid</span>
@@ -388,28 +388,28 @@ const OrderConfirmation = () => {
 
             {/* Action Buttons */}
             <div className="action-buttons">
-              <button 
+              <button
                 className="btn-primary"
                 onClick={handleTrackOrder}
               >
                 <FiTruck />
                 Track Your Order
               </button>
-              <button 
+              <button
                 className="btn-secondary"
                 onClick={handleDownloadInvoice}
               >
                 <FiDownload />
                 Download Invoice
               </button>
-              <button 
+              <button
                 className="btn-outline"
                 onClick={handleShareOrder}
               >
                 <FiShare2 />
                 Share Order
               </button>
-              <button 
+              <button
                 className="btn-continue"
                 onClick={handleContinueShopping}
               >

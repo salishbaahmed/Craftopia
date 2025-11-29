@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../../../components/Navbar/Navbar';
 import Footer from '../../../components/Footer/Footer';
+import api from '../../../api/axios';
+import { useAuth } from '../../../context/AuthContext';
 import './CustomerMakePayment.css';
-import { 
-  FiCreditCard, 
-  FiDollarSign, 
-  FiSmartphone, 
+import {
+  FiCreditCard,
+  FiDollarSign,
+  FiSmartphone,
   FiTruck,
   FiCheck,
   FiLock,
@@ -148,18 +150,56 @@ const CustomerMakePayment = () => {
     }
   };
 
+  const { user } = useAuth();
+
   const handlePaymentSubmit = async (e) => {
     e.preventDefault();
-    
+
+    // Common function to create order in backend
+    const createBackendOrder = async (paymentMethod) => {
+      try {
+        if (!user) {
+          console.log('User not logged in, skipping backend order creation');
+          return `ORD-${Date.now()}`; // Return local ID for guests
+        }
+
+        const orderPayload = {
+          items: orderSummary.items.map(item => ({
+            productId: item.id, // Ensure this matches backend expectation
+            name: item.name,
+            price: item.price,
+            quantity: item.quantity,
+            image: item.image
+          })),
+          shippingAddress: orderSummary.checkoutFormData || {},
+          subtotal: orderSummary.subtotal,
+          discount: orderSummary.discount,
+          tax: orderSummary.tax,
+          total: orderSummary.total,
+          paymentStatus: 'Paid',
+          status: 'Processing'
+        };
+
+        const response = await api.post('/orders/', orderPayload);
+        return response.data.id;
+      } catch (error) {
+        console.error('Error creating backend order:', error);
+        // Fallback to local ID if backend fails, so user still sees confirmation
+        return `ORD-${Date.now()}-OFFLINE`;
+      }
+    };
+
     if (selectedMethod === 'cod') {
       // Direct success for Cash on Delivery
       setPaymentStatus('processing');
-      setTimeout(() => {
+      setTimeout(async () => {
+        const orderId = await createBackendOrder('Cash on Delivery');
+
         setPaymentStatus('success');
         setTimeout(() => {
           // Store order data for confirmation page (include earned rewards = 1% of total)
           const orderData = {
-            orderId: `ORD-${Date.now()}`,
+            orderId: orderId,
             orderItems: orderSummary.items,
             subtotal: orderSummary.subtotal,
             discount: orderSummary.discount,
@@ -182,16 +222,18 @@ const CustomerMakePayment = () => {
     if (selectedMethod === 'rewards') {
       // Process reward points payment
       setPaymentStatus('processing');
-      setTimeout(() => {
+      setTimeout(async () => {
         // Deduct reward points
         const newRewardBalance = customerRewards - orderSummary.total;
         updateRewards(newRewardBalance);
-        
+
+        const orderId = await createBackendOrder('Reward Points');
+
         setPaymentStatus('success');
         setTimeout(() => {
           // Store order data for confirmation page
           const orderData = {
-            orderId: `ORD-${Date.now()}`,
+            orderId: orderId,
             orderItems: orderSummary.items,
             subtotal: orderSummary.subtotal,
             discount: orderSummary.discount,
@@ -213,7 +255,7 @@ const CustomerMakePayment = () => {
 
     // For other payment methods, simulate processing
     setPaymentStatus('processing');
-    
+
     // Simulate API call to payment gateway
     try {
       await new Promise((resolve, reject) => {
@@ -227,12 +269,14 @@ const CustomerMakePayment = () => {
           }
         }, 2000);
       });
-      
+
+      const orderId = await createBackendOrder(selectedMethod === 'card' ? 'Credit/Debit Card' : selectedMethod === 'wallet' ? 'Mobile Wallet' : 'Bank Transfer');
+
       setPaymentStatus('success');
       setTimeout(() => {
         // Store order data for confirmation page
         const orderData = {
-          orderId: `ORD-${Date.now()}`,
+          orderId: orderId,
           orderItems: orderSummary.items,
           subtotal: orderSummary.subtotal,
           discount: orderSummary.discount,
@@ -441,7 +485,7 @@ const CustomerMakePayment = () => {
   return (
     <div className="payment-page">
       <Navbar />
-      
+
       <div className="payment-container">
         {/* Header Section */}
         <div className="payment-header">
@@ -490,9 +534,8 @@ const CustomerMakePayment = () => {
                   {paymentMethods.map(method => (
                     <div
                       key={method.id}
-                      className={`method-card ${selectedMethod === method.id ? 'selected' : ''} ${
-                        method.disabled ? 'disabled' : ''
-                      }`}
+                      className={`method-card ${selectedMethod === method.id ? 'selected' : ''} ${method.disabled ? 'disabled' : ''
+                        }`}
                       onClick={() => !method.disabled && setSelectedMethod(method.id)}
                     >
                       <div className="method-icon">
@@ -562,7 +605,7 @@ const CustomerMakePayment = () => {
               {paymentStatus === 'failed' && (
                 <div className="payment-status error">
                   <p>Payment failed. Please check your details and try again.</p>
-                  <button 
+                  <button
                     className="retry-button"
                     onClick={() => setPaymentStatus('idle')}
                   >
@@ -575,8 +618,8 @@ const CustomerMakePayment = () => {
                 <div className="payment-status success">
                   <FiCheck className="status-icon" />
                   <p>
-                    {selectedMethod === 'rewards' 
-                      ? 'Payment successful with reward points! Redirecting...' 
+                    {selectedMethod === 'rewards'
+                      ? 'Payment successful with reward points! Redirecting...'
                       : 'Payment successful! Redirecting to confirmation...'
                     }
                   </p>
@@ -595,7 +638,7 @@ const CustomerMakePayment = () => {
           <div className="payment-right">
             <div className="order-summary">
               <h3>Order Summary</h3>
-              
+
               <div className="order-items">
                 {orderSummary.items.map((item, index) => (
                   <div key={index} className="order-item">

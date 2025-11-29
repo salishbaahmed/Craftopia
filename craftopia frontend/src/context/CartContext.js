@@ -11,18 +11,40 @@ export const CartProvider = ({ children }) => {
 
     // Load cart when user changes
     useEffect(() => {
-        if (user) {
-            // TODO: Implement backend cart fetching
-            // For now, we'll stick to localStorage or implement a simple backend sync later
-            // const fetchCart = async () => { ... }
-            // fetchCart();
-        } else {
-            // Load from localStorage for guest
+        const loadCart = () => {
             const savedCart = JSON.parse(localStorage.getItem('craftopiaCart') || '[]');
             setCart(savedCart);
             updateCount(savedCart);
+        };
+
+        if (user) {
+            // Load cart for logged-in user
+            loadCart();
+        } else {
+            // Load from localStorage for guest
+            loadCart();
         }
     }, [user]);
+
+    // Listen for cart updates from other components
+    useEffect(() => {
+        const handleCartUpdate = () => {
+            const savedCart = JSON.parse(localStorage.getItem('craftopiaCart') || '[]');
+            setCart(savedCart);
+            updateCount(savedCart);
+        };
+
+        // Listen for the cartUpdated event
+        window.addEventListener('cartUpdated', handleCartUpdate);
+
+        // Also listen for storage events (for cross-tab updates)
+        window.addEventListener('storage', handleCartUpdate);
+
+        return () => {
+            window.removeEventListener('cartUpdated', handleCartUpdate);
+            window.removeEventListener('storage', handleCartUpdate);
+        };
+    }, []);
 
     const updateCount = (items) => {
         const count = items.reduce((sum, item) => sum + (item.quantity || 1), 0);

@@ -27,22 +27,11 @@ const CustomerCart = () => {
 
   const [promoCode, setPromoCode] = useState("");
 
-  // Listen for cart updates from other pages
-  React.useEffect(() => {
-    const handleCartUpdate = () => {
-      const savedCart = localStorage.getItem('craftopiaCart');
-      if (savedCart) {
-        setCartItems(JSON.parse(savedCart));
-      }
-    };
-
-    window.addEventListener('cartUpdated', handleCartUpdate);
-    return () => window.removeEventListener('cartUpdated', handleCartUpdate);
-  }, []);
-
-  // Save cart to localStorage whenever it changes
+  // Save cart to localStorage and notify other components whenever it changes
   React.useEffect(() => {
     localStorage.setItem('craftopiaCart', JSON.stringify(cartItems));
+    // Notify other components (like Navbar) that cart has been updated
+    window.dispatchEvent(new Event('cartUpdated'));
   }, [cartItems]);
 
   const updateQuantity = (id, qty) => {
@@ -77,10 +66,10 @@ const CustomerCart = () => {
   return (
     <div className="cart-page">
       <Navbar />
-      
+
       {/* Added spacing container */}
       <div className="cart-content-wrapper">
-        
+
         {/* NEW HEADER SECTION */}
         <div className="cart-header">
           <div className="cart-header-content">
@@ -93,7 +82,7 @@ const CustomerCart = () => {
                 {totalItems} {totalItems === 1 ? 'item' : 'items'} in your cart
               </p>
             </div>
-            
+
             <div className="cart-stats">
               <div className="stat-item">
                 <span className="stat-label">Total Items</span>
@@ -125,112 +114,112 @@ const CustomerCart = () => {
               </div>
             ) : (
               <div className="cart-list">
-              {cartItems.map(item => {
-                if (!item || !item.id || !item.name || !item.price) return null;
-                return (
-                <div key={item.id} className="cart-card">
-                  
-                  {/* IMAGE */}
-                  <div className="cart-img">
-                    <img src={item.image || '/images/placeholder.png'} alt={item.name} />
-                  </div>
+                {cartItems.map(item => {
+                  if (!item || !item.id || !item.name || !item.price) return null;
+                  return (
+                    <div key={item.id} className="cart-card">
 
-                  {/* DETAILS */}
-                  <div className="cart-info">
-                    <p className="cart-category">{item.category || 'Product'}</p>
-                    <h3 className="cart-name">{item.name}</h3>
-                    {item.type === 'gift' && item.giftDetails && (
-                      <div className="gift-info-badge">
-                        <span className="gift-badge">🎁 Gift</span>
-                        <p className="gift-recipient">To: <strong>{item.giftDetails.recipientName}</strong></p>
+                      {/* IMAGE */}
+                      <div className="cart-img">
+                        <img src={item.image || '/images/placeholder.png'} alt={item.name} />
                       </div>
-                    )}
-                    <p className="item-unit-price">{format(item.price || 0)} total</p>
 
-                    {/* Quantity */}
-                    <div className="qty-box">
-                      <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>
-                        <FiMinus />
-                      </button>
-                      <span>{item.quantity}</span>
-                      <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>
-                        <FiPlus />
-                      </button>
+                      {/* DETAILS */}
+                      <div className="cart-info">
+                        <p className="cart-category">{item.category || 'Product'}</p>
+                        <h3 className="cart-name">{item.name}</h3>
+                        {item.type === 'gift' && item.giftDetails && (
+                          <div className="gift-info-badge">
+                            <span className="gift-badge">🎁 Gift</span>
+                            <p className="gift-recipient">To: <strong>{item.giftDetails.recipientName}</strong></p>
+                          </div>
+                        )}
+                        <p className="item-unit-price">{format(item.price || 0)} total</p>
+
+                        {/* Quantity */}
+                        <div className="qty-box">
+                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)}>
+                            <FiMinus />
+                          </button>
+                          <span>{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>
+                            <FiPlus />
+                          </button>
+                        </div>
+                      </div>
+
+                      {/* PRICE + TRASH */}
+                      <div className="cart-right">
+                        <p className="cart-price">{format((item.price || 0) * (item.quantity || 1))}</p>
+
+                        <button className="delete-btn" onClick={() => removeItem(item.id)}>
+                          <FiTrash2 />
+                        </button>
+                      </div>
+
                     </div>
-                  </div>
-
-                  {/* PRICE + TRASH */}
-                  <div className="cart-right">
-                    <p className="cart-price">{format((item.price || 0) * (item.quantity || 1))}</p>
-
-                    <button className="delete-btn" onClick={() => removeItem(item.id)}>
-                      <FiTrash2 />
-                    </button>
-                  </div>
-
-                </div>
-                );
-              })}
+                  );
+                })}
               </div>
             )}
           </div>
 
           {/* RIGHT SIDE ORDER SUMMARY */}
           {cartItems.length > 0 && (
-          <div className="summary-section">
-            <div className="summary-box">
-              <h3>Order Summary</h3>
+            <div className="summary-section">
+              <div className="summary-box">
+                <h3>Order Summary</h3>
 
-              {/* PROMO */}
-              <div className="promo-row">
-                <input
-                  type="text"
-                  placeholder="Enter promo code"
-                  value={promoCode}
-                  onChange={(e) => setPromoCode(e.target.value)}
-                />
-                <button className="apply-btn">Apply</button>
+                {/* PROMO */}
+                <div className="promo-row">
+                  <input
+                    type="text"
+                    placeholder="Enter promo code"
+                    value={promoCode}
+                    onChange={(e) => setPromoCode(e.target.value)}
+                  />
+                  <button className="apply-btn">Apply</button>
+                </div>
+
+                <p className="promo-suggest">Try: CRAFT10 or WELCOME20</p>
+
+                <div className="summary-line" />
+
+                {/* PRICE TABLE */}
+                <div className="summary-item">
+                  <span>Subtotal ({totalItems} items)</span>
+                  <span>{format(subtotal)}</span>
+                </div>
+
+                <div className="summary-item">
+                  <span>Shipping</span>
+                  <span className="free">FREE</span>
+                </div>
+
+                <div className="summary-item">
+                  <span>Tax (5%)</span>
+                  <span>{format(tax)}</span>
+                </div>
+
+                <div className="summary-line" />
+
+                <div className="summary-total">
+                  <span>Total</span>
+                  <span>{format(total)}</span>
+                </div>
+
+                <button className="checkout-btn" onClick={handleCheckout}>
+                  Proceed to Checkout
+                </button>
+
+                <div className="benefits">
+                  <p><FiShield /> Secure checkout</p>
+                  <p><FiTruck /> Fast & reliable delivery</p>
+                  <p><FiTag /> Best price guarantee</p>
+                </div>
+
               </div>
-
-              <p className="promo-suggest">Try: CRAFT10 or WELCOME20</p>
-
-              <div className="summary-line" />
-
-              {/* PRICE TABLE */}
-              <div className="summary-item">
-                <span>Subtotal ({totalItems} items)</span>
-                <span>{format(subtotal)}</span>
-              </div>
-
-              <div className="summary-item">
-                <span>Shipping</span>
-                <span className="free">FREE</span>
-              </div>
-
-              <div className="summary-item">
-                <span>Tax (5%)</span>
-                <span>{format(tax)}</span>
-              </div>
-
-              <div className="summary-line" />
-
-              <div className="summary-total">
-                <span>Total</span>
-                <span>{format(total)}</span>
-              </div>
-
-              <button className="checkout-btn" onClick={handleCheckout}>
-                Proceed to Checkout
-              </button>
-
-              <div className="benefits">
-                <p><FiShield /> Secure checkout</p>
-                <p><FiTruck /> Fast & reliable delivery</p>
-                <p><FiTag /> Best price guarantee</p>
-              </div>
-
             </div>
-          </div>
           )}
         </div>
       </div>

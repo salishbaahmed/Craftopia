@@ -161,45 +161,7 @@ const CustomerCheckout = () => {
 
 
 
-  const handlePayment = async () => {
-    // In a real app, we would integrate Stripe/PayPal here.
-    // For this MVP, we'll simulate payment and create the order immediately.
 
-    try {
-      const orderData = {
-        items: orderItems.map(item => ({
-          productId: item.id,
-          name: item.name,
-          quantity: item.quantity,
-          price: item.price,
-          image: item.image
-        })),
-        shippingAddress: {
-          name: `${formData.firstName} ${formData.lastName}`,
-          street: formData.address,
-          city: formData.city,
-          province: formData.province,
-          zipCode: formData.zipCode,
-          phone: formData.phone
-        },
-        paymentMethod: 'Credit Card', // Simulated
-        subtotal,
-        discount,
-        tax,
-        total
-      };
-
-      const response = await api.post('/orders', orderData);
-
-      // Clear cart and redirect
-      clearCart();
-      navigate('/customer-order-confirmation', { state: { orderId: response.data.id } });
-
-    } catch (error) {
-      console.error('Error placing order:', error);
-      alert('Failed to place order. Please try again.');
-    }
-  };
   return (
     <div className="checkout-page">
       <Navbar />
@@ -396,7 +358,7 @@ const CustomerCheckout = () => {
                 </div>
               </div>
 
-              <button type="submit" className="continue-button" onClick={handlePayment}>
+              <button type="submit" className="continue-button">
                 Continue to Payment
               </button>
             </form>

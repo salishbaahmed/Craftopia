@@ -297,7 +297,7 @@ const CustomerLandingPage = () => {
     }
 
     // Filter by price range
-    filtered = filtered.filter(product => 
+    filtered = filtered.filter(product =>
       product.price >= selectedPriceRange.min && product.price <= selectedPriceRange.max
     );
 
@@ -345,10 +345,10 @@ const CustomerLandingPage = () => {
   const addToCart = (product) => {
     // Get existing cart from localStorage
     const existingCart = JSON.parse(localStorage.getItem('craftopiaCart') || '[]');
-    
+
     // Check if product already exists in cart
     const existingItem = existingCart.find(item => item.id === product.id && item.type !== 'gift');
-    
+
     if (existingItem) {
       // If product exists, increase quantity
       existingItem.quantity = (existingItem.quantity || 1) + 1;
@@ -361,13 +361,13 @@ const CustomerLandingPage = () => {
         image: '/images/placeholder.png' // Default image since products don't have images in data
       });
     }
-    
+
     // Save updated cart to localStorage
     localStorage.setItem('craftopiaCart', JSON.stringify(existingCart));
-    
+
     // Trigger cart update event for other components
     window.dispatchEvent(new Event('cartUpdated'));
-    
+
     // Show notification
     setShowCartNotification(true);
     setTimeout(() => setShowCartNotification(false), 3000);
@@ -381,11 +381,11 @@ const CustomerLandingPage = () => {
       setWishlist(prev => prev.filter(item => item.id !== product.id));
     } else {
       // store minimal product info to wishlist, including inStock status
-      const entry = { 
-        id: product.id, 
-        name: product.name, 
-        price: product.price, 
-        category: product.category, 
+      const entry = {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        category: product.category,
         image: product.image || '/images/placeholder.png',
         inStock: true, // All products in landing page are in stock by default
         rating: 5,
@@ -411,7 +411,7 @@ const CustomerLandingPage = () => {
   return (
     <div className="landing-page">
       <Navbar />
-      
+
       {/* Cart Notification */}
       {showCartNotification && (
         <div className="cart-notification">
@@ -431,8 +431,8 @@ const CustomerLandingPage = () => {
         </section>
 
         <div className="search-container">
-          <input 
-            type="text" 
+          <input
+            type="text"
             placeholder="Search resin keychains, clay bookmarks, custom products..."
             className="search-input"
             value={searchQuery}
@@ -453,7 +453,7 @@ const CustomerLandingPage = () => {
                   {selectedCategory !== "All Products" && (
                     <span className="filter-active-tag">
                       Category: {selectedCategory}
-                      <button 
+                      <button
                         className="filter-remove-btn"
                         onClick={() => setSelectedCategory("All Products")}
                       >
@@ -464,7 +464,7 @@ const CustomerLandingPage = () => {
                   {selectedPriceRange.label !== "All Prices" && (
                     <span className="filter-active-tag">
                       Price: {selectedPriceRange.label}
-                      <button 
+                      <button
                         className="filter-remove-btn"
                         onClick={() => setSelectedPriceRange(priceRanges[0])}
                       >
@@ -486,7 +486,7 @@ const CustomerLandingPage = () => {
                 <ul className="filter-category-list">
                   {categories.map((category, index) => (
                     <li key={index} className="filter-category-item">
-                      <button 
+                      <button
                         className={`filter-category-button ${selectedCategory === category ? 'filter-category-active' : ''}`}
                         onClick={() => handleCategorySelect(category)}
                       >
@@ -508,7 +508,7 @@ const CustomerLandingPage = () => {
                 <ul className="filter-price-list">
                   {priceRanges.map((range, index) => (
                     <li key={index} className="filter-price-item">
-                      <button 
+                      <button
                         className={`filter-price-button ${selectedPriceRange.label === range.label ? 'filter-price-active' : ''}`}
                         onClick={() => handlePriceRangeSelect(range)}
                       >
@@ -547,13 +547,13 @@ const CustomerLandingPage = () => {
                   <div key={product.id} className="product-card">
                     <div className="product-image">
                       {product.badge && (
-                        <div className={`product-badge ${product.badge === 'Sale' ? 'sale' : 
-                                          product.badge === 'Limited Edition' ? 'limited' : 
-                                          product.badge === 'Custom' ? 'custom' : 'popular'}`}>
+                        <div className={`product-badge ${product.badge === 'Sale' ? 'sale' :
+                          product.badge === 'Limited Edition' ? 'limited' :
+                            product.badge === 'Custom' ? 'custom' : 'popular'}`}>
                           {product.badge}
                         </div>
                       )}
-                      <button 
+                      <button
                         className={`like-btn ${isInWishlist(product.id) ? 'active' : ''}`}
                         onClick={() => toggleWishlist(product)}
                       >
@@ -580,14 +580,14 @@ const CustomerLandingPage = () => {
                         )}
                       </div>
                       <div className="product-actions">
-                        <button 
+                        <button
                           className="add-to-cart-btn"
                           onClick={() => addToCart(product)}
                         >
                           <FiShoppingCart className="btn-icon" />
                           Add to Cart
                         </button>
-                        <button 
+                        <button
                           className="send-gift-btn"
                           onClick={() => handleSendGift(product)}
                         >

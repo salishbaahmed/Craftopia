@@ -58,10 +58,10 @@ const CustomerSendGift = () => {
   // Calculate total price
   const calculateTotalPrice = () => {
     if (!selectedProduct) return 0;
-    
+
     const wrappingPrice = wrappingPapers.find(wp => wp.id === giftOptions.wrappingPaper)?.price || 0;
     const cardPrice = giftCards.find(gc => gc.id === giftOptions.giftCard)?.price || 0;
-    
+
     return selectedProduct.price + wrappingPrice + cardPrice;
   };
 
@@ -71,7 +71,7 @@ const CustomerSendGift = () => {
       ...prev,
       [field]: value
     }));
-    
+
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({
@@ -106,7 +106,7 @@ const CustomerSendGift = () => {
   // Handle gift submission
   const handleSubmitGift = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
@@ -116,7 +116,7 @@ const CustomerSendGift = () => {
     try {
       // Simulate API call
       await new Promise(resolve => setTimeout(resolve, 2000));
-      
+
       // Create gift order object
       const giftOrder = {
         product: selectedProduct,
@@ -138,7 +138,7 @@ const CustomerSendGift = () => {
       const existingCart = JSON.parse(localStorage.getItem('craftopiaCart') || '[]');
       const wrappingPaper = wrappingPapers.find(wp => wp.id === giftOptions.wrappingPaper);
       const giftCard = giftCards.find(gc => gc.id === giftOptions.giftCard);
-      
+
       const cartItem = {
         id: Date.now(), // Unique ID for this cart item
         name: `${selectedProduct.name} (Gift)`,
@@ -164,7 +164,7 @@ const CustomerSendGift = () => {
           orderId: giftOrder.orderId
         }
       };
-      
+
       localStorage.setItem('craftopiaCart', JSON.stringify([...existingCart, cartItem]));
 
       // Trigger cart update event
@@ -226,7 +226,7 @@ const CustomerSendGift = () => {
   return (
     <div className="sendgift-page">
       <Navbar />
-      
+
       {/* Cart Notification */}
       {showCartNotification && (
         <div className="sendgift-cart-notification">
@@ -234,11 +234,11 @@ const CustomerSendGift = () => {
           <span>Gift added to cart!</span>
         </div>
       )}
-      
+
       <main className="sendgift-main">
         <div className="sendgift-container">
           <div className="sendgift-header">
-            <button 
+            <button
               className="sendgift-back-button"
               onClick={() => navigate('/customer')}
             >
@@ -286,7 +286,7 @@ const CustomerSendGift = () => {
                   <FiMessageSquare className="sendgift-section-icon" />
                   Recipient Information
                 </h3>
-                
+
                 <div className="sendgift-form-row">
                   <div className="sendgift-form-group">
                     <label htmlFor="recipientName">Recipient Name *</label>
@@ -327,7 +327,7 @@ const CustomerSendGift = () => {
                   Wrapping Paper
                 </h3>
                 <p className="sendgift-section-description">Choose how you'd like your gift to be wrapped</p>
-                
+
                 <div className="sendgift-options-grid">
                   {wrappingPapers.map((paper) => (
                     <label key={paper.id} className="sendgift-option-card">
@@ -341,8 +341,8 @@ const CustomerSendGift = () => {
                       <div className="sendgift-option-content">
                         <div className="sendgift-option-preview sendgift-wrapping-preview">
                           {paper.image ? (
-                            <img 
-                              src={paper.image} 
+                            <img
+                              src={paper.image}
                               alt={paper.name}
                               className="sendgift-option-image"
                             />
@@ -369,7 +369,7 @@ const CustomerSendGift = () => {
                   Gift Card
                 </h3>
                 <p className="sendgift-section-description">Select a gift card to include with your present</p>
-                
+
                 <div className="sendgift-options-grid">
                   {giftCards.map((card) => (
                     <label key={card.id} className="sendgift-option-card">
@@ -383,8 +383,8 @@ const CustomerSendGift = () => {
                       <div className="sendgift-option-content">
                         <div className="sendgift-option-preview sendgift-card-preview">
                           {card.image ? (
-                            <img 
-                              src={card.image} 
+                            <img
+                              src={card.image}
                               alt={card.name}
                               className="sendgift-option-image"
                             />
