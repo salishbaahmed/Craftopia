@@ -165,25 +165,27 @@ const CustomerMakePayment = () => {
 
         const orderPayload = {
           items: orderSummary.items.map(item => ({
-            productId: item.id, // Ensure this matches backend expectation
+            productId: String(item.id), // Convert to string to match backend expectation
             name: item.name,
             price: item.price,
             quantity: item.quantity,
-            image: item.image
+            image: item.image || ''
           })),
           shippingAddress: orderSummary.checkoutFormData || {},
           subtotal: orderSummary.subtotal,
           discount: orderSummary.discount,
           tax: orderSummary.tax,
           total: orderSummary.total,
-          paymentStatus: 'Paid',
-          status: 'Processing'
+          paymentStatus: 'Paid'
         };
 
+        console.log('Creating backend order with payload:', JSON.stringify(orderPayload, null, 2));
         const response = await api.post('/orders/', orderPayload);
+        console.log('Backend order created:', response.data);
         return response.data.id;
       } catch (error) {
         console.error('Error creating backend order:', error);
+        console.error('Error response:', error.response?.data);
         // Fallback to local ID if backend fails, so user still sees confirmation
         return `ORD-${Date.now()}-OFFLINE`;
       }

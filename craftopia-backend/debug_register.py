@@ -18,10 +18,7 @@ async def debug_register():
                 password="hashedpassword"
             )
             print(f"User object created: {new_user}")
-<<<<<<< HEAD
             # addresses is a list, not a relationship in the same way for this debug
-=======
->>>>>>> ee2a075f6c6f9171a3591b34687f5442b9e58c40
             print(f"Addresses: {new_user.addresses}")
             
             session.add(new_user)

@@ -22,6 +22,7 @@ const CustomerOrders = () => {
     const loadOrders = async () => {
       try {
         const response = await api.get('/orders/my-orders');
+        console.log('Orders response:', response.data);
         setOrders(response.data);
         setIsLoading(false);
       } catch (error) {
@@ -158,17 +159,17 @@ const CustomerOrders = () => {
                   <div className="customer-order-meta">
                     <div className="customer-date-section">
                       <FiCalendar className="customer-calendar-icon" />
-                      <span className="customer-order-date">{order.date}</span>
+                      <span className="customer-order-date">{new Date(order.createdAt).toLocaleDateString()}</span>
                     </div>
                     <div className="customer-amount-section">
-                      <span className="customer-order-amount">{formatCurrency(order.amount)}</span>
+                      <span className="customer-order-amount">{formatCurrency(order.total)}</span>
                     </div>
                   </div>
 
                   {/* Third Row - Product Information */}
                   <div className="customer-product-info">
-                    <h3 className="customer-product-title">{order.items[0].name}</h3>
-                    {order.items.length > 1 && (
+                    <h3 className="customer-product-title">{order.items?.[0]?.name || 'Order Items'}</h3>
+                    {order.items && order.items.length > 1 && (
                       <span className="customer-more-items">
                         +{order.items.length - 1} more item{order.items.length - 1 > 1 ? 's' : ''}
                       </span>
@@ -185,7 +186,7 @@ const CustomerOrders = () => {
                       {expandedOrder === order.id ? <FiChevronUp /> : <FiChevronDown />}
                     </button>
 
-                    {order.status === 'Delivered' && (
+                    {order.status === 'Delivered' && order.items?.[0] && (
                       isItemRated(order.id, order.items[0]?.id, order.items[0]?.name) ? (
                         <button className="customer-rate-product-btn" disabled>
                           Rated
@@ -218,36 +219,40 @@ const CustomerOrders = () => {
                     <div className="customer-order-items-section">
                       <h4 className="customer-section-title">Order Items</h4>
                       <div className="customer-order-items">
-                        {order.items.map((item, index) => (
-                          <div key={item.id} className="customer-order-item">
-                            <div className="customer-item-image">
-                              {/* Placeholder for product image */}
-                              <div className="customer-image-placeholder">
-                                <FiPackage />
+                        {order.items && order.items.length > 0 ? (
+                          order.items.map((item, index) => (
+                            <div key={item.id || index} className="customer-order-item">
+                              <div className="customer-item-image">
+                                {/* Placeholder for product image */}
+                                <div className="customer-image-placeholder">
+                                  <FiPackage />
+                                </div>
+                              </div>
+                              <div className="customer-item-details">
+                                <h5 className="customer-item-name">{item.name}</h5>
+                                <p className="customer-item-category">{item.category}</p>
+                                <div className="customer-item-meta">
+                                  <span className="customer-item-quantity">Qty: {item.quantity}</span>
+                                  <span className="customer-item-price">{formatCurrency(item.price)}</span>
+                                </div>
+                                {order.status === 'Delivered' && (
+                                  isItemRated(order.id, item?.id, item?.name) ? (
+                                    <button className="customer-rate-product-btn customer-rate-item-btn" disabled>Rated</button>
+                                  ) : (
+                                    <button
+                                      className="customer-rate-product-btn customer-rate-item-btn"
+                                      onClick={() => handleRateProduct(order, item)}
+                                    >
+                                      Rate This Product
+                                    </button>
+                                  )
+                                )}
                               </div>
                             </div>
-                            <div className="customer-item-details">
-                              <h5 className="customer-item-name">{item.name}</h5>
-                              <p className="customer-item-category">{item.category}</p>
-                              <div className="customer-item-meta">
-                                <span className="customer-item-quantity">Qty: {item.quantity}</span>
-                                <span className="customer-item-price">{formatCurrency(item.price)}</span>
-                              </div>
-                              {order.status === 'Delivered' && (
-                                isItemRated(order.id, item?.id, item?.name) ? (
-                                  <button className="customer-rate-product-btn customer-rate-item-btn" disabled>Rated</button>
-                                ) : (
-                                  <button
-                                    className="customer-rate-product-btn customer-rate-item-btn"
-                                    onClick={() => handleRateProduct(order, item)}
-                                  >
-                                    Rate This Product
-                                  </button>
-                                )
-                              )}
-                            </div>
-                          </div>
-                        ))}
+                          ))
+                        ) : (
+                          <p>No items found</p>
+                        )}
                       </div>
                     </div>
 
@@ -257,7 +262,7 @@ const CustomerOrders = () => {
                       <div className="customer-summary-grid">
                         <div className="customer-summary-item">
                           <span className="customer-summary-label">Subtotal:</span>
-                          <span className="customer-summary-value">{formatCurrency(order.amount)}</span>
+                          <span className="customer-summary-value">{formatCurrency(order.total)}</span>
                         </div>
                         <div className="customer-summary-item">
                           <span className="customer-summary-label">Shipping:</span>
@@ -269,7 +274,7 @@ const CustomerOrders = () => {
                         </div>
                         <div className="customer-summary-item customer-total">
                           <span className="customer-summary-label">Total:</span>
-                          <span className="customer-summary-value">{formatCurrency(order.amount)}</span>
+                          <span className="customer-summary-value">{formatCurrency(order.total)}</span>
                         </div>
                       </div>
                     </div>
@@ -278,10 +283,10 @@ const CustomerOrders = () => {
                     <div className="customer-shipping-section">
                       <h4 className="customer-section-title">Shipping Information</h4>
                       <div className="customer-shipping-details">
-                        <p><strong>{order.shippingAddress.name}</strong></p>
-                        <p>{order.shippingAddress.street}</p>
-                        <p>{order.shippingAddress.city}, {order.shippingAddress.province} {order.shippingAddress.zipCode}</p>
-                        <p>Phone: {order.shippingAddress.phone}</p>
+                        <p><strong>{order.shippingAddress?.firstName} {order.shippingAddress?.lastName}</strong></p>
+                        <p>{order.shippingAddress?.address || order.shippingAddress?.street}</p>
+                        <p>{order.shippingAddress?.city}, {order.shippingAddress?.province} {order.shippingAddress?.zipCode}</p>
+                        <p>Phone: {order.shippingAddress?.phone}</p>
                       </div>
                     </div>
 
@@ -295,7 +300,7 @@ const CustomerOrders = () => {
                           </div>
                           <div className="customer-timeline-content">
                             <span className="customer-timeline-title">Order Placed</span>
-                            <span className="customer-timeline-date">{order.date}</span>
+                            <span className="customer-timeline-date">{new Date(order.createdAt).toLocaleDateString()}</span>
                           </div>
                         </div>
                         <div className={`customer-timeline-item ${(order.status === 'Shipped' || order.status === 'Out for Delivery' || order.status === 'Delivered') ? 'customer-timeline-completed' : ''}`}>
@@ -304,7 +309,7 @@ const CustomerOrders = () => {
                           </div>
                           <div className="customer-timeline-content">
                             <span className="customer-timeline-title">Processing</span>
-                            <span className="customer-timeline-date">{order.date}</span>
+                            <span className="customer-timeline-date">{new Date(order.createdAt).toLocaleDateString()}</span>
                           </div>
                         </div>
                         <div className={`customer-timeline-item ${(order.status === 'Shipped' || order.status === 'Out for Delivery' || order.status === 'Delivered') ? 'customer-timeline-completed' : ''}`}>

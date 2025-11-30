@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException, Depends, Body
+from fastapi.responses import StreamingResponse
+from app.utils.invoice_generator import generate_invoice_pdf
 from typing import List
-from app.models.order import Order, OrderItem
+from app.models.order import Order, OrderItem, OrderCreate, OrderItemCreate, OrderResponse
 from app.models.user import User
 from app.utils.auth import get_current_user, get_current_admin
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -11,35 +13,36 @@ from sqlalchemy.orm import selectinload
 router = APIRouter()
 
 @router.post("/", response_model=Order, status_code=201)
-async def create_order(order: Order, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
-    # Ensure the order is linked to the current user
+async def create_order(order_data: OrderCreate, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    # Convert OrderCreate to Order
+    # We need to manually create OrderItems from OrderItemCreate
+    
+    # Create Order object (excluding items for now)
+    order_dict = order_data.dict(exclude={"items"})
+    order = Order(**order_dict)
     order.userId = user.id
     
-    # We need to handle items separately if they are passed in the order object but not linked yet
-    # But Order model has items: List[OrderItem]
-    # If the input JSON has items, Pydantic/SQLModel will try to parse them.
-    # However, we need to ensure they are created correctly.
+    # Create OrderItem objects
+    order_items = []
+    for item_data in order_data.items:
+        item = OrderItem(**item_data.dict())
+        # We don't need to set order_id explicitly if we add to order.items, 
+        # but let's be safe and let SQLAlchemy handle the relationship
+        order_items.append(item)
     
-    # Actually, if we just add the order to the session, SQLModel should handle the relationship if configured correctly.
-    # But `items` in `Order` is a relationship. If the input `Order` Pydantic model has `items` as a list of `OrderItem` objects,
-    # we might need to adjust how we handle it because `OrderItem` needs `order_id` which isn't generated yet.
-    # SQLAlchemy handles this by flushing.
+    order.items = order_items
     
     session.add(order)
     await session.commit()
     await session.refresh(order)
     
-    # We might need to refresh items too to get their IDs if needed, but for response it might be fine.
-    # To return items, we need to load them.
-    # await session.refresh(order, ["items"]) # This might not work directly with asyncpg in all versions without explicit load
-    
-    # Let's re-fetch with items
+    # Re-fetch with items to ensure response is correct
     result = await session.execute(select(Order).where(Order.id == order.id).options(selectinload(Order.items)))
     order = result.scalars().first()
     
     return order
 
-@router.get("/my-orders", response_model=List[Order])
+@router.get("/my-orders", response_model=List[OrderResponse])
 async def get_my_orders(user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
     result = await session.execute(select(Order).where(Order.userId == user.id).options(selectinload(Order.items)))
     return result.scalars().all()
@@ -58,6 +61,26 @@ async def get_order(id: str, user: User = Depends(get_current_user), session: As
         if getattr(user, "role", "user") != "admin":
              raise HTTPException(status_code=403, detail="Not authorized to view this order")
     return order
+
+@router.get("/{id}/invoice")
+async def download_invoice(id: str, user: User = Depends(get_current_user), session: AsyncSession = Depends(get_session)):
+    result = await session.execute(select(Order).where(Order.id == id).options(selectinload(Order.items)))
+    order = result.scalars().first()
+    
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+        
+    if order.userId != user.id:
+        if getattr(user, "role", "user") != "admin":
+             raise HTTPException(status_code=403, detail="Not authorized to view this invoice")
+             
+    pdf_buffer = generate_invoice_pdf(order)
+    
+    return StreamingResponse(
+        pdf_buffer,
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename=invoice_{order.id}.pdf"}
+    )
 
 # Admin Routes
 @router.get("/admin/all", response_model=List[Order])

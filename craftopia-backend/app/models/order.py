@@ -28,3 +28,41 @@ class Order(SQLModel, table=True):
     status: str = "Pending"
     paymentStatus: str = "Pending"
     createdAt: datetime = Field(default_factory=datetime.now)
+
+class OrderItemCreate(SQLModel):
+    productId: str
+    name: str
+    price: float
+    quantity: int
+    image: Optional[str] = None
+
+class OrderCreate(SQLModel):
+    items: List[OrderItemCreate]
+    shippingAddress: dict
+    subtotal: float
+    discount: float
+    tax: float
+    total: float
+    paymentStatus: str = "Pending"
+
+class OrderItemResponse(SQLModel):
+    id: str
+    productId: str
+    name: str
+    price: float
+    quantity: int
+    image: Optional[str] = None
+
+class OrderResponse(SQLModel):
+    id: str
+    userId: str
+    items: List[OrderItemResponse] = []
+    shippingAddress: dict
+    subtotal: float
+    discount: float
+    tax: float
+    total: float
+    status: str
+    paymentStatus: str
+    createdAt: datetime
+

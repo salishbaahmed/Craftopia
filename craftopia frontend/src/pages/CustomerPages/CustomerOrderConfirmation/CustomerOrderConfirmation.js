@@ -195,9 +195,41 @@ const OrderConfirmation = () => {
     navigate('/customer-track-order');
   };
 
-  const handleDownloadInvoice = () => {
-    // Simulate invoice download
-    alert('Invoice download started!');
+  const handleDownloadInvoice = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      // Use 127.0.0.1 to avoid localhost DNS issues
+      const response = await fetch(`http://127.0.0.1:8000/api/orders/${orderDetails.orderId}/invoice`, {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      if (!response.ok) {
+        // Try to get error details from backend
+        let errorMessage = 'Failed to download invoice';
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.detail || errorMessage;
+        } catch (e) {
+          errorMessage = `Server error: ${response.status}`;
+        }
+        throw new Error(errorMessage);
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `invoice_${orderDetails.orderId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    } catch (error) {
+      console.error('Error downloading invoice:', error);
+      alert(`Failed to download invoice: ${error.message}`);
+    }
   };
 
   const handleShareOrder = () => {
