@@ -215,6 +215,7 @@ const CustomerMakePayment = () => {
           };
           localStorage.setItem('orderData', JSON.stringify(orderData));
           localStorage.removeItem('craftopiaCart'); // Clear cart after successful order
+          window.dispatchEvent(new Event('cartUpdated')); // Notify cart context
           navigate('/customer-order-confirmation');
         }, 2000);
       }, 1500);
@@ -249,6 +250,7 @@ const CustomerMakePayment = () => {
           };
           localStorage.setItem('orderData', JSON.stringify(orderData));
           localStorage.removeItem('craftopiaCart'); // Clear cart after successful order
+          window.dispatchEvent(new Event('cartUpdated')); // Notify cart context
           navigate('/customer-order-confirmation');
         }, 2000);
       }, 1500);
@@ -292,6 +294,7 @@ const CustomerMakePayment = () => {
         };
         localStorage.setItem('orderData', JSON.stringify(orderData));
         localStorage.removeItem('craftopiaCart'); // Clear cart after successful order
+        window.dispatchEvent(new Event('cartUpdated')); // Notify cart context
         navigate('/customer-order-confirmation');
       }, 2000);
     } catch (error) {
