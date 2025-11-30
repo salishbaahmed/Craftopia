@@ -1,0 +1,525 @@
+.customerfaq-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.customerfaq-content {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background: #f8fcfd;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header Section */
+.customerfaq-header {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.customerfaq-icon-circle {
+  width: 80px;
+  height: 80px;
+  background: #00b894;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 25px;
+  box-shadow: 0 4px 15px rgba(0, 184, 148, 0.3);
+}
+
+.customerfaq-icon {
+  font-size: 2.5rem;
+  color: white;
+  stroke-width: 1.5;
+}
+
+.customerfaq-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #2d3436;
+  margin-bottom: 15px;
+  line-height: 1.2;
+}
+
+.customerfaq-subtitle {
+  font-size: 1.1rem;
+  color: #636e72;
+  margin-bottom: 40px;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+
+/* Search Bar */
+.customerfaq-search-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.customerfaq-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: #f1f3f4;
+  border-radius: 50px;
+  padding: 12px 20px;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.customerfaq-search:focus-within {
+  background: white;
+  border-color: #00b894;
+  box-shadow: 0 4px 15px rgba(0, 184, 148, 0.1);
+}
+
+.customerfaq-search-icon {
+  font-size: 1.3rem;
+  margin-right: 12px;
+  color: #636e72;
+  stroke-width: 1.5;
+}
+
+.customerfaq-search-input {
+  flex: 1;
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 1rem;
+  color: #2d3436;
+  font-family: inherit;
+}
+
+.customerfaq-search-input::placeholder {
+  color: #636e72;
+}
+
+/* No Results */
+.customerfaq-no-results {
+  text-align: center;
+  padding: 60px 20px;
+  background: white;
+  border-radius: 12px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+}
+
+.customerfaq-no-results-icon {
+  font-size: 4rem;
+  color: #636e72;
+  margin-bottom: 20px;
+  stroke-width: 1;
+  opacity: 0.5;
+}
+
+.customerfaq-no-results h3 {
+  font-size: 1.5rem;
+  color: #2d3436;
+  margin-bottom: 10px;
+}
+
+.customerfaq-no-results p {
+  color: #636e72;
+  margin-bottom: 25px;
+}
+
+.customerfaq-clear-search {
+  background: #00b894;
+  color: white;
+  border: none;
+  padding: 10px 25px;
+  border-radius: 25px;
+  cursor: pointer;
+  font-family: inherit;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.customerfaq-clear-search:hover {
+  background: #00a885;
+  transform: translateY(-1px);
+}
+
+/* Search Results */
+.customerfaq-search-results {
+  margin-bottom: 30px;
+}
+
+.customerfaq-search-results-title {
+  font-size: 1.5rem;
+  color: #2d3436;
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+/* FAQ Section Cards */
+.customerfaq-section-card {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
+  border-top: 4px solid #00b894;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.customerfaq-section-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.12);
+}
+
+.customerfaq-popular-questions {
+  border-top-color: #e84393;
+}
+
+.customerfaq-popular-questions .customerfaq-section-header {
+  background: linear-gradient(135deg, #e0f7f4, #f8fcfd);
+}
+
+.customerfaq-section-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 25px;
+  padding: 15px 20px;
+  background: #e0f7f4;
+  border-radius: 8px;
+  border-left: 4px solid #00b894;
+}
+
+.customerfaq-popular-questions .customerfaq-section-header {
+  border-left-color: #e84393;
+}
+
+.customerfaq-section-icon {
+  font-size: 1.5rem;
+  color: #00b894;
+  stroke-width: 1.5;
+  display: flex;
+  align-items: center;
+}
+
+.customerfaq-popular-questions .customerfaq-section-icon {
+  color: #e84393;
+}
+
+.customerfaq-section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #2d3436;
+  margin: 0;
+}
+
+/* Accordion Styles */
+.customerfaq-accordion-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.customerfaq-accordion-item {
+  border: 1px solid #e0f7f4;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  background: white;
+}
+
+.customerfaq-accordion-item:hover {
+  border-color: #00b894;
+  box-shadow: 0 2px 10px rgba(0, 184, 148, 0.1);
+}
+
+.customerfaq-accordion-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 20px 25px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  border-left: 4px solid transparent;
+  gap: 15px;
+}
+
+.customerfaq-accordion-header:hover {
+  background: #f8fcfd;
+  border-left-color: #00b894;
+}
+
+.customerfaq-accordion-header.customerfaq-active {
+  background: #f8fcfd;
+  border-left-color: #00b894;
+  border-bottom: 1px solid #e0f7f4;
+}
+
+.customerfaq-accordion-question {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #2d3436;
+  flex: 1;
+  line-height: 1.4;
+  text-align: left;
+  margin: 0;
+}
+
+.customerfaq-accordion-icon {
+  font-size: 1.3rem;
+  color: #00b894;
+  transition: transform 0.3s ease;
+  min-width: 20px;
+  text-align: center;
+  stroke-width: 1.5;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.customerfaq-accordion-header.customerfaq-active .customerfaq-accordion-icon {
+  transform: rotate(180deg);
+}
+
+.customerfaq-accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  background: white;
+}
+
+.customerfaq-accordion-content.customerfaq-active {
+  max-height: 1000px;
+}
+
+.customerfaq-accordion-answer {
+  padding: 0 25px 25px;
+  color: #636e72;
+  line-height: 1.6;
+  font-size: 1rem;
+  margin-top: 0;
+}
+
+/* Contact Section */
+.customerfaq-contact-section {
+  background: #00b894;
+  border-radius: 12px;
+  padding: 50px 30px;
+  text-align: center;
+  margin-top: 20px;
+  box-shadow: 0 4px 25px rgba(0, 184, 148, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.customerfaq-contact-section::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 100%;
+  height: 200%;
+  background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+  transform: rotate(45deg);
+}
+
+.customerfaq-contact-content {
+  max-width: 500px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.customerfaq-contact-icon {
+  font-size: 3rem;
+  color: white;
+  margin-bottom: 20px;
+  stroke-width: 1.5;
+}
+
+.customerfaq-contact-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 15px;
+}
+
+.customerfaq-contact-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.9);
+  margin-bottom: 30px;
+  line-height: 1.5;
+}
+
+.customerfaq-contact-button {
+  background: white;
+  color: #00b894;
+  border: none;
+  padding: 15px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-bottom: 20px;
+  font-family: inherit;
+  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.customerfaq-contact-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
+  background: #f8fcfd;
+}
+
+.customerfaq-button-icon {
+  font-size: 1.2rem;
+  stroke-width: 1.5;
+}
+
+.customerfaq-contact-email {
+  color: white;
+  font-size: 1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .customerfaq-content {
+    padding: 20px 15px;
+  }
+
+  .customerfaq-title {
+    font-size: 2rem;
+  }
+
+  .customerfaq-icon-circle {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 20px;
+  }
+
+  .customerfaq-icon {
+    font-size: 2rem;
+  }
+
+  .customerfaq-subtitle {
+    font-size: 1rem;
+    margin-bottom: 30px;
+  }
+
+  .customerfaq-section-card {
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+
+  .customerfaq-section-header {
+    padding: 12px 15px;
+    margin-bottom: 20px;
+  }
+
+  .customerfaq-section-title {
+    font-size: 1.3rem;
+  }
+
+  .customerfaq-accordion-header {
+    padding: 15px 20px;
+    gap: 12px;
+  }
+
+  .customerfaq-accordion-question {
+    font-size: 1rem;
+  }
+
+  .customerfaq-accordion-answer {
+    padding: 0 20px 20px;
+    font-size: 0.95rem;
+  }
+
+  .customerfaq-contact-section {
+    padding: 40px 20px;
+  }
+
+  .customerfaq-contact-title {
+    font-size: 1.7rem;
+  }
+
+  .customerfaq-contact-button {
+    padding: 12px 30px;
+    font-size: 1rem;
+  }
+
+  .customerfaq-contact-icon {
+    font-size: 2.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .customerfaq-title {
+    font-size: 1.7rem;
+  }
+
+  .customerfaq-section-header {
+    flex-direction: column;
+    text-align: center;
+    gap: 10px;
+  }
+
+  .customerfaq-accordion-header {
+    padding: 12px 15px;
+  }
+
+  .customerfaq-accordion-question {
+    font-size: 0.95rem;
+  }
+
+  .customerfaq-contact-title {
+    font-size: 1.5rem;
+  }
+
+  .customerfaq-contact-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* Focus Styles for Accessibility */
+.customerfaq-accordion-header:focus,
+.customerfaq-search-input:focus,
+.customerfaq-contact-button:focus,
+.customerfaq-clear-search:focus {
+  outline: 2px solid #00b894;
+  outline-offset: 2px;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  .customerfaq-section-card,
+  .customerfaq-accordion-item,
+  .customerfaq-accordion-header,
+  .customerfaq-accordion-content,
+  .customerfaq-contact-button,
+  .customerfaq-clear-search {
+    transition: none;
+  }
+  
+  .customerfaq-accordion-content {
+    transition: max-height 0.1s ease;
+  }
+  
+  .customerfaq-contact-section::before {
+    animation: none;
+  }
+}
