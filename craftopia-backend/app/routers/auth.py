@@ -30,6 +30,7 @@ class Token(BaseModel):
 @router.post("/register", response_model=Token)
 async def register(user_data: UserCreate, session: AsyncSession = Depends(get_session)):
     print(f"Register request received for: {user_data.email}")
+<<<<<<< HEAD
     try:
         # Check if user exists
         result = await session.execute(select(User).where(User.email == user_data.email))
@@ -60,6 +61,32 @@ async def register(user_data: UserCreate, session: AsyncSession = Depends(get_se
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"Registration failed: {str(e)}")
+=======
+    # Check if user exists
+    result = await session.execute(select(User).where(User.email == user_data.email))
+    existing_user = result.scalars().first()
+    
+    if existing_user:
+        raise HTTPException(status_code=400, detail="Email already registered")
+    
+    hashed_password = get_password_hash(user_data.password)
+    new_user = User(
+        firstName=user_data.firstName,
+        lastName=user_data.lastName,
+        email=user_data.email,
+        password=hashed_password
+    )
+    session.add(new_user)
+    await session.commit()
+    await session.refresh(new_user)
+    
+    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token = create_access_token(
+        data={"sub": new_user.email, "role": "user"}, expires_delta=access_token_expires
+    )
+    print("User registered successfully")
+    return {"access_token": access_token, "token_type": "bearer", "role": "user"}
+>>>>>>> ee2a075f6c6f9171a3591b34687f5442b9e58c40
 
 @router.post("/login", response_model=Token)
 async def login(login_data: LoginRequest, session: AsyncSession = Depends(get_session)):
