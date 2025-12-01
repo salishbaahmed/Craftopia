@@ -74,41 +74,45 @@ const AdminUpdateProduct = () => {
   }, []);
 
   // ...
-
+  // Helper to convert file to Base64
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
   const handleSave = async () => {
     if (!selectedProduct) return;
     setIsSaving(true);
 
     try {
-      const formDataToSend = new FormData();
-
-      // Append fields
-      Object.keys(formData).forEach(key => {
-        if (key === 'limitedEdition') {
-          formDataToSend.append(key, formData[key]);
-        } else if (formData[key] !== undefined && formData[key] !== null) {
-          formDataToSend.append(key, formData[key]);
+      // Process images: keep existing URLs, convert new files to Base64
+      const processedImages = await Promise.all(images.map(async (img) => {
+        if (img.isExisting) {
+          return img.url;
+        } else if (img.file) {
+          return await convertToBase64(img.file);
         }
-      });
+        return null;
+      }));
 
-      // Append new images
-      images.forEach(img => {
-        if (!img.isExisting && img.file) {
-          formDataToSend.append('images', img.file);
-        }
-      });
+      const validImages = processedImages.filter(img => img !== null);
 
-      // Note: Handling deletion of existing images might require a separate API logic 
-      // or sending the list of kept image URLs. For now, we'll assume the backend 
-      // handles appending new images. To delete, we might need a specific endpoint 
-      // or a 'kept_images' field.
-      // Let's assume we send 'kept_images' as a list of URLs.
-      const keptImages = images.filter(img => img.isExisting).map(img => img.url);
-      keptImages.forEach(url => formDataToSend.append('kept_images', url));
+      const productData = {
+        ...formData,
+        price: parseFloat(formData.price),
+        stock: parseInt(formData.stock),
+        weight: parseFloat(formData.weight),
+        images: validImages,
+        limitedEdition: formData.limitedEdition === true || formData.limitedEdition === 'true',
+        tags: formData.tags ? formData.tags.split(',').map(tag => tag.trim()) : []
+      };
 
-      await api.put(`/products/${selectedProduct.id}`, formDataToSend, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      });
+      console.log('Sending update data:', productData);
+
+      await api.put(`/products/${selectedProduct.id}`, productData);
 
       alert('Product updated successfully!');
 
@@ -189,12 +193,12 @@ const AdminUpdateProduct = () => {
       dimensions: product.dimensions,
       weight: product.weight,
       careInstructions: product.careInstructions,
-      tags: product.tags,
+      tags: Array.isArray(product.tags) ? product.tags.join(', ') : (product.tags || ''),
       artistStory: product.artistStory || '',
       limitedEdition: product.limitedEdition || false,
       launchDate: product.launchDate || ''
     });
-    setImages(product.images.map((img, index) => ({
+    setImages((product.images || []).map((img, index) => ({
       id: index,
       url: img,
       isExisting: true
