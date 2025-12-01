@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './AdminMain.css';
 import AdminSidebar from '../../components/AdminSideBar/AdminSideBar'
 
-import { 
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar 
+import {
+  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar
 } from 'recharts';
+import api from '../../api/axios';
 
 const AdminMain = () => {
   const navigate = useNavigate();
@@ -20,12 +21,16 @@ const AdminMain = () => {
 
   useEffect(() => {
     // load products count
-    try {
-      const p = JSON.parse(localStorage.getItem('products') || '[]');
-      setTotalProducts(p.length || 0);
-    } catch (err) {
-      setTotalProducts(0);
-    }
+    const fetchProductCount = async () => {
+      try {
+        const response = await api.get('/products');
+        setTotalProducts(response.data.length);
+      } catch (err) {
+        console.error('Error fetching product count:', err);
+        setTotalProducts(0);
+      }
+    };
+    fetchProductCount();
 
     // aggregate orders into monthly buckets for last 6 months
     try {
@@ -124,7 +129,7 @@ const AdminMain = () => {
     <div className="admin-main-container">
       {/* Sidebar */}
       <AdminSidebar />
-      
+
 
       {/* Main Content */}
       <main className="main-content1">
@@ -161,7 +166,7 @@ const AdminMain = () => {
         <section className="overview-section">
           <h2>Overview</h2>
           <div className="overview-placeholder">
-            <h3 style={{marginBottom: '1rem'}}>Orders Status</h3>
+            <h3 style={{ marginBottom: '1rem' }}>Orders Status</h3>
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={ordersData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -174,7 +179,7 @@ const AdminMain = () => {
               </LineChart>
             </ResponsiveContainer>
 
-            <h3 style={{margin: '2rem 0 1rem 0'}}>Revenue</h3>
+            <h3 style={{ margin: '2rem 0 1rem 0' }}>Revenue</h3>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={revenueData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
