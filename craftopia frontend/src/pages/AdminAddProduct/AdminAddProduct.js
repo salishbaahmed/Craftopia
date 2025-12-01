@@ -87,34 +87,47 @@ const AddProduct = () => {
     setIsSubmitting(true);
 
     try {
-      const formDataToSend = new FormData();
+      // Convert tags string to array
+      const tagsArray = formData.tags
+        ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
+        : [];
 
-      // Append all text fields
-      Object.keys(formData).forEach(key => {
-        if (key === 'limitedEdition') {
-          formDataToSend.append(key, formData[key]);
-        } else if (formData[key]) {
-          formDataToSend.append(key, formData[key]);
-        }
-      });
+      // Use placeholder images (since backend expects URLs, not files)
+      const imageUrls = images.length > 0
+        ? images.map((_, index) => `/images/placeholder.png`)
+        : ['/images/placeholder.png'];
 
-      // Append images
-      images.forEach(img => {
-        if (img.file) {
-          formDataToSend.append('images', img.file);
-        }
-      });
+      const productData = {
+        name: formData.name,
+        description: formData.description,
+        price: parseFloat(formData.price),
+        category: formData.category,
+        stock: parseInt(formData.stock),
+        images: imageUrls,
+        tags: tagsArray,
+        materials: formData.materials || undefined,
+        dimensions: formData.dimensions || undefined,
+        weight: formData.weight ? parseFloat(formData.weight) : undefined,
+        careInstructions: formData.careInstructions || undefined,
+        artistStory: formData.artistStory || undefined,
+        limitedEdition: formData.limitedEdition,
+        launchDate: formData.launchDate || undefined
+      };
 
-      await api.post('/products', formDataToSend, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      // Remove undefined fields
+      Object.keys(productData).forEach(key =>
+        productData[key] === undefined && delete productData[key]
+      );
+
+      console.log('Sending product data:', productData);
+
+      await api.post('/products', productData);
 
       alert('Product added successfully!');
       navigate('/admin');
     } catch (error) {
       console.error('Error adding product:', error);
+      console.error('Error response:', error.response?.data);
       alert('Failed to add product. Please try again.');
     } finally {
       setIsSubmitting(false);

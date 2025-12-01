@@ -1,23 +1,54 @@
 import React, { useState, useEffect } from 'react';
 import './LandingPage.css';
-import api from '../../api/axios';
+import './LandingPage.css';
 
 const LandingPage = () => {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await api.get('/products');
-        setProducts(response.data);
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-    fetchProducts();
-  }, []);
+  const featuredProducts = [
+    {
+      id: 1,
+      category: "Resin Keychain",
+      name: "Floral Resin Keychain",
+      price: 1200,
+      images: ["/placeholder.png"]
+    },
+    {
+      id: 2,
+      category: "Resin Bookmarks",
+      name: "Ocean Wave Resin Bookmark",
+      price: 850,
+      images: ["/placeholder.png"]
+    },
+    {
+      id: 3,
+      category: "Resin Coasters",
+      name: "Geometric Resin Coaster Set",
+      price: 2200,
+      images: ["/placeholder.png"]
+    },
+    {
+      id: 4,
+      category: "Resin Jewelry Boxes",
+      name: "Mini Resin Jewelry Box",
+      price: 3500,
+      images: ["/placeholder.png"]
+    },
+    {
+      id: 5,
+      category: "Resin Trays",
+      name: "Marble Resin Serving Tray",
+      price: 4200,
+      images: ["/placeholder.png"]
+    },
+    {
+      id: 6,
+      category: "Resin Cups",
+      name: "Colorful Resin Tea Cup",
+      price: 1800,
+      images: ["/placeholder.png"]
+    }
+  ];
 
   return (
     <div className="landing-page">
@@ -107,30 +138,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* Featured Products Section (NEW) */}
-      <section className="featured-products-section" id="products">
-        <div className="section-container">
-          <h2 className="section-title">Featured Creations</h2>
-          <div className="products-grid">
-            {products.slice(0, 6).map(product => (
-              <div key={product.id} className="product-card">
-                <div className="product-image-container">
-                  <img
-                    src={product.images && product.images.length > 0 ? product.images[0] : '/placeholder.png'}
-                    alt={product.name}
-                    className="product-image"
-                  />
-                </div>
-                <div className="product-info">
-                  <h3 className="product-name">{product.name}</h3>
-                  <p className="product-category">{product.category}</p>
-                  <p className="product-price">Rs {product.price}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+
 
       {/* Middle Section */}
       <section className="middle-section">

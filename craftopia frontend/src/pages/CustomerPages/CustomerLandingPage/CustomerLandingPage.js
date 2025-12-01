@@ -4,219 +4,8 @@ import Footer from '../../../components/Footer/Footer';
 import './CustomerLandingPage.css';
 import { FiSearch, FiHeart, FiShoppingCart, FiGift } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
+import api from '../../../api/axios';
 
-// All products data with updated categories
-const allProducts = [
-  {
-    id: 1,
-    category: "Resin Keychain",
-    name: "Floral Resin Keychain",
-    description: "Beautiful transparent resin keychain with pressed flowers",
-    rating: "4.8 (25 reviews)",
-    price: 1200,
-    badge: "Popular"
-  },
-  {
-    id: 2,
-    category: "Resin Bookmarks",
-    name: "Ocean Wave Resin Bookmark",
-    description: "Elegant resin bookmark with blue ocean wave design",
-    rating: "4.6 (18 reviews)",
-    price: 850,
-    originalPrice: 1000,
-    discount: "15%",
-    badge: "Sale"
-  },
-  {
-    id: 3,
-    category: "Resin Coasters",
-    name: "Geometric Resin Coaster Set",
-    description: "Set of 4 resin coasters with geometric patterns",
-    rating: "4.9 (30 reviews)",
-    price: 2200
-  },
-  {
-    id: 4,
-    category: "Resin Jewelry Boxes",
-    name: "Mini Resin Jewelry Box",
-    description: "Small resin jewelry box with gold flakes",
-    rating: "4.7 (22 reviews)",
-    price: 3500,
-    badge: "Limited Edition"
-  },
-  {
-    id: 5,
-    category: "Resin Trays",
-    name: "Marble Resin Serving Tray",
-    description: "Elegant marble-effect resin serving tray",
-    rating: "4.5 (15 reviews)",
-    price: 4200
-  },
-  {
-    id: 6,
-    category: "Resin Cups",
-    name: "Colorful Resin Tea Cup",
-    description: "Handcrafted resin cup with colorful swirls",
-    rating: "4.4 (12 reviews)",
-    price: 1800,
-    originalPrice: 2000,
-    discount: "10%"
-  },
-  {
-    id: 7,
-    category: "Resin Magnets",
-    name: "Fruit-shaped Resin Magnets",
-    description: "Set of 6 cute fruit-shaped resin magnets",
-    rating: "4.8 (20 reviews)",
-    price: 900,
-    badge: "Popular"
-  },
-  {
-    id: 8,
-    category: "Resin Name Plates",
-    name: "Personalized Resin Name Plate",
-    description: "Custom resin name plate for desk",
-    rating: "4.9 (28 reviews)",
-    price: 1500
-  },
-  {
-    id: 9,
-    category: "Clay Pencil Toppers",
-    name: "Animal Clay Pencil Toppers",
-    description: "Set of 4 adorable animal clay pencil toppers",
-    rating: "4.5 (19 reviews)",
-    price: 600
-  },
-  {
-    id: 10,
-    category: "Clay Bookmarks",
-    name: "Clay Flower Bookmarks",
-    description: "Delicate clay flower-shaped bookmarks",
-    rating: "4.7 (23 reviews)",
-    price: 750,
-    badge: "New"
-  },
-  {
-    id: 11,
-    category: "Clay Badges",
-    name: "Emoji Clay Badges",
-    description: "Set of 8 fun emoji clay badges",
-    rating: "4.6 (16 reviews)",
-    price: 500,
-    originalPrice: 650,
-    discount: "23%"
-  },
-  {
-    id: 12,
-    category: "Clay Keychains",
-    name: "Mini Food Clay Keychains",
-    description: "Cute miniature food clay keychains",
-    rating: "4.9 (31 reviews)",
-    price: 800
-  },
-  {
-    id: 13,
-    category: "Clay Desk Decor",
-    name: "Clay Plant Desk Decor",
-    description: "Small clay succulent plant for desk",
-    rating: "4.8 (27 reviews)",
-    price: 1200
-  },
-  {
-    id: 14,
-    category: "Clay Photo Holders",
-    name: "Clay Cat Photo Holder",
-    description: "Adorable clay cat holding photo frame",
-    rating: "4.7 (21 reviews)",
-    price: 950
-  },
-  {
-    id: 15,
-    category: "Customized Resin Keychains",
-    name: "Custom Name Resin Keychain",
-    description: "Personalized resin keychain with your name",
-    rating: "4.9 (35 reviews)",
-    price: 1500,
-    badge: "Custom"
-  },
-  {
-    id: 16,
-    category: "Customized Resin Initial Necklaces",
-    name: "Initial Resin Pendant Necklace",
-    description: "Elegant resin necklace with custom initial",
-    rating: "4.8 (29 reviews)",
-    price: 2800
-  },
-  {
-    id: 17,
-    category: "Customized Resin Bookmarks",
-    name: "Personalized Resin Bookmark",
-    description: "Custom resin bookmark with name or quote",
-    rating: "4.7 (24 reviews)",
-    price: 1300,
-    originalPrice: 1500,
-    discount: "13%"
-  },
-  {
-    id: 18,
-    category: "Customized Resin Trinket Boxes",
-    name: "Custom Resin Memory Box",
-    description: "Personalized resin trinket box for keepsakes",
-    rating: "4.9 (32 reviews)",
-    price: 4500,
-    badge: "Custom"
-  },
-  {
-    id: 19,
-    category: "Custom Resin Photo Coasters",
-    name: "Photo Resin Coasters",
-    description: "Custom resin coasters with your photos",
-    rating: "4.8 (26 reviews)",
-    price: 3200
-  },
-  {
-    id: 20,
-    category: "Customize Resin Name Plates",
-    name: "Desk Name Plate Custom",
-    description: "Personalized resin name plate for office",
-    rating: "4.6 (18 reviews)",
-    price: 1800
-  },
-  {
-    id: 21,
-    category: "Customized Clay Keychains",
-    name: "Custom Clay Character Keychain",
-    description: "Personalized clay keychain with your design",
-    rating: "4.9 (33 reviews)",
-    price: 1100,
-    badge: "Custom"
-  },
-  {
-    id: 22,
-    category: "Customized Clay Initial Necklaces",
-    name: "Clay Initial Necklace Custom",
-    description: "Beautiful clay necklace with custom initial",
-    rating: "4.7 (25 reviews)",
-    price: 2400
-  },
-  {
-    id: 23,
-    category: "Customized Clay Bookmarks",
-    name: "Personalized Clay Bookmark",
-    description: "Custom clay bookmark with name or design",
-    rating: "4.8 (28 reviews)",
-    price: 1000
-  },
-  {
-    id: 24,
-    category: "Customized Clay Trinket Boxes",
-    name: "Custom Clay Keepsake Box",
-    description: "Personalized clay box for special items",
-    rating: "4.9 (30 reviews)",
-    price: 3800,
-    badge: "Custom"
-  }
-];
 
 const categories = [
   "All Products",
@@ -258,11 +47,32 @@ const CustomerLandingPage = () => {
   // State management
   const [selectedCategory, setSelectedCategory] = useState("All Products");
   const [selectedPriceRange, setSelectedPriceRange] = useState(priceRanges[0]);
-  const [filteredProducts, setFilteredProducts] = useState(allProducts);
+  const [allProducts, setAllProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [wishlist, setWishlist] = useState([]);
   const [showCartNotification, setShowCartNotification] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
+
+  // Fetch products from API on component mount
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        setIsLoading(true);
+        setError(null);
+        const response = await api.get('/products');
+        setAllProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        setError('Failed to load products. Please try again later.');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchProducts();
+  }, []);
 
   // Load wishlist from localStorage on mount
   useEffect(() => {
@@ -312,7 +122,7 @@ const CustomerLandingPage = () => {
     }
 
     setFilteredProducts(filtered);
-  }, [selectedCategory, selectedPriceRange, searchQuery]);
+  }, [selectedCategory, selectedPriceRange, searchQuery, allProducts]);
 
   // Handle category selection
   const handleCategorySelect = (category) => {
@@ -533,7 +343,20 @@ const CustomerLandingPage = () => {
               </div>
             </div>
 
-            {filteredProducts.length === 0 ? (
+            {isLoading ? (
+              <div className="loading-products">
+                <div className="loading-spinner"></div>
+                <p>Loading products...</p>
+              </div>
+            ) : error ? (
+              <div className="error-products">
+                <h3>Error Loading Products</h3>
+                <p>{error}</p>
+                <button className="retry-btn" onClick={() => window.location.reload()}>
+                  Retry
+                </button>
+              </div>
+            ) : filteredProducts.length === 0 ? (
               <div className="no-products">
                 <h3>No products found</h3>
                 <p>Try adjusting your filters or search terms</p>
