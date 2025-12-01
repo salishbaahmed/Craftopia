@@ -80,6 +80,15 @@ const AddProduct = () => {
     setImages(prev => prev.filter(img => img.id !== id));
   };
 
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
 
 
   const handleSubmit = async (e) => {
@@ -92,9 +101,9 @@ const AddProduct = () => {
         ? formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag)
         : [];
 
-      // Use placeholder images (since backend expects URLs, not files)
+      // Convert images to Base64 strings
       const imageUrls = images.length > 0
-        ? images.map((_, index) => `/images/placeholder.png`)
+        ? await Promise.all(images.map(img => convertToBase64(img.file)))
         : ['/images/placeholder.png'];
 
       const productData = {

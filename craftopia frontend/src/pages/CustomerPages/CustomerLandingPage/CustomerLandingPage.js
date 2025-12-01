@@ -382,9 +382,17 @@ const CustomerLandingPage = () => {
                       >
                         <FiHeart />
                       </button>
-                      <div className="image-placeholder">
-                        {product.category}
-                      </div>
+                      {product.images && product.images.length > 0 ? (
+                        <img
+                          src={product.images[0]}
+                          alt={product.name}
+                          className="product-img"
+                        />
+                      ) : (
+                        <div className="image-placeholder">
+                          {product.category}
+                        </div>
+                      )}
                     </div>
                     <div className="product-info">
                       <p className="product-category">{product.category}</p>
