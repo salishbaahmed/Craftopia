@@ -27,6 +27,10 @@ class Order(SQLModel, table=True):
     total: float
     status: str = "Pending"
     paymentStatus: str = "Pending"
+    deliveryStatus: str = Field(default="pending")
+    deliveryHistory: List[dict] = Field(default=[], sa_column=Column(JSON))
+    estimatedDelivery: Optional[str] = None
+    deliveryDate: Optional[str] = None
     createdAt: datetime = Field(default_factory=datetime.now)
 
 class OrderItemCreate(SQLModel):
@@ -64,5 +68,9 @@ class OrderResponse(SQLModel):
     total: float
     status: str
     paymentStatus: str
+    deliveryStatus: str
+    deliveryHistory: List[dict]
+    estimatedDelivery: Optional[str]
+    deliveryDate: Optional[str]
     createdAt: datetime
 

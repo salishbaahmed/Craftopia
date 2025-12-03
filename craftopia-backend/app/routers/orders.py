@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends, Body
 from fastapi.responses import StreamingResponse
 from app.utils.invoice_generator import generate_invoice_pdf
-from typing import List
+from typing import List, Optional
 from app.models.order import Order, OrderItem, OrderCreate, OrderItemCreate, OrderResponse
 from app.models.user import User
 from app.utils.auth import get_current_user, get_current_admin
@@ -97,6 +97,46 @@ async def update_order_status(id: str, status: str = Body(..., embed=True), admi
         raise HTTPException(status_code=404, detail="Order not found")
     
     order.status = status
+    session.add(order)
+    await session.commit()
+    await session.refresh(order)
+    return order
+
+@router.patch("/admin/{id}/delivery-status", response_model=Order)
+async def update_delivery_status(
+    id: str, 
+    deliveryStatus: str = Body(..., embed=True),
+    deliveryHistory: List[dict] = Body(default=[], embed=True),
+    estimatedDelivery: Optional[str] = Body(default=None, embed=True),
+    deliveryDate: Optional[str] = Body(default=None, embed=True),
+    admin = Depends(get_current_admin), 
+    session: AsyncSession = Depends(get_session)
+):
+    result = await session.execute(select(Order).where(Order.id == id).options(selectinload(Order.items)))
+    order = result.scalars().first()
+    
+    if not order:
+        raise HTTPException(status_code=404, detail="Order not found")
+    
+    order.deliveryStatus = deliveryStatus
+    if deliveryHistory:
+        order.deliveryHistory = deliveryHistory
+    if estimatedDelivery is not None:
+        order.estimatedDelivery = estimatedDelivery
+    if deliveryDate is not None:
+        order.deliveryDate = deliveryDate
+        
+    # Also update main status if applicable
+    # If delivery status is 'delivered', set main status to 'delivered'
+    if deliveryStatus == 'delivered':
+        order.status = 'delivered'
+    elif deliveryStatus == 'shipped':
+        order.status = 'shipped'
+    elif deliveryStatus == 'out-for-delivery':
+        order.status = 'out-for-delivery'
+    elif deliveryStatus == 'processing':
+        order.status = 'processing'
+        
     session.add(order)
     await session.commit()
     await session.refresh(order)

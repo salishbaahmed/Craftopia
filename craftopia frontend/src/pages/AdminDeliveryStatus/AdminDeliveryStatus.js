@@ -6,40 +6,7 @@ import {
   FiTruck,
   FiSearch, FiSave, FiCheck, FiClock, FiMapPin
 } from 'react-icons/fi';
-
-const DEFAULT_ORDERS = [
-  {
-    id: 'ORD-1001',
-    customerName: 'Ali Raza',
-    customerEmail: 'ali.raza@email.com',
-    customerPhone: '+92-300-1234567',
-    orderDate: '2024-03-15',
-    status: 'approved',
-    deliveryStatus: 'delivered',
-    totalAmount: 12500,
-    items: [
-      { id: 1, name: 'Handmade Ceramic Vase', quantity: 1, price: 8500 },
-      { id: 2, name: 'Embroidered Shawl', quantity: 2, price: 2000 }
-    ],
-    shippingAddress: {
-      street: 'House 123, Street 5',
-      area: 'Gulberg',
-      city: 'Lahore',
-      province: 'Punjab',
-      zipCode: '54000'
-    },
-    paymentMethod: 'Bank Transfer',
-    estimatedDelivery: '2024-03-22',
-    deliveryDate: '2024-03-20',
-    deliveryHistory: [
-      { status: 'ordered', date: '2024-03-15', time: '14:30' },
-      { status: 'processing', date: '2024-03-16', time: '09:15' },
-      { status: 'shipped', date: '2024-03-18', time: '14:30' },
-      { status: 'out-for-delivery', date: '2024-03-20', time: '08:45' },
-      { status: 'delivered', date: '2024-03-20', time: '14:15' }
-    ]
-  }
-];
+import api from '../../api/axios';
 
 const AdminDeliveryStatus = () => {
   const navigate = useNavigate();
@@ -49,31 +16,21 @@ const AdminDeliveryStatus = () => {
 
   const [orders1, setOrders1] = useState([]);
 
-
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('orderHistory');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        setOrders1(parsed.length ? parsed : DEFAULT_ORDERS);
-      } else {
-        setOrders1(DEFAULT_ORDERS);
-      }
-    } catch (err) {
-      setOrders1(DEFAULT_ORDERS);
-    }
-
-    const onOrdersUpdated = () => {
+    const fetchOrders = async () => {
       try {
-        const latest = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-        setOrders1(latest);
+        const response = await api.get('/orders/admin/all');
+        setOrders1(response.data);
       } catch (err) {
-        // ignore
+        console.error('Error fetching orders:', err);
+        if (err.response && err.response.status === 401) {
+          navigate('/admin-login');
+        }
+        setOrders1([]);
       }
     };
-    window.addEventListener('ordersUpdated', onOrdersUpdated);
-    return () => window.removeEventListener('ordersUpdated', onOrdersUpdated);
-  }, []);
+    fetchOrders();
+  }, [navigate]);
 
   const [selectedStatus1, setSelectedStatus1] = useState('');
 
@@ -86,8 +43,16 @@ const AdminDeliveryStatus = () => {
   ];
 
   const filteredOrders1 = orders1.filter(order => {
-    const statusOk = (order.status || order.orderStatus || '').toString() === 'approved' || (order.deliveryStatus || '').toString() === 'approved';
+    // Show orders that are approved or already in delivery process
+    const status = (order.status || order.orderStatus || '').toString().toLowerCase();
+    const deliveryStatus = (order.deliveryStatus || '').toString().toLowerCase();
+
+    const statusOk = status === 'approved' ||
+      ['processing', 'shipped', 'out-for-delivery', 'delivered', 'delayed'].includes(status) ||
+      ['processing', 'shipped', 'out-for-delivery', 'delivered', 'delayed'].includes(deliveryStatus);
+
     if (!statusOk) return false;
+
     const id = (order.id || order.orderId || '').toString().toLowerCase();
     const name = (order.customerName || (order.checkoutFormData && order.checkoutFormData.fullName) || '').toString().toLowerCase();
     const email = (order.customerEmail || (order.checkoutFormData && order.checkoutFormData.email) || '').toString().toLowerCase();
@@ -106,10 +71,13 @@ const AdminDeliveryStatus = () => {
       shipped: { class: 'status-shipped1', label: 'Shipped', icon: <FiTruck /> },
       'out-for-delivery': { class: 'status-out-for-delivery1', label: 'Out for Delivery', icon: <FiMapPin /> },
       delivered: { class: 'status-delivered1', label: 'Delivered', icon: <FiCheck /> },
-      delayed: { class: 'status-delayed1', label: 'Delayed', icon: <FiClock /> }
+      delayed: { class: 'status-delayed1', label: 'Delayed', icon: <FiClock /> },
+      pending: { class: 'status-pending1', label: 'Pending', icon: <FiClock /> }, // Fallback
+      approved: { class: 'status-approved1', label: 'Approved', icon: <FiCheck /> } // Fallback
     };
 
-    const config = statusConfig1[status] || statusConfig1.processing;
+    const normalizedStatus = (status || 'processing').toLowerCase();
+    const config = statusConfig1[normalizedStatus] || statusConfig1.processing;
     return (
       <span className={`status-badge1 ${config.class}`}>
         {config.icon}
@@ -124,10 +92,13 @@ const AdminDeliveryStatus = () => {
       shipped: ['out-for-delivery', 'delayed'],
       'out-for-delivery': ['delivered', 'delayed'],
       delivered: [],
-      delayed: ['shipped', 'out-for-delivery']
+      delayed: ['shipped', 'out-for-delivery'],
+      approved: ['processing'] // Allow transition from approved to processing
     };
-    // if currentStatus is not in the flow map (eg. 'approved' or undefined), fall back to 'processing'
-    const key = statusFlow1[currentStatus] ? currentStatus : 'processing';
+
+    const normalizedStatus = (currentStatus || 'approved').toLowerCase();
+    // if currentStatus is not in the flow map, fall back to 'approved' or 'processing'
+    const key = statusFlow1[normalizedStatus] ? normalizedStatus : 'processing';
     return deliveryStatuses1.filter(status => statusFlow1[key]?.includes(status.value));
   };
 
@@ -137,14 +108,16 @@ const AdminDeliveryStatus = () => {
       return;
     }
 
-    if (!selectedStatus1 || selectedStatus1 === selectedOrder1.deliveryStatus) {
+    const currentDeliveryStatus = selectedOrder1.deliveryStatus || selectedOrder1.status;
+
+    if (!selectedStatus1 || selectedStatus1 === currentDeliveryStatus) {
       alert('Please select a new status to update.');
       return;
     }
 
     setIsUpdating1(true);
 
-    setTimeout(() => {
+    try {
       const currentDateTime = new Date();
       const newHistoryEntry = {
         status: selectedStatus1,
@@ -152,37 +125,43 @@ const AdminDeliveryStatus = () => {
         time: currentDateTime.toTimeString().split(' ')[0].substring(0, 5)
       };
 
-      const updatedOrders1 = orders1.map(order => {
-        const idA = order.id || order.orderId;
-        const idB = selectedOrder1.id || selectedOrder1.orderId;
-        if (idA === idB) {
-          const history = Array.isArray(order.deliveryHistory) ? [...order.deliveryHistory, newHistoryEntry] : [newHistoryEntry];
-          const updated = {
-            ...order,
-            deliveryStatus: selectedStatus1,
-            deliveryHistory: history
-          };
-          if (selectedStatus1 === 'delivered') {
-            updated.deliveredDate = currentDateTime.toISOString().split('T')[0];
-          }
-          return updated;
-        }
-        return order;
-      });
+      const history = Array.isArray(selectedOrder1.deliveryHistory) ? [...selectedOrder1.deliveryHistory, newHistoryEntry] : [newHistoryEntry];
+
+      const payload = {
+        deliveryStatus: selectedStatus1,
+        deliveryHistory: history
+      };
+
+      if (selectedStatus1 === 'delivered') {
+        payload.deliveryDate = currentDateTime.toISOString().split('T')[0];
+      }
+
+      // We can also set estimated delivery if needed, but for now let's keep it simple or calculate it
+      if (selectedStatus1 === 'processing' && !selectedOrder1.estimatedDelivery) {
+        // Set estimated delivery to 7 days from now
+        const estDate = new Date();
+        estDate.setDate(estDate.getDate() + 7);
+        payload.estimatedDelivery = estDate.toISOString().split('T')[0];
+      }
+
+      const id = selectedOrder1.id || selectedOrder1.orderId;
+      const response = await api.patch(`/orders/admin/${id}/delivery-status`, payload);
+      const updatedOrder = response.data;
+
+      const updatedOrders1 = orders1.map(order =>
+        (order.id === id || order.orderId === id) ? updatedOrder : order
+      );
 
       setOrders1(updatedOrders1);
-      setSelectedOrder1(updatedOrders1.find(o => (o.id || o.orderId) === (selectedOrder1.id || selectedOrder1.orderId)));
-      try {
-        localStorage.setItem('orderHistory', JSON.stringify(updatedOrders1));
-        window.dispatchEvent(new CustomEvent('ordersUpdated', { detail: { orders: updatedOrders1 } }));
-      } catch (err) {
-        // ignore
-      }
-      setIsUpdating1(false);
+      setSelectedOrder1(updatedOrder);
 
-      alert(`Delivery status for order ${selectedOrder1.id || selectedOrder1.orderId} has been updated to ${selectedStatus1}. Customer will be notified.`);
-      console.log(`Notification sent to ${selectedOrder1.customerEmail}: Your order ${selectedOrder1.id || selectedOrder1.orderId} delivery status has been updated to ${selectedStatus1}.`);
-    }, 1500);
+      alert(`Delivery status for order ${id} has been updated to ${selectedStatus1}. Customer will be notified.`);
+    } catch (err) {
+      console.error('Error updating delivery status:', err);
+      alert('Failed to update delivery status.');
+    } finally {
+      setIsUpdating1(false);
+    }
   };
 
   const handleLogout1 = () => {
@@ -228,6 +207,8 @@ const AdminDeliveryStatus = () => {
                     const customerName = order.customerName || (order.checkoutFormData && order.checkoutFormData.fullName) || '';
                     const customerEmail = order.customerEmail || (order.checkoutFormData && order.checkoutFormData.email) || '';
                     const isSelected = (selectedOrder1 && (selectedOrder1.id || selectedOrder1.orderId)) === oid;
+                    const displayStatus = order.deliveryStatus || order.status || 'pending';
+
                     return (
                       <div
                         key={oid || Math.random()}
@@ -236,7 +217,7 @@ const AdminDeliveryStatus = () => {
                       >
                         <div className="order-header1">
                           <span className="order-id1">{oid}</span>
-                          {getStatusBadge1(order.deliveryStatus)}
+                          {getStatusBadge1(displayStatus)}
                         </div>
                         <div className="order-customer1">
                           <strong>{customerName}</strong>
@@ -246,7 +227,7 @@ const AdminDeliveryStatus = () => {
                           <span className="order-amount1">Rs {Number(order.totalAmount || order.total || 0).toLocaleString()}</span>
                         </div>
                         <div className="delivery-info1">
-                          <span className="estimated-delivery1">Est: {order.estimatedDelivery}</span>
+                          <span className="estimated-delivery1">Est: {order.estimatedDelivery || 'N/A'}</span>
                         </div>
                       </div>
                     );
@@ -265,12 +246,17 @@ const AdminDeliveryStatus = () => {
               </div>
             ) : (
               <div className="status-update-container1">
-                <div className="order-header-details1">
-                  <h2>Update Delivery Status</h2>
-                  <div className="current-status-display1">
-                    {getStatusBadge1(selectedOrder1.deliveryStatus)}
-                  </div>
-                </div>
+                {(() => {
+                  const displayStatus = selectedOrder1.deliveryStatus || selectedOrder1.status || 'pending';
+                  return (
+                    <div className="order-header-details1">
+                      <h2>Update Delivery Status</h2>
+                      <div className="current-status-display1">
+                        {getStatusBadge1(displayStatus)}
+                      </div>
+                    </div>
+                  );
+                })()}
 
                 <div className="order-info-grid1">
                   <div className="info-group1">
@@ -287,7 +273,7 @@ const AdminDeliveryStatus = () => {
                   </div>
                   <div className="info-group1">
                     <label>Estimated Delivery</label>
-                    <p>{selectedOrder1.estimatedDelivery}</p>
+                    <p>{selectedOrder1.estimatedDelivery || 'N/A'}</p>
                   </div>
                   {selectedOrder1.deliveryDate && (
                     <div className="info-group1">
@@ -326,6 +312,9 @@ const AdminDeliveryStatus = () => {
                         </div>
                       </div>
                     ))}
+                    {(!selectedOrder1.deliveryHistory || selectedOrder1.deliveryHistory.length === 0) && (
+                      <p>No delivery history available.</p>
+                    )}
                   </div>
                 </div>
 
@@ -334,7 +323,7 @@ const AdminDeliveryStatus = () => {
                   <div className="form-group1">
                     <label>Current Status</label>
                     <div className="current-status1">
-                      {getStatusBadge1(selectedOrder1.deliveryStatus)}
+                      {getStatusBadge1(selectedOrder1.deliveryStatus || selectedOrder1.status)}
                     </div>
                   </div>
 
@@ -346,7 +335,7 @@ const AdminDeliveryStatus = () => {
                       className="status-select1"
                     >
                       <option value="">Select new status...</option>
-                      {getNextStatusOptions1(selectedOrder1.deliveryStatus).map(status => (
+                      {getNextStatusOptions1(selectedOrder1.deliveryStatus || selectedOrder1.status).map(status => (
                         <option key={status.value} value={status.value}>
                           {status.label} - {status.description}
                         </option>
@@ -361,7 +350,7 @@ const AdminDeliveryStatus = () => {
                     <button
                       className="update-btn1"
                       onClick={updateDeliveryStatus1}
-                      disabled={!selectedStatus1 || selectedStatus1 === selectedOrder1.deliveryStatus || isUpdating1}
+                      disabled={!selectedStatus1 || selectedStatus1 === (selectedOrder1.deliveryStatus || selectedOrder1.status) || isUpdating1}
                     >
                       <FiSave />
                       {isUpdating1 ? 'Updating...' : 'Update Delivery Status'}
