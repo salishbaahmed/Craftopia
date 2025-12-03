@@ -2,55 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './AdminManageOrders.css';
 import AdminSidebar from '../../components/AdminSideBar/AdminSideBar'
-import { 
+import {
   FiPackage, FiTruck,
   FiSearch, FiCheck, FiX, FiClock
 } from 'react-icons/fi';
-
-const DEFAULT_ORDERS = [
-  {
-    id: 'ORD-1001',
-    customerName: 'Ali Raza',
-    customerEmail: 'ali.raza@email.com',
-    customerPhone: '+92-300-1234567',
-    orderDate: '2024-03-15',
-    status: 'delivered',
-    totalAmount: 12500,
-    items: [
-      { id: 1, name: 'Handmade Ceramic Vase', quantity: 1, price: 8500 },
-      { id: 2, name: 'Embroidered Shawl', quantity: 2, price: 2000 }
-    ],
-    shippingAddress: {
-      street: 'House 123, Street 5',
-      area: 'Gulberg',
-      city: 'Lahore',
-      province: 'Punjab',
-      zipCode: '54000'
-    },
-    paymentMethod: 'Bank Transfer',
-    deliveryStatus: 'delivered'
-  },
-  {
-    id: 'ORD-1002',
-    customerName: 'Fatima Noor',
-    customerEmail: 'fatima.noor@email.com',
-    customerPhone: '+92-301-2345678',
-    orderDate: '2024-03-14',
-    status: 'pending',
-    totalAmount: 8500,
-    items: [
-      { id: 3, name: 'Painted Vase', quantity: 1, price: 8500 }
-    ],
-    shippingAddress: {
-      street: 'Flat 5B, Tariq Road',
-      city: 'Karachi',
-      province: 'Sindh',
-      zipCode: '75500'
-    },
-    paymentMethod: 'Cash on Delivery',
-    deliveryStatus: 'pending'
-  }
-];
+import api from '../../api/axios';
 
 const AdminManageOrders = () => {
   const navigate = useNavigate();
@@ -60,17 +16,19 @@ const AdminManageOrders = () => {
   const [orders1, setOrders1] = useState([]);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('orderHistory');
-      if (stored) {
-        const parsed = JSON.parse(stored);
-        setOrders1(parsed.length ? parsed : DEFAULT_ORDERS);
-      } else {
-        setOrders1(DEFAULT_ORDERS);
+    const fetchOrders = async () => {
+      try {
+        const response = await api.get('/orders/admin/all');
+        setOrders1(response.data);
+      } catch (err) {
+        console.error('Error fetching orders:', err);
+        if (err.response && err.response.status === 401) {
+          navigate('/admin-login');
+        }
+        setOrders1([]);
       }
-    } catch (err) {
-      setOrders1(DEFAULT_ORDERS);
-    }
+    };
+    fetchOrders();
   }, []);
 
   const filteredOrders1 = orders1.filter(order =>
@@ -91,8 +49,10 @@ const AdminManageOrders = () => {
       'out-for-delivery': { class: 'status-out-for-delivery1', label: 'Out for Delivery', icon: <FiTruck /> },
       delivered: { class: 'status-delivered1', label: 'Delivered', icon: <FiCheck /> }
     };
-    
-    const config = statusConfig1[status] || statusConfig1.pending;
+
+    // Handle case-insensitive matching for status
+    const normalizedStatus = (status || 'pending').toLowerCase();
+    const config = statusConfig1[normalizedStatus] || statusConfig1.pending;
     return (
       <span className={`status-badge1 ${config.class}`}>
         {config.icon} {config.label}
@@ -104,32 +64,25 @@ const AdminManageOrders = () => {
     if (!selectedOrder1) return alert('Please select an order.');
     setIsUpdating1(true);
 
-    setTimeout(() => {
-      const deliveryStatuses = ['processing', 'shipped', 'out-for-delivery', 'delivered', 'delayed'];
-      const updatedOrders1 = orders1.map(order => {
-        const idA = order.id || order.orderId;
-        const idB = selectedOrder1.id || selectedOrder1.orderId;
-        if (idA === idB) {
-          // only update deliveryStatus when newStatus is part of delivery flow
-          if (deliveryStatuses.includes(newStatus)) {
-            return { ...order, status: newStatus, deliveryStatus: newStatus };
-          }
-          return { ...order, status: newStatus };
-        }
-        return order;
-      });
+    try {
+      const id = selectedOrder1.id || selectedOrder1.orderId;
+      const response = await api.patch(`/orders/admin/${id}/status`, { status: newStatus });
+      const updatedOrder = response.data;
+
+      const updatedOrders1 = orders1.map(order =>
+        (order.id === id || order.orderId === id) ? updatedOrder : order
+      );
+
       setOrders1(updatedOrders1);
-      setSelectedOrder1({ ...selectedOrder1, status: newStatus, deliveryStatus: newStatus });
-      try {
-        localStorage.setItem('orderHistory', JSON.stringify(updatedOrders1));
-        window.dispatchEvent(new CustomEvent('ordersUpdated', { detail: { orders: updatedOrders1 } }));
-      } catch (err) {
-        // ignore
-      }
+      setSelectedOrder1(updatedOrder);
+
+      alert(`Order ${id} has been ${newStatus}.`);
+    } catch (err) {
+      console.error('Error updating order status:', err);
+      alert('Failed to update order status.');
+    } finally {
       setIsUpdating1(false);
-      alert(`Order ${selectedOrder1.id || selectedOrder1.orderId} has been ${newStatus}.`);
-      console.log(`Notification sent to ${selectedOrder1.customerEmail}: Order ${selectedOrder1.id || selectedOrder1.orderId} ${newStatus}.`);
-    }, 1000);
+    }
   };
 
   const handleLogout1 = () => navigate('/admin-login');
@@ -171,10 +124,13 @@ const AdminManageOrders = () => {
                     const customerName = order.customerName || (order.checkoutFormData && order.checkoutFormData.fullName) || 'Customer';
                     const customerEmail = order.customerEmail || (order.checkoutFormData && order.checkoutFormData.email) || '';
                     const items = order.items || order.orderItems || [];
-                    const total = order.totalAmount || order.total || order.totalPrice || 0;
+                    const total = order.totalAmount || order.total || order.totalPrice || order.totalPaid || 0;
                     const status = order.status || order.orderStatus || '';
                     const delivery = order.deliveryStatus || status || '';
-                    const date = order.orderDate || order.orderPlaced || '';
+                    const date = order.orderDate || order.orderPlaced || order.createdAt || '';
+                    // Format date if it's a timestamp string
+                    const formattedDate = new Date(date).toLocaleDateString();
+
                     return (
                       <div
                         key={id}
@@ -190,7 +146,7 @@ const AdminManageOrders = () => {
                           <span className="customer-email1">{customerEmail}</span>
                         </div>
                         <div className="order-details1">
-                          <span className="order-date1">{date}</span>
+                          <span className="order-date1">{formattedDate !== 'Invalid Date' ? formattedDate : date}</span>
                           <span className="order-amount1">Rs {Number(total).toLocaleString()}</span>
                         </div>
                         <div className="order-items1">
@@ -215,12 +171,15 @@ const AdminManageOrders = () => {
               <div className="order-details-container1">
                 {(() => {
                   const id = selectedOrder1.id || selectedOrder1.orderId || '';
-                  const date = selectedOrder1.orderDate || selectedOrder1.orderPlaced || '';
+                  const date = selectedOrder1.orderDate || selectedOrder1.orderPlaced || selectedOrder1.createdAt || '';
+                  const formattedDate = new Date(date).toLocaleDateString();
+                  const finalDate = formattedDate !== 'Invalid Date' ? formattedDate : date;
+
                   const customerName = selectedOrder1.customerName || (selectedOrder1.checkoutFormData && selectedOrder1.checkoutFormData.fullName) || '';
                   const customerEmail = selectedOrder1.customerEmail || (selectedOrder1.checkoutFormData && selectedOrder1.checkoutFormData.email) || '';
                   const customerPhone = selectedOrder1.customerPhone || (selectedOrder1.checkoutFormData && selectedOrder1.checkoutFormData.phone) || '';
-                  const total = selectedOrder1.totalAmount || selectedOrder1.total || selectedOrder1.totalPrice || 0;
-                  const paymentMethod = selectedOrder1.paymentMethod || selectedOrder1.payment || '';
+                  const total = selectedOrder1.totalAmount || selectedOrder1.total || selectedOrder1.totalPrice || selectedOrder1.totalPaid || 0;
+                  const paymentMethod = selectedOrder1.paymentMethod || selectedOrder1.payment || 'N/A';
                   const delivery = selectedOrder1.deliveryStatus || selectedOrder1.status || '';
                   const items = selectedOrder1.items || selectedOrder1.orderItems || [];
                   const addr = selectedOrder1.shippingAddress || selectedOrder1.checkoutFormData || {};
@@ -233,7 +192,7 @@ const AdminManageOrders = () => {
 
                       <div className="order-info-grid1">
                         <div className="info-group1"><label>Order ID</label><p>{id}</p></div>
-                        <div className="info-group1"><label>Order Date</label><p>{date}</p></div>
+                        <div className="info-group1"><label>Order Date</label><p>{finalDate}</p></div>
                         <div className="info-group1"><label>Customer Name</label><p>{customerName}</p></div>
                         <div className="info-group1"><label>Customer Email</label><p>{customerEmail}</p></div>
                         <div className="info-group1"><label>Customer Phone</label><p>{customerPhone}</p></div>

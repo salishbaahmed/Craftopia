@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import {  useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './AdminDeliveryStatus.css';
 import AdminSidebar from '../../components/AdminSideBar/AdminSideBar'
-import { 
-  FiTruck, 
+import {
+  FiTruck,
   FiSearch, FiSave, FiCheck, FiClock, FiMapPin
 } from 'react-icons/fi';
 
@@ -48,7 +48,7 @@ const AdminDeliveryStatus = () => {
   const [isUpdating1, setIsUpdating1] = useState(false);
 
   const [orders1, setOrders1] = useState([]);
-  
+
 
   useEffect(() => {
     try {
@@ -108,7 +108,7 @@ const AdminDeliveryStatus = () => {
       delivered: { class: 'status-delivered1', label: 'Delivered', icon: <FiCheck /> },
       delayed: { class: 'status-delayed1', label: 'Delayed', icon: <FiClock /> }
     };
-    
+
     const config = statusConfig1[status] || statusConfig1.processing;
     return (
       <span className={`status-badge1 ${config.class}`}>
@@ -143,7 +143,7 @@ const AdminDeliveryStatus = () => {
     }
 
     setIsUpdating1(true);
-    
+
     setTimeout(() => {
       const currentDateTime = new Date();
       const newHistoryEntry = {
@@ -313,21 +313,21 @@ const AdminDeliveryStatus = () => {
                   </div>
                 </div>
 
-                    <div className="delivery-history-section1">
-                      <h4>Delivery History</h4>
-                      <div className="history-timeline1">
-                        {(selectedOrder1.deliveryHistory || []).map((history, index) => (
-                          <div key={index} className="history-item1">
-                            <div className="history-status1">
-                              {getStatusBadge1(history.status)}
-                            </div>
-                            <div className="history-datetime1">
-                              {history.date} at {history.time}
-                            </div>
-                          </div>
-                        ))}
+                <div className="delivery-history-section1">
+                  <h4>Delivery History</h4>
+                  <div className="history-timeline1">
+                    {(selectedOrder1.deliveryHistory || []).map((history, index) => (
+                      <div key={index} className="history-item1">
+                        <div className="history-status1">
+                          {getStatusBadge1(history.status)}
+                        </div>
+                        <div className="history-datetime1">
+                          {history.date} at {history.time}
+                        </div>
                       </div>
-                    </div>
+                    ))}
+                  </div>
+                </div>
 
                 <div className="status-update-form1">
                   <h4>Update Delivery Status</h4>

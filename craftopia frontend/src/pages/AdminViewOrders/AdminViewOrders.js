@@ -28,6 +28,9 @@ const AdminViewOrders = () => {
         setOrders(response.data);
       } catch (err) {
         console.error('Error fetching orders:', err);
+        if (err.response && err.response.status === 401) {
+          navigate('/admin-login');
+        }
         setOrders([]);
       }
     };
@@ -39,7 +42,7 @@ const AdminViewOrders = () => {
     const id = (order.id || order.orderId || '').toString().toLowerCase();
     const stat = (order.status || order.orderStatus || '').toString();
     const matchesSearch = name.includes(searchTerm.toLowerCase()) || id.includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === 'all' || stat === statusFilter;
+    const matchesStatus = statusFilter === 'all' || stat.toLowerCase() === statusFilter.toLowerCase();
     return matchesSearch && matchesStatus;
   });
 

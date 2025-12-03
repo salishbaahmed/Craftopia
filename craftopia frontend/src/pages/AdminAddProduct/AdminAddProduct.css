@@ -19,7 +19,8 @@
 .main-content1 {
   flex: 1;
   padding: 2rem;
-  margin-left: 240px; /* Match sidebar width */
+  margin-left: 240px;
+  /* Match sidebar width */
   overflow-y: auto;
 }
 
