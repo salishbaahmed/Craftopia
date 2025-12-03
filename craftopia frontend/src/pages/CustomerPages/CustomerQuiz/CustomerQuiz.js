@@ -11,160 +11,124 @@ const CustomerQuiz = () => {
   const quizQuestions = [
     {
       id: 1,
-      title: "What type of crafts interest you most?",
-      subtitle: "Select your primary crafting preference",
+      title: "What type of product are you looking for?",
+      subtitle: "Select the main purpose",
       options: [
-        {
-          id: 'resin',
-          title: 'Resin Crafts',
-          subtitle: 'Clear, glossy finished products',
-          image: 'https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'clay',
-          title: 'Clay Crafts',
-          subtitle: 'Molded and baked creations',
-          image: 'https://images.unsplash.com/photo-1584735264932-96d55eaf4c7b?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'custom-resin',
-          title: 'Custom Resin',
-          subtitle: 'Personalized resin items',
-          image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'custom-clay',
-          title: 'Custom Clay',
-          subtitle: 'Personalized clay creations',
-          image: 'https://images.unsplash.com/photo-1548484356-3c9c5a2615e1?w=400&h=300&fit=crop'
-        }
+        { id: 'useful', title: 'Something useful', subtitle: 'Practical items', letter: 'A', image: 'https://images.unsplash.com/photo-1589994965851-a8f479c573a9?w=400&h=300&fit=crop' },
+        { id: 'decorative', title: 'Something decorative', subtitle: 'Aesthetic pieces', letter: 'B', image: 'https://images.unsplash.com/photo-1584735264932-96d55eaf4c7b?w=400&h=300&fit=crop' },
+        { id: 'personalized', title: 'Something personalized', subtitle: 'Custom made', letter: 'C', image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop' },
+        { id: 'budget', title: 'Small & budget-friendly', subtitle: 'Affordable gifts', letter: 'D', image: 'https://images.unsplash.com/photo-1548484356-3c9c5a2615e1?w=400&h=300&fit=crop' }
       ]
     },
     {
       id: 2,
-      title: "Which resin products appeal to you?",
-      subtitle: "Choose your favorite resin items",
+      title: "Who are you buying this for?",
+      subtitle: "Select the recipient",
       options: [
-        {
-          id: 'resin-keychain',
-          title: 'Resin Keychains',
-          subtitle: 'Durable and colorful',
-          image: 'https://images.unsplash.com/photo-1605731414532-2587f80c2aaa?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'resin-coasters',
-          title: 'Resin Coasters',
-          subtitle: 'Protect your surfaces',
-          image: 'https://images.unsplash.com/photo-1573869903598-5355d7ebf4a9?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'resin-jewelry',
-          title: 'Jewelry Boxes',
-          subtitle: 'Elegant storage solutions',
-          image: 'https://images.unsplash.com/photo-1599643478510-a349f355fc53?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'resin-bookmarks',
-          title: 'Resin Bookmarks',
-          subtitle: 'Beautiful reading companions',
-          image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop'
-        }
+        { id: 'yourself', title: 'Yourself', subtitle: 'Treat yourself', letter: 'A', image: 'https://images.unsplash.com/photo-1605731414532-2587f80c2aaa?w=400&h=300&fit=crop' },
+        { id: 'friend', title: 'Friend / Best Friend', subtitle: 'For a buddy', letter: 'B', image: 'https://images.unsplash.com/photo-1573869903598-5355d7ebf4a9?w=400&h=300&fit=crop' },
+        { id: 'family', title: 'Family Member', subtitle: 'For family', letter: 'C', image: 'https://images.unsplash.com/photo-1599643478510-a349f355fc53?w=400&h=300&fit=crop' },
+        { id: 'general', title: 'A Gift for Anyone', subtitle: 'General gift', letter: 'D', image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop' }
       ]
     },
     {
       id: 3,
-      title: "What clay creations catch your eye?",
-      subtitle: "Select preferred clay items",
+      title: "What style do you prefer?",
+      subtitle: "Select material preference",
       options: [
-        {
-          id: 'clay-keychains',
-          title: 'Clay Keychains',
-          subtitle: 'Unique and lightweight',
-          image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'clay-pencil-toppers',
-          title: 'Pencil Toppers',
-          subtitle: 'Fun desk accessories',
-          image: 'https://images.unsplash.com/photo-1452868195396-89c1af3b1b2e?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'clay-desk-decor',
-          title: 'Desk Decor',
-          subtitle: 'Brighten your workspace',
-          image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'clay-photo-holders',
-          title: 'Photo Holders',
-          subtitle: 'Display precious memories',
-          image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop'
-        }
-      ]
-    },
-    {
-      id: 4,
-      title: "Which personalized items interest you?",
-      subtitle: "Choose custom options you'd love",
-      options: [
-        {
-          id: 'custom-name-plates',
-          title: 'Name Plates',
-          subtitle: 'Personalized identification',
-          image: 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'custom-necklaces',
-          title: 'Initial Necklaces',
-          subtitle: 'Wearable personalization',
-          image: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'custom-trinkets',
-          title: 'Trinket Boxes',
-          subtitle: 'Store your treasures',
-          image: 'https://images.unsplash.com/photo-1599643478510-a349f355fc53?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'custom-coasters',
-          title: 'Photo Coasters',
-          subtitle: 'Memories on display',
-          image: 'https://images.unsplash.com/photo-1573869903598-5355d7ebf4a9?w=400&h=300&fit=crop'
-        }
-      ]
-    },
-    {
-      id: 5,
-      title: "Finalize your crafting preferences",
-      subtitle: "Select any additional interests",
-      options: [
-        {
-          id: 'resin-magnets',
-          title: 'Resin Magnets',
-          subtitle: 'Decorate your fridge',
-          image: 'https://images.unsplash.com/photo-1616634375264-2d2e17736a36?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'clay-badges',
-          title: 'Clay Badges',
-          subtitle: 'Wearable art pieces',
-          image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'resin-trays',
-          title: 'Resin Trays',
-          subtitle: 'Functional and beautiful',
-          image: 'https://images.unsplash.com/photo-1573869903598-5355d7ebf4a9?w=400&h=300&fit=crop'
-        },
-        {
-          id: 'clay-bookmarks',
-          title: 'Clay Bookmarks',
-          subtitle: 'Artistic page markers',
-          image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400&h=300&fit=crop'
-        }
+        { id: 'resin', title: 'Resin', subtitle: 'Glossy & clear', letter: 'A', image: 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?w=400&h=300&fit=crop' },
+        { id: 'clay', title: 'Clay', subtitle: 'Matte & molded', letter: 'B', image: 'https://images.unsplash.com/photo-1452868195396-89c1af3b1b2e?w=400&h=300&fit=crop' },
+        { id: 'mixed', title: 'Combination / Mixed', subtitle: 'Best of both', letter: 'C', image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400&h=300&fit=crop' },
+        { id: 'surprise', title: 'Surprise me!', subtitle: 'No preference', letter: 'D', image: 'https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?w=400&h=300&fit=crop' }
       ]
     }
   ];
+
+  const getRecommendation = () => {
+    const q1 = quizQuestions[0].options.find(o => o.id === selectedAnswers[0])?.letter;
+    const q2 = quizQuestions[1].options.find(o => o.id === selectedAnswers[1])?.letter;
+    const q3 = quizQuestions[2].options.find(o => o.id === selectedAnswers[2])?.letter;
+
+    if (!q1 || !q2 || !q3) return "Please complete the quiz to get a recommendation.";
+
+    const key = `Q1${q1}-Q2${q2}-Q3${q3}`;
+
+    const resultsMap = {
+      // Q1A - Useful
+      'Q1A-Q2A-Q3A': 'Resin Bookmarks, Resin Coasters, Resin Cups, Resin Name Plates',
+      'Q1A-Q2A-Q3B': 'Clay Bookmarks, Clay Pencil Toppers, Clay Photo Holders',
+      'Q1A-Q2A-Q3C': 'Resin Bookmarks, Clay Bookmarks, Resin Coasters, Clay Photo Holders',
+      'Q1A-Q2A-Q3D': 'Resin Coasters, Clay Bookmarks, Resin Cups',
+      'Q1A-Q2B-Q3A': 'Resin Bookmarks, Resin Keychains, Resin Coasters',
+      'Q1A-Q2B-Q3B': 'Clay Keychains, Clay Bookmarks, Clay Pencil Toppers',
+      'Q1A-Q2B-Q3C': 'Resin Bookmarks, Clay Bookmarks, Resin Keychains',
+      'Q1A-Q2B-Q3D': 'Clay Keychains, Resin Bookmarks, Resin Coasters',
+      'Q1A-Q2C-Q3A': 'Resin Coasters, Resin Cups, Resin Name Plates',
+      'Q1A-Q2C-Q3B': 'Clay Photo Holders, Clay Bookmarks',
+      'Q1A-Q2C-Q3C': 'Resin Coasters, Clay Photo Holders',
+      'Q1A-Q2C-Q3D': 'Resin Coasters, Clay Bookmarks',
+      'Q1A-Q2D-Q3A': 'Resin Bookmarks, Resin Coasters, Resin Keychains',
+      'Q1A-Q2D-Q3B': 'Clay Keychains, Clay Bookmarks, Clay Pencil Toppers',
+      'Q1A-Q2D-Q3C': 'Resin Bookmarks, Clay Bookmarks, Resin Coasters',
+      'Q1A-Q2D-Q3D': 'Resin Coasters, Clay Keychains',
+
+      // Q1B - Decorative
+      'Q1B-Q2A-Q3A': 'Resin Trays, Resin Jewelry Boxes, Resin Magnets',
+      'Q1B-Q2A-Q3B': 'Clay Desk Decor, Clay Badges, Clay Trinket Boxes',
+      'Q1B-Q2A-Q3C': 'Resin Jewelry Boxes, Clay Desk Decor',
+      'Q1B-Q2A-Q3D': 'Resin Magnets, Clay Desk Decor',
+      'Q1B-Q2B-Q3A': 'Resin Jewelry Boxes, Resin Magnets',
+      'Q1B-Q2B-Q3B': 'Clay Trinket Boxes, Clay Badges',
+      'Q1B-Q2B-Q3C': 'Resin Jewelry Boxes, Clay Trinket Boxes',
+      'Q1B-Q2B-Q3D': 'Resin Magnets, Clay Badges',
+      'Q1B-Q2C-Q3A': 'Resin Trays, Resin Magnets, Resin Jewelry Boxes',
+      'Q1B-Q2C-Q3B': 'Clay Desk Decor, Clay Photo Holders',
+      'Q1B-Q2C-Q3C': 'Resin Trays, Clay Photo Holders',
+      'Q1B-Q2C-Q3D': 'Resin Magnets, Clay Desk Decor',
+      'Q1B-Q2D-Q3A': 'Resin Magnets, Resin Trays',
+      'Q1B-Q2D-Q3B': 'Clay Badges, Clay Trinket Boxes',
+      'Q1B-Q2D-Q3C': 'Resin Magnets, Clay Trinket Boxes',
+      'Q1B-Q2D-Q3D': 'Resin Magnets, Clay Badges',
+
+      // Q1C - Personalized
+      'Q1C-Q2A-Q3A': 'Customized Resin Initial Necklaces, Customized Resin Trinket Boxes, Customize Resin Name Plates',
+      'Q1C-Q2A-Q3B': 'Customized Clay Initial Necklaces, Customized Clay Trinket Boxes',
+      'Q1C-Q2A-Q3C': 'Customized Resin Initial Necklaces, Customized Clay Initial Necklaces',
+      'Q1C-Q2A-Q3D': 'Customized Resin Initial Necklaces, Customized Clay Trinket Boxes',
+      'Q1C-Q2B-Q3A': 'Customized Resin Keychains, Customized Resin Initial Necklaces, Customized Resin Bookmarks',
+      'Q1C-Q2B-Q3B': 'Customized Clay Keychains, Customized Clay Initial Necklaces, Customized Clay Bookmarks',
+      'Q1C-Q2B-Q3C': 'Customized Resin Keychains, Customized Clay Keychains',
+      'Q1C-Q2B-Q3D': 'Customized Resin Keychains, Customized Clay Initial Necklaces',
+      'Q1C-Q2C-Q3A': 'Custom Resin Photo Coasters, Customize Resin Name Plates, Customized Resin Trinket Boxes',
+      'Q1C-Q2C-Q3B': 'Customized Clay Trinket Boxes',
+      'Q1C-Q2C-Q3C': 'Custom Resin Photo Coasters, Customized Clay Trinket Boxes',
+      'Q1C-Q2C-Q3D': 'Customize Resin Name Plates, Customized Clay Trinket Boxes',
+      'Q1C-Q2D-Q3A': 'Customized Resin Keychains, Customized Resin Bookmarks',
+      'Q1C-Q2D-Q3B': 'Customized Clay Keychains, Customized Clay Bookmarks',
+      'Q1C-Q2D-Q3C': 'Customized Resin Keychains, Customized Clay Keychains',
+      'Q1C-Q2D-Q3D': 'Customized Resin Keychains, Customized Clay Keychains',
+
+      // Q1D - Small & Budget-Friendly
+      'Q1D-Q2A-Q3A': 'Resin Keychains, Resin Bookmarks, Resin Magnets',
+      'Q1D-Q2A-Q3B': 'Clay Keychains, Clay Pencil Toppers, Clay Badges',
+      'Q1D-Q2A-Q3C': 'Resin Keychains, Clay Keychains',
+      'Q1D-Q2A-Q3D': 'Resin Magnets, Clay Pencil Toppers',
+      'Q1D-Q2B-Q3A': 'Resin Keychains, Resin Bookmarks',
+      'Q1D-Q2B-Q3B': 'Clay Keychains, Clay Badges',
+      'Q1D-Q2B-Q3C': 'Resin Keychains, Clay Keychains',
+      'Q1D-Q2B-Q3D': 'Clay Keychains, Resin Magnets',
+      'Q1D-Q2C-Q3A': 'Resin Magnets, Resin Coasters',
+      'Q1D-Q2C-Q3B': 'Clay Photo Holders, Clay Bookmarks',
+      'Q1D-Q2C-Q3C': 'Resin Magnets, Clay Bookmarks',
+      'Q1D-Q2C-Q3D': 'Resin Magnets, Clay Bookmarks',
+      'Q1D-Q2D-Q3A': 'Resin Keychains, Resin Magnets',
+      'Q1D-Q2D-Q3B': 'Clay Keychains, Clay Pencil Toppers',
+      'Q1D-Q2D-Q3C': 'Resin Keychains, Clay Keychains',
+      'Q1D-Q2D-Q3D': 'Resin Keychains, Clay Keychains'
+    };
+
+    return resultsMap[key] || "We have a wide variety of crafts for you to explore!";
+  };
 
   const handleAnswerSelect = (optionId) => {
     setSelectedAnswers(prev => ({
@@ -196,24 +160,27 @@ const CustomerQuiz = () => {
   const progress = ((currentQuestion + 1) / quizQuestions.length) * 100;
 
   if (quizCompleted) {
+    const recommendation = getRecommendation();
+    const recommendedItems = recommendation.split(',').map(item => item.trim());
+
     return (
       <div className="customerquiz-container">
         <Navbar />
         <div className="customerquiz-completed">
           <div className="customerquiz-completed-content">
-            <h2>Quiz Completed! 🎉</h2>
-            <p>Thank you for sharing your crafting preferences!</p>
-            <div className="customerquiz-summary">
-              <h3>Your Selections:</h3>
-              <ul>
-                {Object.entries(selectedAnswers).map(([questionIndex, answer]) => (
-                  <li key={questionIndex}>
-                    Q{parseInt(questionIndex) + 1}: {answer}
-                  </li>
-                ))}
-              </ul>
+            <h2>Your Perfect Match! ✨</h2>
+            <p>Based on your unique style, we've curated these just for you:</p>
+
+            <div className="customerquiz-recommendations-grid">
+              {recommendedItems.map((item, index) => (
+                <div key={index} className="recommendation-card" style={{ animationDelay: `${index * 0.1}s` }}>
+                  <div className="recommendation-icon">🎁</div>
+                  <h3>{item}</h3>
+                </div>
+              ))}
             </div>
-            <button 
+
+            <button
               className="customerquiz-restart-btn"
               onClick={() => {
                 setCurrentQuestion(0);
@@ -221,7 +188,7 @@ const CustomerQuiz = () => {
                 setQuizCompleted(false);
               }}
             >
-              Take Quiz Again
+              Start New Quiz
             </button>
           </div>
         </div>
@@ -237,10 +204,10 @@ const CustomerQuiz = () => {
     <div className="customerquiz-container">
       <Navbar />
       <div className="customerquiz-content">
-        {/* Updated Progress Bar with Question Numbers */}
+        {/* Progress Bar */}
         <div className="customerquiz-progress-section">
           <div className="customerquiz-progress-container">
-            <div 
+            <div
               className="customerquiz-progress-bar"
               style={{ width: `${progress}%` }}
             ></div>
@@ -249,9 +216,8 @@ const CustomerQuiz = () => {
             {quizQuestions.map((_, index) => (
               <div
                 key={index}
-                className={`customerquiz-question-number ${
-                  index <= currentQuestion ? 'customerquiz-question-active' : ''
-                } ${index === currentQuestion ? 'customerquiz-question-current' : ''}`}
+                className={`customerquiz-question-number ${index <= currentQuestion ? 'customerquiz-question-active' : ''
+                  } ${index === currentQuestion ? 'customerquiz-question-current' : ''}`}
               >
                 {index + 1}
               </div>
@@ -264,15 +230,14 @@ const CustomerQuiz = () => {
           <p className="customerquiz-question-subtitle">{currentQ.subtitle}</p>
         </div>
 
-        {/* Updated 2x2 Grid Layout */}
+        {/* Options Grid */}
         <div className="customerquiz-options-grid">
           <div className="customerquiz-options-row">
             {currentQ.options.slice(0, 2).map((option) => (
               <div
                 key={option.id}
-                className={`customerquiz-option-card ${
-                  selectedAnswers[currentQuestion] === option.id ? 'customerquiz-option-selected' : ''
-                }`}
+                className={`customerquiz-option-card ${selectedAnswers[currentQuestion] === option.id ? 'customerquiz-option-selected' : ''
+                  }`}
                 onClick={() => handleAnswerSelect(option.id)}
               >
                 <div className="customerquiz-option-image">
@@ -289,9 +254,8 @@ const CustomerQuiz = () => {
             {currentQ.options.slice(2, 4).map((option) => (
               <div
                 key={option.id}
-                className={`customerquiz-option-card ${
-                  selectedAnswers[currentQuestion] === option.id ? 'customerquiz-option-selected' : ''
-                }`}
+                className={`customerquiz-option-card ${selectedAnswers[currentQuestion] === option.id ? 'customerquiz-option-selected' : ''
+                  }`}
                 onClick={() => handleAnswerSelect(option.id)}
               >
                 <div className="customerquiz-option-image">
@@ -307,27 +271,27 @@ const CustomerQuiz = () => {
         </div>
 
         <div className="customerquiz-navigation">
-          <button 
+          <button
             className="customerquiz-btn customerquiz-btn-secondary"
             onClick={handlePrevious}
             disabled={currentQuestion === 0}
           >
             Previous
           </button>
-          
-          <button 
+
+          <button
             className="customerquiz-btn customerquiz-btn-exit"
             onClick={handleExit}
           >
             Exit Quiz
           </button>
 
-          <button 
+          <button
             className="customerquiz-btn customerquiz-btn-primary"
             onClick={handleNext}
             disabled={isNextDisabled}
           >
-            {currentQuestion === quizQuestions.length - 1 ? 'Complete Quiz' : 'Next Question'}
+            {currentQuestion === quizQuestions.length - 1 ? 'See Results' : 'Next Question'}
           </button>
         </div>
       </div>

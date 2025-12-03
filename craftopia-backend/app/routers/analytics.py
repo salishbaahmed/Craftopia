@@ -18,11 +18,24 @@ async def get_sales_analytics(period: str = "monthly", admin = Depends(get_curre
     
     data = {}
     for order in orders:
-        date_key = order.createdAt.strftime("%Y-%m") if period == "monthly" else order.createdAt.strftime("%Y-%W")
+        if period == "yearly":
+            date_key = order.createdAt.strftime("%Y")
+        elif period == "monthly":
+            date_key = order.createdAt.strftime("%Y-%m")
+        else: # weekly
+            date_key = order.createdAt.strftime("%Y-%W")
+            
         if date_key not in data:
-            data[date_key] = {"revenue": 0, "orders": 0}
+            data[date_key] = {"revenue": 0, "orders": 0, "delivered": 0}
+            
         data[date_key]["revenue"] += order.total
         data[date_key]["orders"] += 1
+        
+        # Check delivery status
+        status = order.status.lower()
+        delivery_status = getattr(order, 'deliveryStatus', '').lower()
+        if status == 'delivered' or delivery_status == 'delivered':
+            data[date_key]["delivered"] += 1
         
     return [{"period": k, **v} for k, v in data.items()]
 
@@ -33,11 +46,20 @@ async def get_summary(admin = Depends(get_current_admin), session: AsyncSession 
     
     total_revenue = sum(o.total for o in orders)
     total_orders = len(orders)
+    
+    total_delivered = 0
+    for o in orders:
+        status = o.status.lower()
+        delivery_status = getattr(o, 'deliveryStatus', '').lower()
+        if status == 'delivered' or delivery_status == 'delivered':
+            total_delivered += 1
+            
     avg_order_value = total_revenue / total_orders if total_orders > 0 else 0
     
     return {
         "totalRevenue": total_revenue,
         "totalOrders": total_orders,
+        "totalDelivered": total_delivered,
         "averageOrderValue": avg_order_value
     }
 
@@ -54,7 +76,7 @@ async def get_top_products(admin = Depends(get_current_admin), session: AsyncSes
         for item in order.items:
             pid = str(item.productId)
             if pid not in product_sales:
-                product_sales[pid] = {"name": item.name, "sales": 0, "revenue": 0}
+                product_sales[pid] = {"id": pid, "name": item.name, "sales": 0, "revenue": 0}
             product_sales[pid]["sales"] += item.quantity
             product_sales[pid]["revenue"] += item.price * item.quantity
             

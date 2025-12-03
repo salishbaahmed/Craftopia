@@ -80,6 +80,24 @@ const AdminSalesReport = () => {
       }
     };
     fetchSalesData();
+
+    const onOrdersUpdated = () => {
+      // Re-fetch all data when orders change
+      fetchSalesData();
+      // Also re-fetch summary and top products
+      api.get('/analytics/summary').then(res => {
+        setSummary({
+          ...res.data,
+          successRate: res.data.totalOrders > 0 ? (res.data.totalDelivered / res.data.totalOrders) * 100 : 0
+        });
+      });
+      api.get('/analytics/top-products').then(res => {
+        setTopProducts(res.data);
+      });
+    };
+
+    window.addEventListener('ordersUpdated', onOrdersUpdated);
+    return () => window.removeEventListener('ordersUpdated', onOrdersUpdated);
   }, [dateRange, selectedYear]);
 
   const handleLogout = () => navigate('/admin-login');
@@ -142,11 +160,20 @@ const AdminSalesReport = () => {
                 onChange={(e) => setSelectedYear(e.target.value)}
                 className="filter-select"
               >
-                <option value={String(new Date().getFullYear())}>{String(new Date().getFullYear())}</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
+                {(() => {
+                  const startYear = 2025;
+                  const currentYear = new Date().getFullYear();
+                  const years = [];
+                  for (let y = currentYear; y >= startYear; y--) {
+                    years.push(y);
+                  }
+                  // If current year is before 2025 (e.g. system time wrong), just show 2025
+                  if (years.length === 0) years.push(2025);
+
+                  return years.map(year => (
+                    <option key={year} value={String(year)}>{year}</option>
+                  ));
+                })()}
               </select>
             </div>
           </div>
@@ -309,8 +336,8 @@ const AdminSalesReport = () => {
             </div>
           )}
         </div>
-      </main>
-    </div>
+      </main >
+    </div >
   );
 };
 

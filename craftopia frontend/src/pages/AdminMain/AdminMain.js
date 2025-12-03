@@ -20,106 +20,86 @@ const AdminMain = () => {
   const [totalOrders, setTotalOrders] = useState(0);
 
   useEffect(() => {
-    // load products count
-    const fetchProductCount = async () => {
+    const fetchData = async () => {
       try {
-        const response = await api.get('/products');
-        setTotalProducts(response.data.length);
+        // Fetch Products Count
+        const productsResponse = await api.get('/products');
+        setTotalProducts(productsResponse.data.length);
       } catch (err) {
         console.error('Error fetching product count:', err);
-        setTotalProducts(0);
+      }
+
+      try {
+        // Fetch Orders
+        const ordersResponse = await api.get('/orders/admin/all');
+        const orders = ordersResponse.data;
+        processOrderData(orders);
+      } catch (err) {
+        console.error('Error fetching orders:', err);
+        if (err.response && err.response.status === 401) {
+          navigate('/admin-login');
+        }
       }
     };
-    fetchProductCount();
 
-    // aggregate orders into monthly buckets for last 6 months
-    try {
-      const orders = JSON.parse(localStorage.getItem('orderHistory') || '[]');
-      if (!orders || orders.length === 0) {
-        // fallback dummy
-        const fallbackOrders = [
-          { name: 'Jan', Pending: 10, Delivered: 30 },
-          { name: 'Feb', Pending: 15, Delivered: 25 },
-          { name: 'Mar', Pending: 12, Delivered: 35 },
-          { name: 'Apr', Pending: 20, Delivered: 40 },
-          { name: 'May', Pending: 18, Delivered: 38 },
-          { name: 'Jun', Pending: 25, Delivered: 45 },
-        ];
-        setOrdersData(fallbackOrders);
-        const pending = fallbackOrders.reduce((s, r) => s + (r.Pending || 0), 0);
-        const delivered = fallbackOrders.reduce((s, r) => s + (r.Delivered || 0), 0);
-        setTotalPending(pending);
-        setTotalDelivered(delivered);
-        setTotalOrders(pending + delivered);
-      } else {
-        // map orders into month buckets
-        const monthMap = {};
-        const now = new Date();
-        for (let i = 5; i >= 0; i--) {
-          const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
-          const key = d.toLocaleString('en-US', { month: 'short' });
-          monthMap[key] = { Pending: 0, Delivered: 0, name: key };
-        }
-        let revenueBuckets = {};
-        orders.forEach(o => {
-          const d = new Date(o.orderDate || o.orderDate || o.orderPlaced || Date.now());
-          const key = d.toLocaleString('en-US', { month: 'short' });
-          if (!monthMap[key]) {
-            monthMap[key] = { Pending: 0, Delivered: 0, name: key };
-          }
-          const status = (o.status || '').toLowerCase();
-          if (status === 'delivered') monthMap[key].Delivered += 1;
-          else monthMap[key].Pending += 1;
+    fetchData();
+  }, [navigate]);
 
-          // revenue
-          const price = Number(o.total || o.totalAmount || o.totalPrice || o.totalAmountPaid || 0) || 0;
-          revenueBuckets[key] = (revenueBuckets[key] || 0) + price;
-        });
-        const months = Object.values(monthMap).slice(-6);
-        setOrdersData(months);
-        const pending = months.reduce((s, r) => s + (r.Pending || 0), 0);
-        const delivered = months.reduce((s, r) => s + (r.Delivered || 0), 0);
-        setTotalPending(pending);
-        setTotalDelivered(delivered);
-        setTotalOrders(pending + delivered);
-        // revenue data from revenueBuckets
-        const rev = Object.keys(revenueBuckets).slice(-4).map(k => ({ name: k, Revenue: revenueBuckets[k] }));
-        setRevenueData(rev.length ? rev : [
-          { name: 'Week 1', Revenue: 2000 },
-          { name: 'Week 2', Revenue: 3500 },
-          { name: 'Week 3', Revenue: 2800 },
-          { name: 'Week 4', Revenue: 4500 },
-        ]);
-        const totalRev = Object.values(revenueBuckets).reduce((s, v) => s + v, 0);
-        setTotalRevenue(totalRev || 0);
-      }
-    } catch (err) {
-      // fallback
-      setOrdersData([
-        { name: 'Jan', Pending: 10, Delivered: 30 },
-        { name: 'Feb', Pending: 15, Delivered: 25 },
-        { name: 'Mar', Pending: 12, Delivered: 35 },
-        { name: 'Apr', Pending: 20, Delivered: 40 },
-        { name: 'May', Pending: 18, Delivered: 38 },
-        { name: 'Jun', Pending: 25, Delivered: 45 },
-      ]);
-      setRevenueData([
-        { name: 'Week 1', Revenue: 2000 },
-        { name: 'Week 2', Revenue: 3500 },
-        { name: 'Week 3', Revenue: 2800 },
-        { name: 'Week 4', Revenue: 4500 },
-      ]);
+  const processOrderData = (orders) => {
+    const now = new Date();
+    const months = [];
+    const monthMap = {};
+
+    // Initialize last 6 months
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const key = d.toLocaleString('default', { month: 'short' });
+      monthMap[key] = { name: key, Pending: 0, Delivered: 0, Revenue: 0 };
+      months.push(key);
     }
 
-    // refresh if ordersUpdated or productsUpdated happen
-    const onOrdersUpdated = () => { /* trigger effect by re-running */ window.location && window.location.reload && window.location.reload(); };
-    window.addEventListener('ordersUpdated', onOrdersUpdated);
-    window.addEventListener('productsUpdated', onOrdersUpdated);
-    return () => {
-      window.removeEventListener('ordersUpdated', onOrdersUpdated);
-      window.removeEventListener('productsUpdated', onOrdersUpdated);
-    };
-  }, []);
+    let pendingCount = 0;
+    let deliveredCount = 0;
+    let revenueTotal = 0;
+
+    orders.forEach(order => {
+      // Calculate Totals
+      const status = (order.status || '').toLowerCase();
+      const deliveryStatus = (order.deliveryStatus || '').toLowerCase();
+
+      // Determine effective status
+      const isDelivered = status === 'delivered' || deliveryStatus === 'delivered';
+      const isPending = !isDelivered && (status !== 'cancelled'); // Assuming anything not delivered or cancelled is pending-ish
+
+      if (isDelivered) deliveredCount++;
+      else if (isPending) pendingCount++;
+
+      const amount = Number(order.total || order.totalAmount || 0);
+      revenueTotal += amount;
+
+      // Map to Month
+      const dateStr = order.createdAt || order.orderDate;
+      if (dateStr) {
+        const d = new Date(dateStr);
+        const key = d.toLocaleString('default', { month: 'short' });
+        if (monthMap[key]) {
+          if (isDelivered) monthMap[key].Delivered++;
+          else if (isPending) monthMap[key].Pending++;
+          monthMap[key].Revenue += amount;
+        }
+      }
+    });
+
+    setTotalPending(pendingCount);
+    setTotalDelivered(deliveredCount);
+    setTotalOrders(orders.length);
+    setTotalRevenue(revenueTotal);
+
+    // Prepare Graph Data
+    const graphData = months.map(month => monthMap[month]);
+    setOrdersData(graphData);
+    setRevenueData(graphData); // Use same monthly data for revenue graph
+  };
 
   const handleLogout = () => {
     navigate('/admin-login');
@@ -158,7 +138,7 @@ const AdminMain = () => {
           </div>
           <div className="stat-card">
             <h3>Revenue</h3>
-            <p>${totalRevenue.toLocaleString()}</p>
+            <p>Rs {totalRevenue.toLocaleString()}</p>
           </div>
         </section>
 
@@ -166,7 +146,7 @@ const AdminMain = () => {
         <section className="overview-section">
           <h2>Overview</h2>
           <div className="overview-placeholder">
-            <h3 style={{ marginBottom: '1rem' }}>Orders Status</h3>
+            <h3 style={{ marginBottom: '1rem' }}>Orders Status (Last 6 Months)</h3>
             <ResponsiveContainer width="100%" height={250}>
               <LineChart data={ordersData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -179,15 +159,15 @@ const AdminMain = () => {
               </LineChart>
             </ResponsiveContainer>
 
-            <h3 style={{ margin: '2rem 0 1rem 0' }}>Revenue</h3>
+            <h3 style={{ margin: '2rem 0 1rem 0' }}>Revenue (Last 6 Months)</h3>
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={revenueData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
-                <Tooltip />
+                <Tooltip formatter={(value) => `Rs ${value.toLocaleString()}`} />
                 <Legend />
-                <Bar dataKey="Revenue" fill="#14B8A6" />
+                <Bar dataKey="Revenue" fill="#14B8A6" name="Revenue (Rs)" />
               </BarChart>
             </ResponsiveContainer>
           </div>

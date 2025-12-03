@@ -328,6 +328,73 @@
   box-shadow: 0 10px 25px rgba(79, 172, 254, 0.4);
 }
 
+/* Recommendation Styles */
+.customerquiz-recommendations-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  margin: 2rem 0;
+  width: 100%;
+}
+
+.recommendation-card {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+  border: 2px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: all 0.3s ease;
+  animation: fadeInUp 0.5s ease backwards;
+}
+
+.recommendation-card:hover {
+  transform: translateY(-5px);
+  border-color: #4facfe;
+  box-shadow: 0 15px 35px rgba(79, 172, 254, 0.15);
+}
+
+.recommendation-icon {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  background: linear-gradient(135deg, #e3f2fd 0%, #f8fbff 100%);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.recommendation-card h3 {
+  font-size: 1.1rem;
+  color: #2d3748;
+  font-weight: 600;
+  margin: 0;
+  line-height: 1.4;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.customerquiz-completed-content {
+  max-width: 800px;
+  /* Increased width for grid */
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .customerquiz-content {
@@ -378,6 +445,10 @@
   .customerquiz-completed-content {
     padding: 2rem;
     margin: 1rem;
+  }
+
+  .customerquiz-recommendations-grid {
+    grid-template-columns: 1fr;
   }
 }
 
