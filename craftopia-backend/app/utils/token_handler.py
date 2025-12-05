@@ -38,11 +38,25 @@ class TokenHandler:
     def decode_token(self, token: str) -> Dict:
         """Decode and validate JWT token"""
         try:
+            # Remove 'Bearer ' prefix if present
+            if token.startswith('Bearer '):
+                token = token[7:]
+            
+            # Decode token
             payload = jwt.decode(
                 token,
                 self._secret_key,
                 algorithms=[self._algorithm]
             )
+            
+            # Check if token is expired
+            exp = payload.get("exp")
+            if exp and datetime.utcnow().timestamp() > exp:
+                raise ValueError("Token has expired")
+            
             return payload
+            
         except JWTError as e:
             raise ValueError(f"Invalid token: {str(e)}")
+        except Exception as e:
+            raise ValueError(f"Token validation failed: {str(e)}")

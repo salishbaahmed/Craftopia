@@ -1,6 +1,7 @@
 """
 Refactored Auth Router using OOP and SOLID principles
 """
+
 from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel, EmailStr
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -10,6 +11,9 @@ from app.repositories.user_repository import UserRepository
 from app.repositories.admin_repository import AdminRepository
 from app.utils.password_handler import PasswordHandler
 from app.utils.token_handler import TokenHandler
+
+from fastapi.security import OAuth2PasswordBearer
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
@@ -104,7 +108,7 @@ async def login(
 
 @router.get("/me")
 async def read_users_me(
-    token: str = Depends(lambda: "token_from_header"),  # Replace with actual OAuth2 scheme
+    token: str = Depends(oauth2_scheme),
     auth_service: AuthService = Depends(get_auth_service)
 ):
     """Get current user from token"""

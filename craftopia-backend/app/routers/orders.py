@@ -1,57 +1,73 @@
 """
-Orders Router - Refactored with DI
+Orders Router
 """
-from fastapi import APIRouter, HTTPException, Depends, Body
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
+from pydantic import BaseModel
 from typing import List, Optional
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.database import get_session
-from app.models.order import (
-    Order, OrderItem, OrderCreate,
-    OrderItemCreate, OrderResponse
-)
+import io
+
 from app.models.user import User
+from app.models.admin import Admin
+from app.models.order import OrderItem
 from app.services.order_service import OrderService
-from app.repositories.order_repository import OrderRepository
-from app.utils.invoice_generator import InvoiceGenerator
-from app.dependencies import get_current_user, get_current_admin
+from app.dependencies import get_order_service, get_current_user, get_current_admin, get_current_user_or_admin
+
+router = APIRouter(prefix="/api/orders", tags=["orders"])
 
 
-router = APIRouter()
+# Request Models
+class OrderItemRequest(BaseModel):
+    productId: str
+    name: str
+    price: float
+    quantity: int
+    imageUrl: str
 
 
-# Dependency Injection
-def get_order_service(
-    session: AsyncSession = Depends(get_session)
-) -> OrderService:
-    """Factory to create OrderService with dependencies"""
-    order_repo = OrderRepository(session)
-    invoice_gen = InvoiceGenerator()
-    return OrderService(
-        order_repository=order_repo,
-        invoice_generator=invoice_gen
-    )
+class ShippingAddress(BaseModel):
+    street: str
+    city: str
+    state: str
+    zipCode: str
+    country: str
 
 
-# Routes
-@router.post("/", response_model=Order, status_code=201)
+class CreateOrderRequest(BaseModel):
+    items: List[OrderItemRequest]
+    shippingAddress: ShippingAddress
+    subtotal: float
+    discount: float
+    tax: float
+    total: float
+    paymentStatus: str = "Pending"
+
+
+class UpdateStatusRequest(BaseModel):
+    status: str
+
+
+class UpdateDeliveryRequest(BaseModel):
+    deliveryStatus: str
+    deliveryHistory: Optional[List[dict]] = None
+    estimatedDelivery: Optional[str] = None
+    deliveryDate: Optional[str] = None
+
+
+@router.post("/")
 async def create_order(
-    order_data: OrderCreate,
-    user: User = Depends(get_current_user),
+    order_data: CreateOrderRequest,
+    current_user: User = Depends(get_current_user),
     order_service: OrderService = Depends(get_order_service)
 ):
-    """Create new order"""
+    """Create new order (user only)"""
     try:
-        # Convert OrderItemCreate to OrderItem
-        items = [
-            OrderItem(**item_data.dict())
-            for item_data in order_data.items
-        ]
+        items = [OrderItem(**item.dict()) for item in order_data.items]
         
         order = await order_service.create_order(
-            user=user,
+            user=current_user,
             items=items,
-            shipping_address=order_data.shippingAddress,
+            shipping_address=order_data.shippingAddress.dict(),
             subtotal=order_data.subtotal,
             discount=order_data.discount,
             tax=order_data.tax,
@@ -60,98 +76,103 @@ async def create_order(
         )
         return order
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.get("/my-orders", response_model=List[OrderResponse])
-async def get_my_orders(
-    user: User = Depends(get_current_user),
+@router.get("/")
+async def get_orders(
+    current_user: User = Depends(get_current_user),
     order_service: OrderService = Depends(get_order_service)
 ):
     """Get all orders for current user"""
-    return await order_service.get_user_orders(user.id)
+    return await order_service.get_user_orders(current_user.id)
 
 
-@router.get("/{id}", response_model=Order)
-async def get_order(
-    id: str,
-    user: User = Depends(get_current_user),
-    order_service: OrderService = Depends(get_order_service)
-):
-    """Get order by ID"""
-    try:
-        return await order_service.get_order_by_id(id, user)
-    except ValueError as e:
-        if "not found" in str(e).lower():
-            raise HTTPException(status_code=404, detail=str(e))
-        raise HTTPException(status_code=403, detail=str(e))
-
-
-@router.get("/{id}/invoice")
-async def download_invoice(
-    id: str,
-    user: User = Depends(get_current_user),
-    order_service: OrderService = Depends(get_order_service)
-):
-    """Download order invoice PDF"""
-    try:
-        pdf_buffer = await order_service.generate_invoice(id, user)
-        
-        return StreamingResponse(
-            pdf_buffer,
-            media_type="application/pdf",
-            headers={
-                "Content-Disposition": f"attachment; filename=invoice_{id}.pdf"
-            }
-        )
-    except ValueError as e:
-        if "not found" in str(e).lower():
-            raise HTTPException(status_code=404, detail=str(e))
-        raise HTTPException(status_code=403, detail=str(e))
-
-
-# Admin Routes
-@router.get("/admin/all", response_model=List[Order])
+@router.get("/all")
 async def get_all_orders(
-    admin=Depends(get_current_admin),
+    current_admin: Admin = Depends(get_current_admin),
     order_service: OrderService = Depends(get_order_service)
 ):
     """Get all orders (admin only)"""
     return await order_service.get_all_orders()
 
 
-@router.patch("/admin/{id}/status", response_model=Order)
-async def update_order_status(
-    id: str,
-    status: str = Body(..., embed=True),
-    admin=Depends(get_current_admin),
+# Support both routes for backward compatibility
+@router.get("/admin/all")
+async def get_all_orders_admin(
+    current_admin: Admin = Depends(get_current_admin),
     order_service: OrderService = Depends(get_order_service)
 ):
-    """Update order status (admin only)"""
+    """Get all orders - admin route (admin only)"""
+    return await order_service.get_all_orders()
+
+
+@router.get("/{order_id}")
+async def get_order(
+    order_id: str,
+    current_user: User | Admin = Depends(get_current_user_or_admin),
+    order_service: OrderService = Depends(get_order_service)
+):
+    """Get order by ID"""
     try:
-        return await order_service.update_order_status(id, status)
+        order = await order_service.get_order_by_id(order_id, current_user)
+        return order
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
 
-@router.patch("/admin/{id}/delivery-status", response_model=Order)
-async def update_delivery_status(
-    id: str,
-    deliveryStatus: str = Body(..., embed=True),
-    deliveryHistory: List[dict] = Body(default=[], embed=True),
-    estimatedDelivery: Optional[str] = Body(default=None, embed=True),
-    deliveryDate: Optional[str] = Body(default=None, embed=True),
-    admin=Depends(get_current_admin),
+@router.put("/{order_id}/status")
+async def update_order_status(
+    order_id: str,
+    status_data: UpdateStatusRequest,
+    current_admin: Admin = Depends(get_current_admin),
     order_service: OrderService = Depends(get_order_service)
 ):
-    """Update order delivery status (admin only)"""
+    """Update order status (admin only)"""
     try:
-        return await order_service.update_delivery_status(
-            order_id=id,
-            delivery_status=deliveryStatus,
-            delivery_history=deliveryHistory,
-            estimated_delivery=estimatedDelivery,
-            delivery_date=deliveryDate
+        order = await order_service.update_order_status(order_id, status_data.status)
+        return order
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@router.put("/{order_id}/delivery")
+async def update_delivery_status(
+    order_id: str,
+    delivery_data: UpdateDeliveryRequest,
+    current_admin: Admin = Depends(get_current_admin),
+    order_service: OrderService = Depends(get_order_service)
+):
+    """Update delivery status (admin only)"""
+    try:
+        order = await order_service.update_delivery_status(
+            order_id=order_id,
+            delivery_status=delivery_data.deliveryStatus,
+            delivery_history=delivery_data.deliveryHistory,
+            estimated_delivery=delivery_data.estimatedDelivery,
+            delivery_date=delivery_data.deliveryDate
+        )
+        return order
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+
+
+@router.get("/{order_id}/invoice")
+async def get_invoice(
+    order_id: str,
+    current_user: User | Admin = Depends(get_current_user_or_admin),
+    order_service: OrderService = Depends(get_order_service)
+):
+    """Generate and download invoice PDF"""
+    try:
+        pdf_buffer = await order_service.generate_invoice(order_id, current_user)
+        
+        return StreamingResponse(
+            pdf_buffer,
+            media_type="application/pdf",
+            headers={
+                "Content-Disposition": f"attachment; filename=invoice_{order_id}.pdf"
+            }
         )
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
