@@ -14,7 +14,8 @@ from app.models.user import User
 from app.services.order_service import OrderService
 from app.repositories.order_repository import OrderRepository
 from app.utils.invoice_generator import InvoiceGenerator
-from app.routers.auth import get_current_user, get_current_admin
+from app.dependencies import get_current_user, get_current_admin
+
 
 router = APIRouter()
 

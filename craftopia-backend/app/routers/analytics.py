@@ -1,52 +1,39 @@
 """
-Analytics Router - Refactored with DI
+Analytics Router
 """
-from fastapi import APIRouter, Depends
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.database import get_session
+from fastapi import APIRouter, Depends, Query
+
+from app.models.admin import Admin
 from app.services.analytics_service import AnalyticsService
-from app.repositories.order_repository import OrderRepository
-from app.routers.auth import get_current_admin
+from app.dependencies import get_analytics_service, get_current_admin
 
-router = APIRouter()
-
-
-# Dependency Injection
-def get_analytics_service(
-    session: AsyncSession = Depends(get_session)
-) -> AnalyticsService:
-    """Factory to create AnalyticsService with dependencies"""
-    order_repo = OrderRepository(session)
-    return AnalyticsService(order_repository=order_repo)
-
-
-# Routes
-@router.get("/sales")
-async def get_sales_analytics(
-    period: str = "monthly",
-    admin=Depends(get_current_admin),
-    analytics_service: AnalyticsService = Depends(get_analytics_service)
-):
-    """
-    Get sales analytics grouped by time period
-    Query params: period (yearly, monthly, weekly)
-    """
-    return await analytics_service.get_sales_analytics(period)
+router = APIRouter(prefix="/api/analytics", tags=["analytics"])
 
 
 @router.get("/summary")
 async def get_summary(
-    admin=Depends(get_current_admin),
+    current_admin: Admin = Depends(get_current_admin),
     analytics_service: AnalyticsService = Depends(get_analytics_service)
 ):
-    """Get overall sales summary"""
+    """Get overall sales summary (admin only)"""
     return await analytics_service.get_summary()
+
+
+@router.get("/sales")
+async def get_sales_analytics(
+    period: str = Query("monthly", regex="^(yearly|monthly|weekly)$"),
+    current_admin: Admin = Depends(get_current_admin),
+    analytics_service: AnalyticsService = Depends(get_analytics_service)
+):
+    """Get sales analytics by period (admin only)"""
+    return await analytics_service.get_sales_analytics(period)
 
 
 @router.get("/top-products")
 async def get_top_products(
-    admin=Depends(get_current_admin),
+    limit: int = Query(5, ge=1, le=20),
+    current_admin: Admin = Depends(get_current_admin),
     analytics_service: AnalyticsService = Depends(get_analytics_service)
 ):
-    """Get top 5 selling products by revenue"""
-    return await analytics_service.get_top_products(limit=5)
+    """Get top selling products (admin only)"""
+    return await analytics_service.get_top_products(limit)

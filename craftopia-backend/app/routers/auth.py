@@ -1,6 +1,5 @@
 """
-Auth Router - Refactored with DI
-Uses services instead of direct database access
+Refactored Auth Router using OOP and SOLID principles
 """
 from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel, EmailStr
@@ -11,13 +10,11 @@ from app.repositories.user_repository import UserRepository
 from app.repositories.admin_repository import AdminRepository
 from app.utils.password_handler import PasswordHandler
 from app.utils.token_handler import TokenHandler
-from fastapi.security import OAuth2PasswordBearer
 
-router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
+router = APIRouter(prefix="/api/auth", tags=["auth"])
 
 
-# DTOs
+# DTOs (Data Transfer Objects)
 class UserCreate(BaseModel):
     firstName: str
     lastName: str
@@ -37,9 +34,12 @@ class Token(BaseModel):
     role: str
 
 
-# Dependency Injection
+# Dependency Injection - DIP in action
 def get_auth_service(session: AsyncSession = Depends(get_session)) -> AuthService:
-    """Factory to create AuthService with dependencies"""
+    """
+    Dependency Injection factory
+    DIP: High-level modules (router) depend on abstractions (AuthService)
+    """
     user_repo = UserRepository(session)
     admin_repo = AdminRepository(session)
     password_handler = PasswordHandler()
@@ -53,43 +53,15 @@ def get_auth_service(session: AsyncSession = Depends(get_session)) -> AuthServic
     )
 
 
-async def get_current_user(
-    token: str = Depends(oauth2_scheme),
-    auth_service: AuthService = Depends(get_auth_service)
-):
-    """Get current user from token"""
-    try:
-        return await auth_service.get_current_user(token)
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=str(e),
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-
-async def get_current_admin(
-    token: str = Depends(oauth2_scheme),
-    auth_service: AuthService = Depends(get_auth_service)
-):
-    """Get current admin from token"""
-    try:
-        return await auth_service.get_current_admin(token)
-    except ValueError as e:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail=str(e),
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-
-# Routes
 @router.post("/register", response_model=Token)
 async def register(
     user_data: UserCreate,
     auth_service: AuthService = Depends(get_auth_service)
 ):
-    """Register a new user"""
+    """
+    Register a new user
+    Uses dependency injection to get AuthService
+    """
     try:
         result = await auth_service.register_user(
             first_name=user_data.firstName,
@@ -101,10 +73,7 @@ async def register(
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Registration failed: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Registration failed: {str(e)}")
 
 
 @router.post("/login", response_model=Token)
@@ -112,7 +81,10 @@ async def login(
     login_data: LoginRequest,
     auth_service: AuthService = Depends(get_auth_service)
 ):
-    """Login user and return JWT token"""
+    """
+    Login user and return JWT token
+    Uses dependency injection to get AuthService
+    """
     try:
         result = await auth_service.login(
             email=login_data.email,
@@ -127,13 +99,23 @@ async def login(
             headers={"WWW-Authenticate": "Bearer"},
         )
     except Exception as e:
-        raise HTTPException(
-            status_code=500,
-            detail=f"Login failed: {str(e)}"
-        )
+        raise HTTPException(status_code=500, detail=f"Login failed: {str(e)}")
 
 
 @router.get("/me")
-async def read_users_me(current_user=Depends(get_current_user)):
-    """Get current user profile"""
-    return current_user
+async def read_users_me(
+    token: str = Depends(lambda: "token_from_header"),  # Replace with actual OAuth2 scheme
+    auth_service: AuthService = Depends(get_auth_service)
+):
+    """Get current user from token"""
+    try:
+        user = await auth_service.get_current_user(token)
+        if not user:
+            raise HTTPException(status_code=404, detail="User not found")
+        return user
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"},
+        )

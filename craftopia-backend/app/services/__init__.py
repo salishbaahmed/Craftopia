@@ -1,3 +1,7 @@
+"""
+Services package initialization
+Exports all service classes for dependency injection
+"""
 from .auth_service import AuthService
 from .user_service import UserService
 from .product_service import ProductService

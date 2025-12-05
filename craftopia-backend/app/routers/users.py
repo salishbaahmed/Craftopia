@@ -1,77 +1,80 @@
 """
-Users Router - Refactored with DI
+Users Router
 """
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from sqlalchemy.ext.asyncio import AsyncSession
-from app.database import get_session
+from typing import List
+
 from app.models.user import User, Address
 from app.services.user_service import UserService
-from app.repositories.user_repository import UserRepository
-from app.routers.auth import get_current_user
+from app.dependencies import get_user_service, get_current_user
 
-router = APIRouter()
+router = APIRouter(prefix="/api/users", tags=["users"])
 
 
-# DTOs
-class UserProfileUpdate(BaseModel):
+# Request Models
+class UpdateProfileRequest(BaseModel):
     firstName: str
     lastName: str
     phone: str
 
 
-# Dependency Injection
-def get_user_service(session: AsyncSession = Depends(get_session)) -> UserService:
-    """Factory to create UserService with dependencies"""
-    user_repo = UserRepository(session)
-    return UserService(user_repository=user_repo)
+class AddAddressRequest(BaseModel):
+    street: str
+    city: str
+    state: str
+    zipCode: str
+    country: str
+    isDefault: bool = False
 
 
-# Routes
-@router.get("/profile", response_model=User)
+@router.get("/profile")
 async def get_profile(
-    user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Get user profile"""
-    return await user_service.get_profile(user)
+    """Get current user's profile"""
+    return await user_service.get_profile(current_user)
 
 
-@router.put("/profile", response_model=User)
+@router.put("/profile")
 async def update_profile(
-    update_data: UserProfileUpdate,
-    user: User = Depends(get_current_user),
+    request: UpdateProfileRequest,
+    current_user: User = Depends(get_current_user),
     user_service: UserService = Depends(get_user_service)
 ):
     """Update user profile"""
     try:
-        return await user_service.update_profile(
-            user=user,
-            first_name=update_data.firstName,
-            last_name=update_data.lastName,
-            phone=update_data.phone
+        updated_user = await user_service.update_profile(
+            user=current_user,
+            first_name=request.firstName,
+            last_name=request.lastName,
+            phone=request.phone
         )
+        return updated_user
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
 
 
-@router.get("/addresses", response_model=list[Address])
+@router.get("/addresses")
 async def get_addresses(
-    user: User = Depends(get_current_user),
+    current_user: User = Depends(get_current_user),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Get all user addresses"""
-    return await user_service.get_addresses(user)
+    """Get user's addresses"""
+    return await user_service.get_addresses(current_user)
 
 
-@router.post("/addresses", response_model=list[Address])
+@router.post("/addresses")
 async def add_address(
-    address: Address,
-    user: User = Depends(get_current_user),
+    request: AddAddressRequest,
+    current_user: User = Depends(get_current_user),
     user_service: UserService = Depends(get_user_service)
 ):
-    """Add new address to user profile"""
+    """Add new address"""
     try:
-        return await user_service.add_address(user, address)
+        address = Address(**request.dict())
+        addresses = await user_service.add_address(current_user, address)
+        return {"addresses": addresses}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        raise HTTPException(status_code=400, detail=str(e))
