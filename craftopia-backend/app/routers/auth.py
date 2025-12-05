@@ -1,99 +1,139 @@
+"""
+Auth Router - Refactored with DI
+Uses services instead of direct database access
+"""
 from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel, EmailStr
-from app.models.user import User
-from app.models.admin import Admin
-from app.utils.auth import get_password_hash, verify_password, create_access_token, get_current_user
-from datetime import timedelta
-from app.config import settings
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.database import get_session
-from sqlmodel import select
+from app.services.auth_service import AuthService
+from app.repositories.user_repository import UserRepository
+from app.repositories.admin_repository import AdminRepository
+from app.utils.password_handler import PasswordHandler
+from app.utils.token_handler import TokenHandler
+from fastapi.security import OAuth2PasswordBearer
 
 router = APIRouter()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/auth/login")
 
+
+# DTOs
 class UserCreate(BaseModel):
     firstName: str
     lastName: str
     email: EmailStr
     password: str
 
+
 class LoginRequest(BaseModel):
     email: EmailStr
     password: str
     role: str = "user"
+
 
 class Token(BaseModel):
     access_token: str
     token_type: str
     role: str
 
-@router.post("/register", response_model=Token)
-async def register(user_data: UserCreate, session: AsyncSession = Depends(get_session)):
-    print(f"Register request received for: {user_data.email}")
-    try:
-        # Check if user exists
-        result = await session.execute(select(User).where(User.email == user_data.email))
-        existing_user = result.scalars().first()
-        
-        if existing_user:
-            raise HTTPException(status_code=400, detail="Email already registered")
-        
-        hashed_password = get_password_hash(user_data.password)
-        new_user = User(
-            firstName=user_data.firstName,
-            lastName=user_data.lastName,
-            email=user_data.email,
-            password=hashed_password
-        )
-        session.add(new_user)
-        await session.commit()
-        await session.refresh(new_user)
-        
-        access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-        access_token = create_access_token(
-            data={"sub": new_user.email, "role": "user"}, expires_delta=access_token_expires
-        )
-        print("User registered successfully")
-        return {"access_token": access_token, "token_type": "bearer", "role": "user"}
-    except Exception as e:
-        print(f"Error during registration: {str(e)}")
-        import traceback
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"Registration failed: {str(e)}")
 
-@router.post("/login", response_model=Token)
-async def login(login_data: LoginRequest, session: AsyncSession = Depends(get_session)):
-    print(f"=== LOGIN ATTEMPT ===")
-    print(f"Email: {login_data.email}")
-    print(f"Password: {login_data.password}")
-    print(f"Role: {login_data.role}")
-    print(f"==================")
-    if login_data.role == "admin":
-        result = await session.execute(select(Admin).where(Admin.email == login_data.email))
-        user = result.scalars().first()
-    else:
-        result = await session.execute(select(User).where(User.email == login_data.email))
-        user = result.scalars().first()
-        
-    print(f"User found: {user is not None}")
-    if user:
-        print(f"Stored hash: {user.password[:50]}...")
-        print(f"Verifying password...")
-        password_valid = verify_password(login_data.password, user.password)
-        print(f"Password valid: {password_valid}")   
-    if not user or not verify_password(login_data.password, user.password):
+# Dependency Injection
+def get_auth_service(session: AsyncSession = Depends(get_session)) -> AuthService:
+    """Factory to create AuthService with dependencies"""
+    user_repo = UserRepository(session)
+    admin_repo = AdminRepository(session)
+    password_handler = PasswordHandler()
+    token_handler = TokenHandler()
+    
+    return AuthService(
+        user_repository=user_repo,
+        admin_repository=admin_repo,
+        password_handler=password_handler,
+        token_handler=token_handler
+    )
+
+
+async def get_current_user(
+    token: str = Depends(oauth2_scheme),
+    auth_service: AuthService = Depends(get_auth_service)
+):
+    """Get current user from token"""
+    try:
+        return await auth_service.get_current_user(token)
+    except ValueError as e:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password",
+            detail=str(e),
             headers={"WWW-Authenticate": "Bearer"},
         )
-    
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
-    access_token = create_access_token(
-        data={"sub": user.email, "role": login_data.role}, expires_delta=access_token_expires
-    )
-    return {"access_token": access_token, "token_type": "bearer", "role": login_data.role}
+
+
+async def get_current_admin(
+    token: str = Depends(oauth2_scheme),
+    auth_service: AuthService = Depends(get_auth_service)
+):
+    """Get current admin from token"""
+    try:
+        return await auth_service.get_current_admin(token)
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
+# Routes
+@router.post("/register", response_model=Token)
+async def register(
+    user_data: UserCreate,
+    auth_service: AuthService = Depends(get_auth_service)
+):
+    """Register a new user"""
+    try:
+        result = await auth_service.register_user(
+            first_name=user_data.firstName,
+            last_name=user_data.lastName,
+            email=user_data.email,
+            password=user_data.password
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Registration failed: {str(e)}"
+        )
+
+
+@router.post("/login", response_model=Token)
+async def login(
+    login_data: LoginRequest,
+    auth_service: AuthService = Depends(get_auth_service)
+):
+    """Login user and return JWT token"""
+    try:
+        result = await auth_service.login(
+            email=login_data.email,
+            password=login_data.password,
+            role=login_data.role
+        )
+        return result
+    except ValueError as e:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Login failed: {str(e)}"
+        )
+
 
 @router.get("/me")
-async def read_users_me(current_user = Depends(get_current_user)):
+async def read_users_me(current_user=Depends(get_current_user)):
+    """Get current user profile"""
     return current_user
