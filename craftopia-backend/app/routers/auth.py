@@ -63,6 +63,11 @@ async def register(user_data: UserCreate, session: AsyncSession = Depends(get_se
 
 @router.post("/login", response_model=Token)
 async def login(login_data: LoginRequest, session: AsyncSession = Depends(get_session)):
+    print(f"=== LOGIN ATTEMPT ===")
+    print(f"Email: {login_data.email}")
+    print(f"Password: {login_data.password}")
+    print(f"Role: {login_data.role}")
+    print(f"==================")
     if login_data.role == "admin":
         result = await session.execute(select(Admin).where(Admin.email == login_data.email))
         user = result.scalars().first()
@@ -70,6 +75,12 @@ async def login(login_data: LoginRequest, session: AsyncSession = Depends(get_se
         result = await session.execute(select(User).where(User.email == login_data.email))
         user = result.scalars().first()
         
+    print(f"User found: {user is not None}")
+    if user:
+        print(f"Stored hash: {user.password[:50]}...")
+        print(f"Verifying password...")
+        password_valid = verify_password(login_data.password, user.password)
+        print(f"Password valid: {password_valid}")   
     if not user or not verify_password(login_data.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
