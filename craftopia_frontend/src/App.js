@@ -32,6 +32,7 @@ import CustomerContactSupport from './pages/CustomerPages/CustomerContactSupport
 import CustomerQuiz from './pages/CustomerPages/CustomerQuiz/CustomerQuiz';
 import CustomerSendGift from './pages/CustomerPages/CustomerSendGift/CustomerSendGift';
 
+
 function App() {
   return (
     <Router>
@@ -68,6 +69,7 @@ function App() {
           <Route path="/customer-contact-support" element={<CustomerContactSupport />} />
           <Route path="/customer-quiz" element={<CustomerQuiz />} />
           <Route path="/customer-send-gift" element={<CustomerSendGift />} />
+
         </Routes>
       </div>
     </Router>

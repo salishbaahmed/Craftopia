@@ -84,7 +84,7 @@
 
 /* Signup Button */
 .signup-button {
-  background-color: #14B8A6;
+  background-color:#dfc3eb;
   color: white;
   border: none;
   border-radius: 0.75rem;
@@ -98,7 +98,7 @@
 }
 
 .signup-button:hover {
-  background-color: #0D9488;
+  background-color: #af7fc4;
   transform: translateY(-1px);
 }
 
@@ -122,8 +122,8 @@
 .login-link-button {
   display: inline-block;
   background-color: white;
-  color: #14B8A6;
-  border: 2px solid #14B8A6;
+  color:#dfc3eb  !important;
+  border: 2px solid #dfc3eb;
   border-radius: 0.75rem;
   padding: 0.7rem !important;
   font-size: 0.85rem !important;
@@ -135,7 +135,7 @@
 }
 
 .login-link-button:hover {
-  background-color: #14B8A6;
+  background-color: #dfc3eb;
   color: white;
   transform: translateY(-1px);
 }

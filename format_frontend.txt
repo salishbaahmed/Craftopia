@@ -32,8 +32,8 @@ craftopia
     │   │   │   ├── Footer.css
     │   │   │   └── Footer.js
     │   │   └── Navbar
-    │   │       ├── Navbar.css
-    │   │       └── Navbar.js
+    │   │   │   ├── Navbar.css
+    │   │   │   └── Navbar.js
     │   ├── context
     │   │   ├── AuthContext.js
     │   │   └── CartContext.js
@@ -72,8 +72,60 @@ craftopia
     │   │   │   ├── CustomerLogin.css
     │   │   │   └── CustomerLogin.js
     │   │   ├── CustomerPages
-    │   │   │   ├── CustomerPages.css
-    │   │   │   └── CustomerPages.js
+    │   │   │   ├── CustomerCart
+    │   │   │   │   ├── CustomerCart.css
+    │   │   │   │   └── CustomerCart.js
+    │   │   │   ├── CustomerCheckout
+    │   │   │   │   ├── CustomerCheckout.css
+    │   │   │   │   └── CustomerCheckout.js
+    │   │   │   ├── CustomerContactSupport
+    │   │   │   │   ├── CustomerContactSupport.css
+    │   │   │   │   └── CustomerContactSupport.js
+    │   │   │   ├── CustomerFAQ
+    │   │   │   │   ├── CustomerFAQ.css
+    │   │   │   │   └── CustomerFAQ.js
+    │   │   │   ├── CustomerLandingPage
+    │   │   │   │   ├── CustomerLandingPage.css
+    │   │   │   │   └── CustomerLandingPage.js
+    │   │   │   ├── CustomerMakePayment
+    │   │   │   │   ├── CustomerMakePayment.css
+    │   │   │   │   └── CustomerMakePayment.js
+    │   │   │   ├── CustomerManageAddress
+    │   │   │   │   ├── CustomerManageAddress.css
+    │   │   │   │   └── CustomerManageAddress.js
+    │   │   │   ├── CustomerMyAccount
+    │   │   │   │   ├── CustomerMyAccount.css
+    │   │   │   │   └── CustomerMyAccount.js
+    │   │   │   ├── CustomerOrderConfirmation
+    │   │   │   │   ├── CustomerOrderConfirmation.css
+    │   │   │   │   └── CustomerOrderConfirmation.js
+    │   │   │   ├── CustomerOrders
+    │   │   │   │   ├── CustomerOrders.css
+    │   │   │   │   └── CustomerOrders.js
+    │   │   │   ├── CustomerProductRating
+    │   │   │   │   ├── CustomerProductRating.css
+    │   │   │   │   └── CustomerProductRating.js
+    │   │   │   ├── CustomerQuiz
+    │   │   │   │   ├── CustomerQuiz.css
+    │   │   │   │   └── CustomerQuiz.js
+    │   │   │   ├── CustomerRefund
+    │   │   │   │   ├── CustomerRefund.css
+    │   │   │   │   └── CustomerRefund.js
+    │   │   │   ├── CustomerSendGift
+    │   │   │   │   ├── CustomerSendGift.css
+    │   │   │   │   └── CustomerSendGift.js
+    │   │   │   ├── CustomerTrackOrder
+    │   │   │   │   ├── CustomerTrackOrder.css
+    │   │   │   │   └── CustomerTrackOrder.js
+    │   │   │   ├── CustomerUpdateProfile
+    │   │   │   │   ├── CustomerUpdateProfile.css
+    │   │   │   │   └── CustomerUpdateProfile.js
+    │   │   │   ├── CustomerViewRewards
+    │   │   │   │   ├── CustomerViewRewards.css
+    │   │   │   │   └── CustomerViewRewards.js
+    │   │   │   └── CustomerWishlist
+    │   │   │       ├── CustomerWishlist.css
+    │   │   │       └── CustomerWishlist.js
     │   │   ├── CustomerSignup
     │   │   │   ├── CustomerSignup.css
     │   │   │   └── CustomerSignup.js

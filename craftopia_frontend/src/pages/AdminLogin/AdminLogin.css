@@ -3,7 +3,7 @@
 /* Admin Login Page Styles */
 .admin-login-page {
   min-height: 100vh;
-  background-color: white;
+  background-color: #f4f7f6;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,7 +65,7 @@
 
 .input-field1:focus {
   outline: none;
-  border-color: #14B8A6;
+  border-color: rgb(223, 195, 235);
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
 }
 
@@ -84,7 +84,7 @@
 
 /* Login Button */
 .login-button {
-  background-color: #14B8A6;
+  background-color:rgb(223, 195, 235);
   color: white;
   border: none;
   border-radius: 0.75rem;
@@ -98,7 +98,7 @@
 }
 
 .login-button:hover {
-  background-color: #0D9488;
+  background-color: #be98ce;
   transform: translateY(-1px);
 }
 

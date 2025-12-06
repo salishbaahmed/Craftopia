@@ -111,7 +111,7 @@ const LandingPage = () => {
           <div className="mobile-menu">
             <nav className="mobile-navigation">
               <a href="#home" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
-              <a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</a>
+             //<a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</a>
               <a href="#features" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Features</a>
               <a href="#creators" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Creators</a>
               <div className="mobile-login-options">
@@ -122,21 +122,6 @@ const LandingPage = () => {
           </div>
         )}
       </header>
-
-      {/* Hero Section */}
-      <section className="hero-section" id="home">
-        <div className="hero-content">
-          <h1 className="hero-title">Discover Handmade Crafts</h1>
-          <p className="hero-subtitle">
-            A curated marketplace where creativity meets the people.
-          </p>
-          <p className="hero-description">
-            Experience the beauty of handmade products with unique stories behind each creation.
-            Craftopia brings together talented artisans and conscious customers in a community
-            that values sustainability, creativity, and personal connection.
-          </p>
-        </div>
-      </section>
 
 
 
@@ -260,7 +245,7 @@ const LandingPage = () => {
               purchase tells a story and supports creative communities worldwide.
             </p>
             <div className="footer-links">
-              <a href="#privacy" className="footer-link">Privacy Policy</a>
+              <a href="#privacypolicy" className="footer-link">Privacy Policy</a>
               <a href="#terms" className="footer-link">Terms of Service</a>
               <a href="#contact" className="footer-link">Contact Us</a>
             </div>
