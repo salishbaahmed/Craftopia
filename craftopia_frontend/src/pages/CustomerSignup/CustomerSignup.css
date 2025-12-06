@@ -9,23 +9,24 @@
   align-items: center;
   justify-content: center;
   font-family: 'Inter', sans-serif;
-  padding: 2rem;
+  padding: 1rem !important; /* reduced */
+  box-sizing: border-box;
 }
 
 .signup-container {
   text-align: center;
   width: 100%;
-  max-width: 450px;
+  max-width: 400px !important; /* reduced so content fits */
 }
 
 /* Logo Section */
 .logo-section {
-  margin-bottom: 2rem;
+  margin-bottom: 1rem !important;
 }
 
 .signup-logo {
-  width: 300px;
-  height: 300px;
+  width: 200px !important;
+  height: 200px !important;
   object-fit: contain;
   margin: 0 auto;
 }
@@ -34,15 +35,15 @@
 .signup-form1 {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  margin-bottom: 2rem;
+  gap: 1rem !important; /* reduced */
+  margin-bottom: 1rem !important;
 }
 
 /* Name Fields */
 .name-fields {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 0.75rem !important; /* reduced */
 }
 
 /* Input Group */
@@ -53,10 +54,10 @@
 
 .input-field1 {
   width: 100%;
-  padding: 1rem 3rem 1rem 1rem;
+  padding: 0.75rem 2.5rem 0.75rem 0.75rem !important;
   border: 2px solid #E5E7EB;
   border-radius: 0.75rem;
-  font-size: 1rem;
+  font-size: 0.9rem !important;
   transition: all 0.3s ease;
   background-color: white;
   box-sizing: border-box;
@@ -77,7 +78,7 @@
   right: 1rem;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.125rem;
+  font-size: 1rem !important;
   pointer-events: none;
 }
 
@@ -87,12 +88,12 @@
   color: white;
   border: none;
   border-radius: 0.75rem;
-  padding: 1rem 2rem;
-  font-size: 1rem;
+  padding: 0.75rem !important;
+  font-size: 0.9rem !important;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;
-  margin-top: 0.5rem;
+  margin-top: 0.25rem !important;
   width: 100%;
 }
 
@@ -107,15 +108,15 @@
 
 /* Login Section */
 .login-section {
-  margin-bottom: 2rem;
-  padding-top: 1.5rem;
+  margin-bottom: 1.25rem !important;
+  padding-top: 1rem !important;
   border-top: 1px solid #E5E7EB;
 }
 
 .login-text {
   color: #6B7280;
-  font-size: 0.875rem;
-  margin-bottom: 1rem;
+  font-size: 0.8rem !important;
+  margin-bottom: 0.75rem !important;
 }
 
 .login-link-button {
@@ -124,8 +125,8 @@
   color: #14B8A6;
   border: 2px solid #14B8A6;
   border-radius: 0.75rem;
-  padding: 0.75rem 1.5rem;
-  font-size: 0.875rem;
+  padding: 0.7rem !important;
+  font-size: 0.85rem !important;
   font-weight: 600;
   cursor: pointer;
   text-decoration: none;
@@ -147,7 +148,7 @@
 .back-link {
   color: #6B7280;
   text-decoration: none;
-  font-size: 0.875rem;
+  font-size: 0.8rem !important;
   transition: all 0.3s ease;
 }
 
@@ -159,45 +160,30 @@
 /* Responsive Design */
 @media (max-width: 480px) {
   .customer-signup-page {
-    padding: 1rem;
+    padding: 0.5rem !important;
   }
   
   .signup-logo {
-    width: 250px;
-    height: 250px;
+    width: 170px !important;
+    height: 170px !important;
   }
   
   .name-fields {
     grid-template-columns: 1fr;
-    gap: 1rem;
   }
-  
+
   .input-field1 {
-    padding: 0.875rem 2.5rem 0.875rem 0.875rem;
-    font-size: 0.875rem;
+    font-size: 0.85rem !important;
+    padding: 0.7rem 2rem 0.7rem 0.7rem !important;
   }
   
   .signup-button {
-    padding: 0.875rem 1.5rem;
-    font-size: 0.875rem;
+    padding: 0.7rem !important;
+    font-size: 0.85rem !important;
   }
   
   .login-link-button {
-    padding: 0.675rem 1.25rem;
-    font-size: 0.8rem;
-  }
-}
-
-@media (min-width: 768px) {
-  .signup-logo {
-    width: 350px;
-    height: 350px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .signup-logo {
-    width: 400px;
-    height: 400px;
+    padding: 0.65rem !important;
+    font-size: 0.8rem !important;
   }
 }

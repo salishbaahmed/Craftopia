@@ -8,11 +8,14 @@ import Navbar from '../../../components/Navbar/Navbar';
 import Footer from '../../../components/Footer/Footer';
 import './CustomerMyAccount.css';
 import api from '../../../api/axios';
+import { useAuth } from '../../../context/AuthContext'; // <-- import the auth hook
 
 const CustomerMyAccount = () => {
+  const { user } = useAuth(); // <-- get the current user
   const [activeSection, setActiveSection] = useState('overview');
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [showOrderModal, setShowOrderModal] = useState(false);
+  const [recentOrders, setRecentOrders] = useState([]);
   const navigate = useNavigate();
 
   const menuItems = [
@@ -29,33 +32,22 @@ const CustomerMyAccount = () => {
     { icon: FiCreditCard, number: 'Rs 85,400', label: 'Total Spent', color: '#8B5CF6' }
   ];
 
-  // Recent orders: load from orderHistory in localStorage so overview stays in sync
-  const [recentOrders, setRecentOrders] = useState([]);
-
-
-
-  // ...
-
   useEffect(() => {
     const loadRecentOrders = async () => {
       try {
         const response = await api.get('/orders/my-orders');
-        // Sort by date desc and take top 3
         const sorted = response.data.sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3);
-
         const mapped = sorted.map(order => ({
           ...order,
           statusColor: order.status === 'Delivered' ? '#10B981' : order.status === 'Shipped' ? '#8B5CF6' : '#3B82F6',
           products: order.items
         }));
-
         setRecentOrders(mapped);
       } catch (err) {
         console.error('Error loading recent orders:', err);
         setRecentOrders([]);
       }
     };
-
     loadRecentOrders();
   }, []);
 
@@ -85,13 +77,11 @@ const CustomerMyAccount = () => {
     navigate(path);
   };
 
-  // Function to handle view details click
   const handleViewDetails = (order) => {
     setSelectedOrder(order);
     setShowOrderModal(true);
   };
 
-  // Function to close modal
   const handleCloseModal = () => {
     setShowOrderModal(false);
     setSelectedOrder(null);
@@ -106,9 +96,11 @@ const CustomerMyAccount = () => {
         <div className="customer-account-sidebar">
           <div className="customer-sidebar-card">
             <div className="customer-user-info">
-              <div className="customer-avatar">A</div>
-              <h3 className="customer-user-name">Ali Raza</h3>
-              <p className="customer-user-email">ali.raza@email.com</p>
+              <div className="customer-avatar">
+                {user?.name?.charAt(0).toUpperCase() || 'U'}
+              </div>
+              <h3 className="customer-user-name">{user?.name || 'User'}</h3>
+              <p className="customer-user-email">{user?.email || 'user@email.com'}</p>
             </div>
 
             <nav className="customer-sidebar-nav">
