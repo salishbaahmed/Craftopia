@@ -13,7 +13,7 @@ engine = create_async_engine(database_url, echo=False, future=True)
 
 async def init_db():
     async with engine.begin() as conn:
-        # await conn.run_sync(SQLModel.metadata.drop_all) # Uncomment to reset db
+       # await conn.run_sync(SQLModel.metadata.drop_all) # Uncomment to reset db
         await conn.run_sync(SQLModel.metadata.create_all)
 
 async def get_session():

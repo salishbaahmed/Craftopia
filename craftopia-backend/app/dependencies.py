@@ -1,10 +1,10 @@
 """
 Shared dependencies for dependency injection
+Place this file at: app/dependencies.py
 """
 from fastapi import Depends, HTTPException, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.ext.asyncio import AsyncSession
-from typing import Optional
 
 from app.database import get_session
 from app.services.auth_service import AuthService
@@ -22,7 +22,7 @@ from app.utils.invoice_generator import InvoiceGenerator
 from app.models.user import User
 from app.models.admin import Admin
 
-# Security scheme
+# Security scheme for Bearer token
 security = HTTPBearer()
 
 
