@@ -81,9 +81,14 @@ async def get_current_user(
     """
     try:
         token = credentials.credentials
+        print(f"[DEBUG] get_current_user - Token: {token[:30]}...")
+        
         user = await auth_service.get_current_user(token)
+        print(f"[DEBUG] get_current_user - User: {user}")
+        print(f"[DEBUG] get_current_user - User type: {type(user).__name__ if user else 'None'}")
         
         if not user:
+            print(f"[DEBUG] get_current_user - User not found")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="User not found",
@@ -92,16 +97,28 @@ async def get_current_user(
         
         # Make sure it's a User, not Admin
         if isinstance(user, Admin):
+            print(f"[DEBUG] get_current_user - User is Admin, rejecting")
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Admin access not allowed on this endpoint"
             )
         
+        print(f"[DEBUG] get_current_user - Success, returning user")
         return user
     except ValueError as e:
+        print(f"[DEBUG] get_current_user - ValueError: {e}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[DEBUG] get_current_user - Exception: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
 
@@ -116,9 +133,14 @@ async def get_current_admin(
     """
     try:
         token = credentials.credentials
+        print(f"[DEBUG] get_current_admin - Token: {token[:30]}...")
+        
         user = await auth_service.get_current_user(token)
+        print(f"[DEBUG] get_current_admin - User: {user}")
+        print(f"[DEBUG] get_current_admin - User type: {type(user).__name__ if user else 'None'}")
         
         if not user:
+            print(f"[DEBUG] get_current_admin - User not found")
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="User not found",
@@ -127,16 +149,30 @@ async def get_current_admin(
         
         # Make sure it's an Admin, not regular User
         if not isinstance(user, Admin):
+            print(f"[DEBUG] get_current_admin - User is NOT Admin, rejecting")
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
                 detail="Admin access required"
             )
         
+        print(f"[DEBUG] get_current_admin - Success, returning admin")
         return user
     except ValueError as e:
+        print(f"[DEBUG] get_current_admin - ValueError: {e}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail=str(e),
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"[DEBUG] get_current_admin - Exception: {e}")
+        import traceback
+        traceback.print_exc()
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
 

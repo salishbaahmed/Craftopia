@@ -7,13 +7,21 @@ const api = axios.create({
     },
 });
 
-// Add a request interceptor to attach the token
+// Add a request interceptor to ensure trailing slashes and attach token
 api.interceptors.request.use(
     (config) => {
+        // Add trailing slash to URL if not present
+        // This prevents 307 redirects that drop the Authorization header
+        if (config.url && !config.url.endsWith('/')) {
+            config.url = config.url + '/';
+        }
+        
+        // Attach token
         const token = localStorage.getItem('token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
+        
         return config;
     },
     (error) => Promise.reject(error)
@@ -25,10 +33,9 @@ api.interceptors.response.use(
     (error) => {
         if (error.response && error.response.status === 401) {
             // Clear token and redirect to login if unauthorized
-            // Note: We might want to use a more sophisticated way to handle this
-            // to avoid circular dependencies or abrupt redirects
             localStorage.removeItem('token');
-            // window.location.href = '/login'; // Optional: force redirect
+            // Optionally redirect to login page
+            // window.location.href = '/login';
         }
         return Promise.reject(error);
     }

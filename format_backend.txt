@@ -1,0 +1,69 @@
+craftopia-backend/
+├── app/
+│   ├── models/               # Domain Models
+│   │   ├── admin.py
+│   │   ├── user.py
+│   │   ├── product.py
+│   │   └── order.py
+│   │
+│   ├── repositories/         # Data Access Layer (NEW)
+│   │   ├── __init__.py
+│   │   ├── base_repository.py
+│   │   ├── user_repository.py
+│   │   ├── admin_repository.py
+│   │   ├── product_repository.py
+│   │   └── order_repository.py
+│   │
+│   ├── services/             # Business Logic Layer (REFACTORED)
+│   │   ├── __init__.py
+│   │   ├── auth_service.py
+│   │   ├── user_service.py
+│   │   ├── product_service.py
+│   │   ├── order_service.py
+│   │   └── analytics_service.py
+│   │
+│   ├── utils/                # Utilities (REFACTORED)
+│   │   ├── __init__.py
+│   │   ├── password_handler.py
+│   │   ├── token_handler.py
+│   │   └── invoice_generator.py
+│   │
+│   ├── routers/              # HTTP Layer (REFACTORED)
+│   │   ├── __init__.py
+│   │   ├── auth.py
+│   │   ├── users.py
+│   │   ├── products.py
+│   │   ├── orders.py
+│   │   ├── analytics.py
+│   │   └── uploads.py
+│   │
+│   ├── config.py
+│   └── database.py
+│
+├── uploads/
+│   └── .gitkeep
+│
+├── .env
+├── main.py
+├── requirements.txt
+├── start_debug.py
+│
+├── craftopia.db
+├── migrate_db.py
+├── reset_db.py
+├── reset_admin.py
+├── create_admin.py
+├── debug_login.py
+├── debug_register.py
+├── check_orders_debug.py
+├── output.txt
+├── docker-compose.yml
+│
+├── test_admin_login.py
+├── test_api.py
+├── test_db_connection.py
+├── test_invoice.pdf
+├── test_invoice.py
+├── test_order_payload.py
+├── test_user_model.py
+└── verify_full_flow.py

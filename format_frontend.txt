@@ -1,0 +1,87 @@
+craftopia
+└── craftopia_frontend
+    ├── node_modules
+    ├── public
+    │   ├── giftcards
+    │   │   ├── anniversy.png
+    │   │   ├── birthday.png
+    │   │   ├── congratulation.png
+    │   │   ├── greeting.png
+    │   │   ├── thankyou.png
+    │   │   └── white.png
+    │   ├── wrappingpapers
+    │   │   ├── dots.png
+    │   │   ├── flower.png
+    │   │   ├── geometric.png
+    │   │   ├── gold.png
+    │   │   ├── red.png
+    │   │   └── white.png
+    │   ├── craftopia logo.png
+    │   ├── craftopia logo2.png
+    │   ├── index.html
+    │   ├── manifest.json
+    │   └── robots.txt
+    ├── src
+    │   ├── api
+    │   │   └── axios.js
+    │   ├── components
+    │   │   ├── AdminSidebar
+    │   │   │   ├── AdminSidebar.css
+    │   │   │   └── AdminSidebar.js
+    │   │   ├── Footer
+    │   │   │   ├── Footer.css
+    │   │   │   └── Footer.js
+    │   │   └── Navbar
+    │   │       ├── Navbar.css
+    │   │       └── Navbar.js
+    │   ├── context
+    │   │   ├── AuthContext.js
+    │   │   └── CartContext.js
+    │   ├── pages
+    │   │   ├── AdminAddProduct
+    │   │   │   ├── AdminAddProduct.css
+    │   │   │   └── AdminAddProduct.js
+    │   │   ├── AdminCustomerFeedback
+    │   │   │   ├── AdminCustomerFeedback.css
+    │   │   │   └── AdminCustomerFeedback.js
+    │   │   ├── AdminDeleteProduct
+    │   │   │   ├── AdminDeleteProduct.css
+    │   │   │   └── AdminDeleteProduct.js
+    │   │   ├── AdminDeliveryStatus
+    │   │   │   ├── AdminDeliveryStatus.css
+    │   │   │   └── AdminDeliveryStatus.js
+    │   │   ├── AdminLogin
+    │   │   │   ├── AdminLogin.css
+    │   │   │   └── AdminLogin.js
+    │   │   ├── AdminMain
+    │   │   │   ├── AdminMain.css
+    │   │   │   └── AdminMain.js
+    │   │   ├── AdminManageOrders
+    │   │   │   ├── AdminManageOrders.css
+    │   │   │   └── AdminManageOrders.js
+    │   │   ├── AdminSalesReport
+    │   │   │   ├── AdminSalesReport.css
+    │   │   │   └── AdminSalesReport.js
+    │   │   ├── AdminUpdateProduct
+    │   │   │   ├── AdminUpdateProduct.css
+    │   │   │   └── AdminUpdateProduct.js
+    │   │   ├── AdminViewOrders
+    │   │   │   ├── AdminViewOrders.css
+    │   │   │   └── AdminViewOrders.js
+    │   │   ├── CustomerLogin
+    │   │   │   ├── CustomerLogin.css
+    │   │   │   └── CustomerLogin.js
+    │   │   ├── CustomerPages
+    │   │   │   ├── CustomerPages.css
+    │   │   │   └── CustomerPages.js
+    │   │   ├── CustomerSignup
+    │   │   │   ├── CustomerSignup.css
+    │   │   │   └── CustomerSignup.js
+    │   │   └── LandingPage
+    │   │       ├── LandingPage.css
+    │   │       └── LandingPage.js
+    │   ├── App.js
+    │   ├── index.css
+    │   └── index.js
+    ├── package-lock.json
+    └── package.json

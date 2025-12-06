@@ -5,7 +5,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
 from typing import List, Optional
-import io
 
 from app.models.user import User
 from app.models.admin import Admin
@@ -54,7 +53,9 @@ class UpdateDeliveryRequest(BaseModel):
     deliveryDate: Optional[str] = None
 
 
+# User endpoints - support both with and without trailing slash
 @router.post("/")
+@router.post("")
 async def create_order(
     order_data: CreateOrderRequest,
     current_user: User = Depends(get_current_user),
@@ -80,6 +81,7 @@ async def create_order(
 
 
 @router.get("/")
+@router.get("")
 async def get_orders(
     current_user: User = Depends(get_current_user),
     order_service: OrderService = Depends(get_order_service)
@@ -88,22 +90,14 @@ async def get_orders(
     return await order_service.get_user_orders(current_user.id)
 
 
-@router.get("/all")
-async def get_all_orders(
-    current_admin: Admin = Depends(get_current_admin),
-    order_service: OrderService = Depends(get_order_service)
-):
-    """Get all orders (admin only)"""
-    return await order_service.get_all_orders()
-
-
-# Support both routes for backward compatibility
+# Admin endpoints - support both with and without trailing slash
+@router.get("/admin/all/")
 @router.get("/admin/all")
 async def get_all_orders_admin(
     current_admin: Admin = Depends(get_current_admin),
     order_service: OrderService = Depends(get_order_service)
 ):
-    """Get all orders - admin route (admin only)"""
+    """Get all orders (admin only)"""
     return await order_service.get_all_orders()
 
 
@@ -121,6 +115,7 @@ async def get_order(
         raise HTTPException(status_code=404, detail=str(e))
 
 
+@router.put("/{order_id}/status/")
 @router.put("/{order_id}/status")
 async def update_order_status(
     order_id: str,
@@ -136,6 +131,7 @@ async def update_order_status(
         raise HTTPException(status_code=404, detail=str(e))
 
 
+@router.put("/{order_id}/delivery/")
 @router.put("/{order_id}/delivery")
 async def update_delivery_status(
     order_id: str,
@@ -157,6 +153,7 @@ async def update_delivery_status(
         raise HTTPException(status_code=404, detail=str(e))
 
 
+@router.get("/{order_id}/invoice/")
 @router.get("/{order_id}/invoice")
 async def get_invoice(
     order_id: str,

@@ -26,13 +26,14 @@ app = FastAPI(
     title="Craftopia API",
     description="E-commerce platform for handcrafted items",
     version="2.0.0",
+    redirect_slashes=False,
     lifespan=lifespan
 )
 
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # In production, replace with frontend URL
+    allow_origins=["http://localhost:5173", "http://localhost:3000"],  # In production, replace with frontend URL
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

@@ -4,14 +4,12 @@ Products Router
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
-
 from app.models.product import Product
 from app.models.admin import Admin
 from app.services.product_service import ProductService
 from app.dependencies import get_product_service, get_current_admin
 
 router = APIRouter(prefix="/api/products", tags=["products"])
-
 
 # Request Models
 class ProductCreate(BaseModel):
@@ -20,9 +18,14 @@ class ProductCreate(BaseModel):
     price: float
     category: str
     stock: int
-    imageUrl: str
+    images: List[str] = []
+    tags: List[str] = []
+    materials: Optional[str] = None
+    dimensions: Optional[str] = None
+    weight: Optional[float] = None
+    careInstructions: Optional[str] = None
+    artistStory: Optional[str] = None
     limitedEdition: bool = False
-
 
 class ProductUpdate(BaseModel):
     name: Optional[str] = None
@@ -30,17 +33,23 @@ class ProductUpdate(BaseModel):
     price: Optional[float] = None
     category: Optional[str] = None
     stock: Optional[int] = None
-    imageUrl: Optional[str] = None
+    images: Optional[List[str]] = None
+    tags: Optional[List[str]] = None
+    materials: Optional[str] = None
+    dimensions: Optional[str] = None
+    weight: Optional[float] = None
+    careInstructions: Optional[str] = None
+    artistStory: Optional[str] = None
     limitedEdition: Optional[bool] = None
 
-
+# GET all products - support both with and without trailing slash
 @router.get("/")
+@router.get("")
 async def get_all_products(
     product_service: ProductService = Depends(get_product_service)
 ):
     """Get all products (public)"""
     return await product_service.get_all_products()
-
 
 @router.get("/{product_id}")
 async def get_product(
@@ -54,7 +63,6 @@ async def get_product(
     except ValueError as e:
         raise HTTPException(status_code=404, detail=str(e))
 
-
 @router.get("/category/{category}")
 async def get_products_by_category(
     category: str,
@@ -62,7 +70,6 @@ async def get_products_by_category(
 ):
     """Get products by category (public)"""
     return await product_service.get_products_by_category(category)
-
 
 @router.get("/search/{name}")
 async def search_products(
@@ -72,8 +79,9 @@ async def search_products(
     """Search products by name (public)"""
     return await product_service.search_products(name)
 
-
+# POST create product - support both with and without trailing slash
 @router.post("/")
+@router.post("")
 async def create_product(
     product_data: ProductCreate,
     current_admin: Admin = Depends(get_current_admin),
@@ -86,7 +94,6 @@ async def create_product(
         return created_product
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
 
 @router.put("/{product_id}")
 async def update_product(
@@ -104,7 +111,6 @@ async def update_product(
         raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
-
 
 @router.delete("/{product_id}")
 async def delete_product(
