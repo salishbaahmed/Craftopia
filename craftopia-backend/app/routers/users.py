@@ -1,9 +1,10 @@
 """
-Users Router
+Users Router - Complete Updated Version
+File: app/routers/users.py
 """
 from fastapi import APIRouter, Depends, HTTPException
 from pydantic import BaseModel
-from typing import List
+from typing import List, Optional
 
 from app.models.user import User, Address
 from app.services.user_service import UserService
@@ -20,11 +21,13 @@ class UpdateProfileRequest(BaseModel):
 
 
 class AddAddressRequest(BaseModel):
+    name: Optional[str] = None
     street: str
     city: str
     state: str
     zipCode: str
     country: str
+    phone: Optional[str] = None
     isDefault: bool = False
 
 
@@ -62,7 +65,8 @@ async def get_addresses(
     user_service: UserService = Depends(get_user_service)
 ):
     """Get user's addresses"""
-    return await user_service.get_addresses(current_user)
+    addresses = await user_service.get_addresses(current_user)
+    return addresses
 
 
 @router.post("/addresses")
@@ -73,8 +77,82 @@ async def add_address(
 ):
     """Add new address"""
     try:
-        address = Address(**request.dict())
-        addresses = await user_service.add_address(current_user, address)
-        return {"addresses": addresses}
+        address_data = {
+            "name": request.name,
+            "street": request.street,
+            "city": request.city,
+            "state": request.state,
+            "zipCode": request.zipCode,
+            "country": request.country,
+            "phone": request.phone,
+            "isDefault": request.isDefault
+        }
+        
+        addresses = await user_service.add_address(current_user, address_data)
+        return {"message": "Address added successfully", "addresses": addresses}
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.put("/addresses/{address_id}")
+async def update_address(
+    address_id: int,
+    request: AddAddressRequest,
+    current_user: User = Depends(get_current_user),
+    user_service: UserService = Depends(get_user_service)
+):
+    """Update an existing address"""
+    try:
+        address_data = {
+            "name": request.name,
+            "street": request.street,
+            "city": request.city,
+            "state": request.state,
+            "zipCode": request.zipCode,
+            "country": request.country,
+            "phone": request.phone,
+            "isDefault": request.isDefault
+        }
+        
+        addresses = await user_service.update_address(
+            current_user, 
+            address_id, 
+            address_data
+        )
+        return {"message": "Address updated successfully", "addresses": addresses}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.delete("/addresses/{address_id}")
+async def delete_address(
+    address_id: int,
+    current_user: User = Depends(get_current_user),
+    user_service: UserService = Depends(get_user_service)
+):
+    """Delete an address"""
+    try:
+        addresses = await user_service.delete_address(current_user, address_id)
+        return {"message": "Address deleted successfully", "addresses": addresses}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=str(e))
+
+
+@router.put("/addresses/{address_id}/default")
+async def set_default_address(
+    address_id: int,
+    current_user: User = Depends(get_current_user),
+    user_service: UserService = Depends(get_user_service)
+):
+    """Set an address as the default address"""
+    try:
+        addresses = await user_service.set_default_address(current_user, address_id)
+        return {"message": "Default address updated successfully", "addresses": addresses}
+    except ValueError as e:
+        raise HTTPException(status_code=404, detail=str(e))
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))

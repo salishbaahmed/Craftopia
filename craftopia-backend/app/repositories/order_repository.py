@@ -24,6 +24,7 @@ class OrderRepository(BaseRepository[Order]):
             select(Order)
             .where(Order.userId == user_id)
             .options(selectinload(Order.items))
+            .order_by(Order.createdAt.desc())
         )
         return result.scalars().all()
     
@@ -39,9 +40,15 @@ class OrderRepository(BaseRepository[Order]):
     async def get_all_with_items(self) -> List[Order]:
         """Get all orders with items loaded"""
         result = await self._session.execute(
-            select(Order).options(selectinload(Order.items))
+            select(Order)
+            .options(selectinload(Order.items))
+            .order_by(Order.createdAt.desc())
         )
-        return result.scalars().all()
+        orders = result.scalars().all()
+        print(f"[DEBUG] get_all_with_items found {len(orders)} orders")
+        for order in orders:
+            print(f"[DEBUG] Order {order.id}: userId={order.userId}, items={len(order.items)}")
+        return orders
     
     async def create_with_items(
         self,
@@ -49,13 +56,22 @@ class OrderRepository(BaseRepository[Order]):
         items: List[OrderItem]
     ) -> Order:
         """Create order with its items"""
-        order.items = items
+        # Add order first to get its ID
         self._session.add(order)
-        await self._session.commit()
-        await self._session.refresh(order)
+        await self._session.flush()  # Flush to get the order ID
         
-        # Reload with items
-        return await self.get_by_id_with_items(order.id)
+        # Now set order_id on each item and add them
+        for item in items:
+            item.order_id = order.id  # ✅ Use snake_case to match model
+            self._session.add(item)
+        
+        # Commit everything
+        await self._session.commit()
+        
+        # Reload order with items
+        result = await self.get_by_id_with_items(order.id)
+        print(f"[DEBUG] Created order {order.id} with {len(items)} items")
+        return result
     
     async def update_status(
         self,
@@ -91,8 +107,8 @@ class OrderRepository(BaseRepository[Order]):
             'out-for-delivery': 'out-for-delivery',
             'processing': 'processing'
         }
-        if delivery_status in status_mapping:
-            order.status = status_mapping[delivery_status]
+        if delivery_status.lower() in status_mapping:
+            order.status = status_mapping[delivery_status.lower()]
         
         return await self.update(order)
     
@@ -102,5 +118,6 @@ class OrderRepository(BaseRepository[Order]):
             select(Order)
             .where(Order.status == status)
             .options(selectinload(Order.items))
+            .order_by(Order.createdAt.desc())
         )
         return result.scalars().all()

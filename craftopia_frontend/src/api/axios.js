@@ -7,14 +7,10 @@ const api = axios.create({
     },
 });
 
-// Add a request interceptor to ensure trailing slashes and attach token
+// Add a request interceptor to attach token
 api.interceptors.request.use(
     (config) => {
-        // Add trailing slash to URL if not present
-        // This prevents 307 redirects that drop the Authorization header
-        if (config.url && !config.url.endsWith('/')) {
-            config.url = config.url + '/';
-        }
+        // DO NOT add trailing slashes - backend routes don't have them
         
         // Attach token
         const token = localStorage.getItem('token');

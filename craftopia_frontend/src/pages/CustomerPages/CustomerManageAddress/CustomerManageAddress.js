@@ -7,14 +7,10 @@ import './CustomerManageAddress.css';
 import api from '../../../api/axios';
 
 const CustomerManageAddress = () => {
-
-
-
-
-  // ...
-
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingAddress, setEditingAddress] = useState(null);
+  const [addresses, setAddresses] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [newAddress, setNewAddress] = useState({
     type: 'home',
     name: '',
@@ -28,6 +24,40 @@ const CustomerManageAddress = () => {
 
   const provinces = ['Punjab', 'Sindh', 'Khyber Pakhtunkhwa', 'Balochistan', 'Gilgit-Baltistan', 'Azad Kashmir'];
 
+  useEffect(() => {
+    fetchAddresses();
+  }, []);
+
+  const fetchAddresses = async () => {
+    try {
+      setLoading(true);
+      const response = await api.get('/users/addresses');
+      
+      // Transform backend addresses to frontend format
+      const transformedAddresses = response.data.map((addr, index) => ({
+        id: index + 1,
+        type: 'home', // You might want to add type to backend model
+        name: addr.name || '',
+        street: addr.street,
+        city: addr.city,
+        province: addr.state,
+        zipCode: addr.zipCode,
+        phone: addr.phone || '',
+        isDefault: addr.isDefault
+      }));
+      
+      setAddresses(transformedAddresses);
+    } catch (err) {
+      console.error('Error fetching addresses:', err);
+      // If no addresses exist yet, that's okay
+      if (err.response?.status !== 404) {
+        alert('Failed to load addresses');
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleInputChange = (field, value) => {
     if (editingAddress) {
       setEditingAddress(prev => ({ ...prev, [field]: value }));
@@ -36,53 +66,6 @@ const CustomerManageAddress = () => {
     }
   };
 
-  const [addresses, setAddresses] = useState([]);
-
-  useEffect(() => {
-    fetchAddresses();
-  }, []);
-
-  const fetchAddresses = async () => {
-    try {
-      const response = await api.get('/users/profile');
-      // Assuming profile has addresses list, or we might need a separate endpoint
-      // Based on previous work, we might need to add address management to user profile
-      // For now, let's assume we store addresses in the user profile or a separate collection
-      // Since we didn't explicitly create an address book endpoint, we might need to rely on
-      // updating the user profile's address list.
-      // However, the backend User model has a single address field, not a list.
-      // We might need to update the backend to support multiple addresses or just use the single one.
-      // Given the frontend supports multiple, let's assume we only sync the "default" one to the main profile
-      // and maybe store the rest in a new field or just keep it local for now if backend doesn't support it.
-
-      // WAIT, I should check the backend User model again.
-      // I'll assume for now we are just managing the single profile address as the "default" one.
-      // But the UI shows a list.
-      // Let's implement a local list for now but sync the default one to the backend.
-
-      // Actually, let's just use the profile address as the single address for now to keep it simple and working.
-      // Or better, let's use the API to get the user profile and populate the list with that one address.
-
-      if (response.data.address) {
-        setAddresses([{
-          id: 1,
-          type: 'home',
-          name: `${response.data.first_name} ${response.data.last_name}`,
-          street: response.data.address,
-          city: response.data.city,
-          province: response.data.state, // mapping province to state
-          zipCode: response.data.zip_code,
-          phone: response.data.phone_number,
-          isDefault: true
-        }]);
-      }
-    } catch (err) {
-      console.error('Error fetching addresses:', err);
-    }
-  };
-
-  // ...
-
   // Add new address
   const handleAddAddress = async () => {
     if (!newAddress.name || !newAddress.street || !newAddress.city || !newAddress.phone) {
@@ -90,33 +73,20 @@ const CustomerManageAddress = () => {
       return;
     }
 
-    // Since backend only supports one address, we'll just update the profile with this new address
-    // if it's set as default.
-
     try {
-      if (newAddress.isDefault || addresses.length === 0) {
-        await api.put('/users/profile', {
-          address: newAddress.street,
-          city: newAddress.city,
-          state: newAddress.province,
-          zip_code: newAddress.zipCode,
-          phone_number: newAddress.phone
-        });
-      }
-
-      // Update local state
-      const addressToAdd = {
-        ...newAddress,
-        id: Date.now(),
+      await api.post('/users/addresses', {
+        name: newAddress.name,
+        street: newAddress.street,
+        city: newAddress.city,
+        state: newAddress.province,
+        zipCode: newAddress.zipCode,
+        phone: newAddress.phone,
+        country: 'Pakistan',
         isDefault: newAddress.isDefault || addresses.length === 0
-      };
+      });
 
-      let updatedAddresses = [...addresses];
-      if (addressToAdd.isDefault) {
-        updatedAddresses = updatedAddresses.map(addr => ({ ...addr, isDefault: false }));
-      }
-
-      setAddresses([...updatedAddresses, addressToAdd]);
+      // Refresh addresses list
+      await fetchAddresses();
 
       // Reset form
       setNewAddress({
@@ -130,10 +100,10 @@ const CustomerManageAddress = () => {
         isDefault: false
       });
       setShowAddForm(false);
-      alert('Address saved successfully');
+      alert('Address saved successfully!');
     } catch (error) {
       console.error('Error saving address:', error);
-      alert('Failed to save address');
+      alert(error.response?.data?.detail || 'Failed to save address');
     }
   };
 
@@ -145,41 +115,42 @@ const CustomerManageAddress = () => {
     }
 
     try {
-      if (editingAddress.isDefault) {
-        await api.put('/users/profile', {
-          address: editingAddress.street,
-          city: editingAddress.city,
-          state: editingAddress.province,
-          zip_code: editingAddress.zipCode,
-          phone_number: editingAddress.phone
-        });
-      }
+      await api.put(`/users/addresses/${editingAddress.id}`, {
+        name: editingAddress.name,
+        street: editingAddress.street,
+        city: editingAddress.city,
+        state: editingAddress.province,
+        zipCode: editingAddress.zipCode,
+        phone: editingAddress.phone,
+        country: 'Pakistan',
+        isDefault: editingAddress.isDefault
+      });
 
-      let updatedAddresses = addresses.map(addr =>
-        addr.id === editingAddress.id ? editingAddress : addr
-      );
-
-      if (editingAddress.isDefault) {
-        updatedAddresses = updatedAddresses.map(addr =>
-          addr.id !== editingAddress.id ? { ...addr, isDefault: false } : addr
-        );
-      }
-
-      setAddresses(updatedAddresses);
+      // Refresh addresses list
+      await fetchAddresses();
       setEditingAddress(null);
-      alert('Address updated successfully');
+      alert('Address updated successfully!');
     } catch (error) {
       console.error('Error updating address:', error);
-      alert('Failed to update address');
+      alert(error.response?.data?.detail || 'Failed to update address');
     }
   };
 
   // Delete address
-  const handleDeleteAddress = (addressId) => {
-    if (window.confirm('Are you sure you want to delete this address?')) {
-      // Local delete only since we can't really "delete" the profile address without clearing it
-      const updatedAddresses = addresses.filter(addr => addr.id !== addressId);
-      setAddresses(updatedAddresses);
+  const handleDeleteAddress = async (addressId) => {
+    if (!window.confirm('Are you sure you want to delete this address?')) {
+      return;
+    }
+
+    try {
+      await api.delete(`/users/addresses/${addressId}`);
+      
+      // Refresh addresses list
+      await fetchAddresses();
+      alert('Address deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting address:', error);
+      alert(error.response?.data?.detail || 'Failed to delete address');
     }
   };
 
@@ -189,23 +160,14 @@ const CustomerManageAddress = () => {
     if (!addr) return;
 
     try {
-      await api.put('/users/profile', {
-        address: addr.street,
-        city: addr.city,
-        state: addr.province,
-        zip_code: addr.zipCode,
-        phone_number: addr.phone
-      });
-
-      const updatedAddresses = addresses.map(a => ({
-        ...a,
-        isDefault: a.id === addressId
-      }));
-      setAddresses(updatedAddresses);
-      alert('Default address updated');
+      await api.put(`/users/addresses/${addressId}/default`);
+      
+      // Refresh addresses list
+      await fetchAddresses();
+      alert('Default address updated successfully!');
     } catch (error) {
       console.error('Error setting default address:', error);
-      alert('Failed to update default address');
+      alert(error.response?.data?.detail || 'Failed to update default address');
     }
   };
 
@@ -254,6 +216,20 @@ const CustomerManageAddress = () => {
         return 'Other';
     }
   };
+
+  if (loading) {
+    return (
+      <div className="customermanageaddress">
+        <Navbar />
+        <div className="customermanageaddress-container">
+          <div style={{ textAlign: 'center', padding: '50px' }}>
+            <p>Loading addresses...</p>
+          </div>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="customermanageaddress">

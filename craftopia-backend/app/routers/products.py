@@ -51,6 +51,7 @@ async def get_all_products(
     """Get all products (public)"""
     return await product_service.get_all_products()
 
+@router.get("/{product_id}/")
 @router.get("/{product_id}")
 async def get_product(
     product_id: str,
@@ -95,6 +96,7 @@ async def create_product(
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@router.put("/{product_id}/")
 @router.put("/{product_id}")
 async def update_product(
     product_id: str,
@@ -112,6 +114,7 @@ async def update_product(
     except Exception as e:
         raise HTTPException(status_code=400, detail=str(e))
 
+@router.delete("/{product_id}/")
 @router.delete("/{product_id}")
 async def delete_product(
     product_id: str,

@@ -47,12 +47,12 @@ class AuthService:
         # Hash password
         hashed_password = self._password_handler.hash_password(password)
         
-        # Create user
+        # Create user with correct field names
         user = User(
-            firstName=first_name,
-            lastName=last_name,
+            first_name=first_name,        # Fixed: snake_case
+            last_name=last_name,          # Fixed: snake_case
             email=email,
-            password=hashed_password
+            password_hash=hashed_password # Fixed: password_hash, not password
         )
         
         # Save to database
@@ -84,7 +84,7 @@ class AuthService:
             user = await self._user_repo.get_by_email(email)
         
         # Verify credentials
-        if not user or not self._password_handler.verify_password(password, user.password):
+        if not user or not self._password_handler.verify_password(password, user.password_hash):
             raise ValueError("Incorrect email or password")
         
         # Generate token

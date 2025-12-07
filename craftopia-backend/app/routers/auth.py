@@ -136,11 +136,12 @@ async def get_current_user_info(
         role = "admin" if isinstance(user, Admin) else "user"
         
         # Return user info without password
+        # Fixed: Use snake_case field names from the model
         return {
-            "id": user.id,
+            "id": str(user.id),
             "email": user.email,
-            "firstName": user.firstName,
-            "lastName": user.lastName,
+            "firstName": user.first_name,  # Fixed: was user.firstName
+            "lastName": user.last_name,    # Fixed: was user.lastName
             "role": role
         }
     except ValueError as e:
