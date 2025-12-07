@@ -1,7 +1,7 @@
 import asyncio
 from app.database import init_db, get_session
 from app.models.admin import Admin
-from app.utils import PasswordHandler
+from app.utils.password_handler import PasswordHandler
 from sqlalchemy import select
 
 async def create_admin():
@@ -24,7 +24,7 @@ async def create_admin():
                 print("\n⚠️  Admin already exists!")
                 print(f"   Email: {existing.email}")
                 print(f"   ID: {existing.id}")
-                print(f"   Name: {existing.firstName} {existing.lastName}")
+                print(f"   Name: {existing.first_name} {existing.last_name}")
                 print("\n💡 To reset password, run: python reset_admin.py")
                 break
             
@@ -42,9 +42,9 @@ async def create_admin():
             
             admin = Admin(
                 email="admin@craftopia.com",
-                password=hashed_password,
-                firstName="Admin",
-                lastName="User"
+                password_hash=hashed_password,  # Fixed: use password_hash
+                first_name="Admin",             # Fixed: use first_name
+                last_name="User"                # Fixed: use last_name
             )
             
             session.add(admin)
@@ -57,7 +57,7 @@ async def create_admin():
             print(f"🔑 Password: admin123")
             print(f"🆔 ID:       {admin.id}")
             print("━" * 60)
-            print(f"\n🌐 Login at: http://localhost:5173/admin/login")
+            print(f"\n🌐 Login at: http://localhost:3000/admin/login")
             
         except Exception as e:
             print(f"\n❌ Error: {e}")

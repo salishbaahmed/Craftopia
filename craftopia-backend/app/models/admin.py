@@ -13,17 +13,14 @@ class Admin(SQLModel, table=True):
     
     id: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
     email: str = Field(unique=True, index=True)
-    password: str
+    password_hash: str  # Fixed: Changed from 'password' to 'password_hash'
     
-    # Map Python camelCase to DB snake_case
-    firstName: Optional[str] = Field(default=None, sa_column_kwargs={"name": "first_name"})
-    lastName: Optional[str] = Field(default=None, sa_column_kwargs={"name": "last_name"})
+    # Map Python snake_case to match User model
+    first_name: Optional[str] = Field(default=None)
+    last_name: Optional[str] = Field(default=None)
     
     role: str = Field(default="admin")
-    createdAt: datetime = Field(
-        default_factory=datetime.utcnow,
-        sa_column_kwargs={"name": "created_at"}
-    )
+    created_at: datetime = Field(default_factory=datetime.utcnow)
     
     class Config:
         # Allow both camelCase and snake_case

@@ -20,19 +20,6 @@ const CustomerUpdateProfile = () => {
     gender: ''
   });
 
-  const [addressInfo, setAddressInfo] = useState({
-    streetAddress: '',
-    city: '',
-    province: 'Punjab',
-    zipCode: ''
-  });
-
-  const [passwordInfo, setPasswordInfo] = useState({
-    currentPassword: '',
-    newPassword: '',
-    confirmPassword: ''
-  });
-
   const [notifications, setNotifications] = useState({
     emailEnabled: true,
     emailOrderUpdates: true,
@@ -54,14 +41,6 @@ const CustomerUpdateProfile = () => {
 
   const handlePersonalInfoChange = (field, value) => {
     setPersonalInfo(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handleAddressInfoChange = (field, value) => {
-    setAddressInfo(prev => ({ ...prev, [field]: value }));
-  };
-
-  const handlePasswordChange = (field, value) => {
-    setPasswordInfo(prev => ({ ...prev, [field]: value }));
   };
 
   const handleNotificationToggle = (field) => {
@@ -99,13 +78,6 @@ const CustomerUpdateProfile = () => {
           // dateOfBirth and gender are not in current backend model
         }));
 
-        setAddressInfo({
-          streetAddress: address || '',
-          city: city || '',
-          province: state || 'Punjab',
-          zipCode: zip_code || ''
-        });
-
       } catch (err) {
         console.error('Error fetching profile:', err);
       }
@@ -115,52 +87,24 @@ const CustomerUpdateProfile = () => {
 
   // ...
 
-  // Save Handlers with Status Feedback
+  // ONLY the save handlers that need to be updated
+
+  // Fixed: Save Personal Info
   const handleSavePersonalInfo = async () => {
     try {
       await api.put('/users/profile', {
-        first_name: personalInfo.firstName,
-        last_name: personalInfo.lastName,
-        phone_number: personalInfo.phone,
-        // email is usually read-only or requires verification
+        firstName: personalInfo.firstName,   // ✓ camelCase to match backend
+        lastName: personalInfo.lastName,     // ✓ camelCase to match backend
+        phone: personalInfo.phone           // ✓ phone, not phone_number
       });
       setSaveStatus(prev => ({ ...prev, personal: true }));
       setTimeout(() => setSaveStatus(prev => ({ ...prev, personal: false })), 2000);
+      alert('Profile updated successfully!');
     } catch (error) {
       console.error('Error updating personal info:', error);
-      alert('Failed to update profile');
+      alert('Failed to update profile: ' + (error.response?.data?.detail || error.message));
     }
   };
-
-  const handleSaveAddressInfo = async () => {
-    try {
-      await api.put('/users/profile', {
-        address: addressInfo.streetAddress,
-        city: addressInfo.city,
-        state: addressInfo.province,
-        zip_code: addressInfo.zipCode
-      });
-      setSaveStatus(prev => ({ ...prev, address: true }));
-      setTimeout(() => setSaveStatus(prev => ({ ...prev, address: false })), 2000);
-    } catch (error) {
-      console.error('Error updating address info:', error);
-      alert('Failed to update address');
-    }
-  };
-
-  const handleUpdatePassword = async () => {
-    if (passwordInfo.newPassword !== passwordInfo.confirmPassword) {
-      alert('Passwords do not match');
-      return;
-    }
-
-    // Backend doesn't have a specific password change endpoint yet, 
-    // but usually it's a separate endpoint or part of profile update with current password check.
-    // For now, we'll assume we can't update it without a specific endpoint or we'd need to add one.
-    // Let's skip this for now or mock it.
-    alert('Password update feature requires backend implementation.');
-  };
-
   const handleSaveNotifications = () => {
     console.log('Saving notifications:', notifications);
     setSaveStatus(prev => ({ ...prev, notifications: true }));
@@ -315,122 +259,6 @@ const CustomerUpdateProfile = () => {
                       <option value="female">Female</option>
                       <option value="other">Other</option>
                     </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Address Information */}
-            <div className="profile-card">
-              <div className="card-header">
-                <div className="card-title">
-                  <FiMapPin className="card-icon" />
-                  <span>Address Information</span>
-                </div>
-                <button
-                  className={`save-btn ${saveStatus.address ? 'saved' : ''}`}
-                  onClick={handleSaveAddressInfo}
-                >
-                  {saveStatus.address ? 'Saved!' : 'Save'}
-                </button>
-              </div>
-
-              <div className="card-content">
-                <div className="form-grid">
-                  <div className="form-group full-width">
-                    <label className="form-label">Street Address</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={addressInfo.streetAddress}
-                      onChange={(e) => handleAddressInfoChange('streetAddress', e.target.value)}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">City</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={addressInfo.city}
-                      onChange={(e) => handleAddressInfoChange('city', e.target.value)}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Province</label>
-                    <select
-                      className="form-input"
-                      value={addressInfo.province}
-                      onChange={(e) => handleAddressInfoChange('province', e.target.value)}
-                    >
-                      {provinces.map(province => (
-                        <option key={province} value={province}>{province}</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Zip Code</label>
-                    <input
-                      type="text"
-                      className="form-input"
-                      value={addressInfo.zipCode}
-                      onChange={(e) => handleAddressInfoChange('zipCode', e.target.value)}
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Change Password */}
-            <div className="profile-card">
-              <div className="card-header">
-                <div className="card-title">
-                  <FiKey className="card-icon" />
-                  <span>Change Password</span>
-                </div>
-                <button
-                  className={`save-btn ${saveStatus.password ? 'saved' : ''}`}
-                  onClick={handleUpdatePassword}
-                >
-                  {saveStatus.password ? 'Updated!' : 'Update Password'}
-                </button>
-              </div>
-
-              <div className="card-content">
-                <div className="form-grid">
-                  <div className="form-group full-width">
-                    <label className="form-label">Current Password</label>
-                    <input
-                      type="password"
-                      className="form-input"
-                      value={passwordInfo.currentPassword}
-                      onChange={(e) => handlePasswordChange('currentPassword', e.target.value)}
-                      placeholder="Enter current password"
-                    />
-                  </div>
-
-                  <div className="form-group full-width">
-                    <label className="form-label">New Password</label>
-                    <input
-                      type="password"
-                      className="form-input"
-                      value={passwordInfo.newPassword}
-                      onChange={(e) => handlePasswordChange('newPassword', e.target.value)}
-                      placeholder="Enter new password"
-                    />
-                  </div>
-
-                  <div className="form-group full-width">
-                    <label className="form-label">Confirm New Password</label>
-                    <input
-                      type="password"
-                      className="form-input"
-                      value={passwordInfo.confirmPassword}
-                      onChange={(e) => handlePasswordChange('confirmPassword', e.target.value)}
-                      placeholder="Confirm new password"
-                    />
                   </div>
                 </div>
               </div>
