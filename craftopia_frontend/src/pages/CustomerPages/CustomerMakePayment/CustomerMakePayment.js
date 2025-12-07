@@ -164,20 +164,27 @@ const CustomerMakePayment = () => {
         }
 
         const orderPayload = {
-          items: orderSummary.items.map(item => ({
-            productId: String(item.id), // Convert to string to match backend expectation
-            name: item.name,
-            price: item.price,
-            quantity: item.quantity,
-            image: item.image || ''
-          })),
-          shippingAddress: orderSummary.checkoutFormData || {},
-          subtotal: orderSummary.subtotal,
-          discount: orderSummary.discount,
-          tax: orderSummary.tax,
-          total: orderSummary.total,
-          paymentStatus: 'Paid'
-        };
+  items: orderSummary.items.map(item => ({
+    productId: String(item.id),
+    name: item.name,
+    price: item.price,
+    quantity: item.quantity,
+    imageUrl: item.image || ''
+  })),
+  shippingAddress: {
+    street: orderSummary.checkoutFormData.address || '',
+    city: orderSummary.checkoutFormData.city || '',
+    state: orderSummary.checkoutFormData.province || '',
+    zipCode: orderSummary.checkoutFormData.zipCode || '',
+    country: 'Pakistan',
+    phone: orderSummary.checkoutFormData.phone || ''
+  },
+  subtotal: orderSummary.subtotal,
+  discount: orderSummary.discount,
+  tax: orderSummary.tax,
+  total: orderSummary.total,
+  paymentStatus: 'Paid'
+};
 
         console.log('Creating backend order with payload:', JSON.stringify(orderPayload, null, 2));
         const response = await api.post('/orders/', orderPayload);

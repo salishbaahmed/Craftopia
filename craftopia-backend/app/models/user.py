@@ -1,10 +1,12 @@
 """
-User Model - Complete Updated Version
+User Model - Consolidated Version
 File: app/models/user.py
 """
 from sqlmodel import Field, SQLModel, Column, JSON
+from sqlalchemy import String  # Added import
 from typing import Optional, List, Dict
 from datetime import datetime
+import uuid
 
 
 class Address(SQLModel):
@@ -21,9 +23,14 @@ class Address(SQLModel):
 
 class User(SQLModel, table=True):
     """User model for customer accounts"""
-    __tablename__ = "users"
+    __tablename__ = "user"  # Changed from "users" to match existing data
     
-    id: Optional[int] = Field(default=None, primary_key=True)
+    # Explicitly use String type to prevent SQLAlchemy from using Integer
+    id: str = Field(
+        default_factory=lambda: str(uuid.uuid4()), 
+        primary_key=True, 
+        sa_type=String  # ✅ Fix: Explicitly tell SQLAlchemy it's a String
+    )
     email: str = Field(unique=True, index=True)
     password_hash: str
     first_name: str
@@ -57,10 +64,10 @@ class User(SQLModel, table=True):
         json_schema_extra = {
             "example": {
                 "email": "customer@example.com",
-                "first_name": "meow",
-                "last_name": "man",
+                "first_name": "John",
+                "last_name": "Doe",
                 "phone_number": "+92 300 1234567",
-                "address": "123 Meow Street",
+                "address": "123 Main Street",
                 "city": "Lahore",
                 "state": "Punjab",
                 "zip_code": "54000",

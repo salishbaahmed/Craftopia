@@ -37,8 +37,14 @@ class OrderService:
         payment_status: str = "Pending"
     ) -> Order:
         """Create new order for user"""
+        # Ensure user ID is string
+        user_id = str(user.id) if user.id is not None else str(user.email)
+        
+        print(f"[DEBUG] Creating order for user_id: {user_id}")
+        print(f"[DEBUG] Order items: {len(items)}")
+        
         order = Order(
-            userId=user.id,
+            userId=user_id,  # Ensure string
             shippingAddress=shipping_address,
             subtotal=subtotal,
             discount=discount,
@@ -47,11 +53,18 @@ class OrderService:
             paymentStatus=payment_status
         )
         
-        return await self._order_repo.create_with_items(order, items)
+        created_order = await self._order_repo.create_with_items(order, items)
+        print(f"[DEBUG] Order created successfully: {created_order.id}")
+        return created_order
     
-    async def get_user_orders(self, user_id: str) -> List[Order]:
+    async def get_user_orders(self, user_id: int | str) -> List[Order]:
         """Get all orders for a user"""
-        return await self._order_repo.get_by_user_id(user_id)
+        # Ensure user ID is string for comparison
+        user_id_str = str(user_id)
+        print(f"[DEBUG] Fetching orders for user_id: {user_id_str}")
+        orders = await self._order_repo.get_by_user_id(user_id_str)
+        print(f"[DEBUG] Found {len(orders)} orders")
+        return orders
     
     async def get_order_by_id(
         self,

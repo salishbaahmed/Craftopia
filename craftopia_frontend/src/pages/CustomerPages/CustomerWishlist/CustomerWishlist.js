@@ -146,53 +146,12 @@ const CustomerWishlist = () => {
             <h1>My Wishlist</h1>
             <p>{wishlistItems.length} items saved for later</p>
           </div>
-          <button onClick={shareWishlist} className="share-wishlist-btn">
-            <FiShare2 /> Share Wishlist
-          </button>
         </div>
-
-        <div className="summary-cards">
-          <div className="summary-card">
-            <div className="card-icon"><FiArchive /></div>
-            <div className="card-content"><h3>Total Items</h3><p>{wishlistItems.length}</p></div>
-          </div>
-          <div className="summary-card">
-            <div className="card-icon"><FiPackage /></div>
-            <div className="card-content"><h3>In Stock</h3><p>{inStockCount}</p></div>
-          </div>
-          <div className="summary-card">
-            <div className="card-icon"><FiDollarSign /></div>
-            <div className="card-content"><h3>Total Value</h3><p>{formatPrice(totalValue)}</p></div>
-          </div>
-        </div>
-
-        <div className="search-filter-bar">
-          <div className="search-container">
-            <input type="text" placeholder="Search wishlist…" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} className="search-input" />
-            <div className="search-icon"><FiSearch /></div>
-          </div>
-          <button className="filter-btn"><FiFilter /> Filters</button>
-        </div>
-
-        {filteredItems.length > 0 && (
-          <div className="bulk-selection-bar">
-            <div className="selection-content">
-              <input type="checkbox" checked={selectedItems.length === filteredItems.length && filteredItems.length > 0} onChange={toggleSelectAll} className="select-all-checkbox" />
-              <label className="select-all-label">Select All ({filteredItems.length} items)</label>
-            </div>
-          </div>
-        )}
 
         <div className="wishlist-grid-new">
           {filteredItems.map(item => (
             <div key={item.id} className="wishlist-item-new">
               {item.discount && <div className="discount-badge">{item.discount}% OFF</div>}
-
-              <div className="item-checkbox">
-                <button onClick={() => toggleItemSelection(item.id)} className={`checkbox-btn ${selectedItems.includes(item.id) ? 'checked' : ''}`}>
-                  {selectedItems.includes(item.id) && <FiCheck />}
-                </button>
-              </div>
 
               <div className="customer-product-image-placeholder1">Product Image</div>
 

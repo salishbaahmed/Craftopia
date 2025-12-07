@@ -18,10 +18,12 @@ const CustomerOrders = () => {
 
   // ...
 
+ // Fixed: Load orders from backend
   useEffect(() => {
     const loadOrders = async () => {
       try {
-        const response = await api.get('/orders/my-orders');
+        // Fixed: Use correct endpoint without /my-orders
+        const response = await api.get('/orders');
         console.log('Orders response:', response.data);
         setOrders(response.data);
         setIsLoading(false);

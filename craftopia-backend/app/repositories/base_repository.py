@@ -1,38 +1,24 @@
 """
-Base Repository - Follows Single Responsibility Principle
-SRP: Handles ONLY database operations
-DIP: Abstract interface that concrete repositories implement
+Base Repository - Generic CRUD operations
+SRP: Handles ONLY basic database operations
+OCP: Open for extension (inheritance), closed for modification
 """
-from abc import ABC, abstractmethod
-from typing import TypeVar, Generic, Optional, List
+from typing import TypeVar, Generic, Optional, List, Type
+from sqlmodel import SQLModel, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlmodel import select
 
-T = TypeVar('T')
+T = TypeVar("T", bound=SQLModel)
 
 
-class BaseRepository(ABC, Generic[T]):
+class BaseRepository(Generic[T]):
     """
-    Abstract base repository
-    SRP: Responsible ONLY for database CRUD operations
-    DIP: Provides abstraction for data access layer
+    Generic base repository
+    SRP: Responsible ONLY for basic CRUD operations
     """
     
-    def __init__(self, session: AsyncSession, model_class: type[T]):
+    def __init__(self, session: AsyncSession, model: Type[T]):
         self._session = session
-        self._model_class = model_class
-    
-    async def get_by_id(self, id: str) -> Optional[T]:
-        """Get entity by ID"""
-        result = await self._session.execute(
-            select(self._model_class).where(self._model_class.id == id)
-        )
-        return result.scalars().first()
-    
-    async def get_all(self) -> List[T]:
-        """Get all entities"""
-        result = await self._session.execute(select(self._model_class))
-        return result.scalars().all()
+        self._model = model
     
     async def create(self, entity: T) -> T:
         """Create new entity"""
@@ -41,18 +27,32 @@ class BaseRepository(ABC, Generic[T]):
         await self._session.refresh(entity)
         return entity
     
+    async def get_by_id(self, entity_id) -> Optional[T]:
+        """Get entity by ID - handles both string and int IDs"""
+        # Don't cast the ID - use it as-is
+        result = await self._session.execute(
+            select(self._model).where(self._model.id == entity_id)
+        )
+        return result.scalars().first()
+    
+    async def get_all(self) -> List[T]:
+        """Get all entities"""
+        result = await self._session.execute(select(self._model))
+        return result.scalars().all()
+    
     async def update(self, entity: T) -> T:
-        """Update existing entity"""
+        """Update entity"""
         self._session.add(entity)
         await self._session.commit()
         await self._session.refresh(entity)
         return entity
     
-    async def delete(self, id: str) -> bool:
-        """Delete entity by ID"""
-        entity = await self.get_by_id(id)
-        if entity:
-            await self._session.delete(entity)
-            await self._session.commit()
-            return True
-        return False
+    async def delete(self, entity: T) -> None:
+        """Delete entity"""
+        await self._session.delete(entity)
+        await self._session.commit()
+    
+    async def exists(self, entity_id) -> bool:
+        """Check if entity exists"""
+        result = await self.get_by_id(entity_id)
+        return result is not None
