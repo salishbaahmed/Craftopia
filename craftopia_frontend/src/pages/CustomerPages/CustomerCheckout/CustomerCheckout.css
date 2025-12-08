@@ -35,7 +35,7 @@
 }
 
 .back-button:hover {
-  color: #00a884;
+  color: #6c5377;
   background: #f0fdfa;
 }
 
@@ -84,7 +84,7 @@
 }
 
 .progress-step.active .step-icon {
-  background: #00a884;
+  background: #6c5377;
   color: white;
   box-shadow: 0 4px 12px rgba(0, 168, 132, 0.3);
 }
@@ -97,7 +97,7 @@
 }
 
 .progress-step.active .step-label {
-  color: #00a884;
+  color:#6c5377;
 }
 
 .progress-line {
@@ -172,7 +172,7 @@
 
 .saved-address-item input[type="radio"] {
   margin-top: 6px;
-  accent-color: #00a884;
+  accent-color:#6c5377;
   width: 18px;
   height: 18px;
 }
@@ -204,7 +204,7 @@
   display: inline-block;
   background: transparent;
   border: 1px dashed rgba(0,168,132,0.14);
-  color: #00a884;
+  color: #6c5377;
   padding: 8px 12px;
   border-radius: 8px;
   cursor: pointer;
@@ -226,7 +226,7 @@
 
 .form-icon {
   font-size: 1.5rem;
-  color: #00a884;
+  color:#6c5377;
 }
 
 .form-header h2 {
@@ -273,7 +273,7 @@
 .form-group input:focus,
 .form-group select:focus {
   outline: none;
-  border-color: #00a884;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.1);
 }
 
@@ -302,7 +302,7 @@
 /* Continue Button */
 .continue-button {
   width: 100%;
-  background: #00a884;
+  background: #6c5377;
   color: white;
   border: none;
   padding: 16px 32px;
@@ -315,7 +315,7 @@
 }
 
 .continue-button:hover {
-  background: #008f70;
+  background: #6c5377;
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0, 168, 132, 0.3);
 }
@@ -426,12 +426,12 @@
 }
 
 .price-row.discount1 {
-  color: #10b981;
+  color:#6c5377;
   font-weight: 600;
 }
 
 .price-row.shipping {
-  color: #10b981;
+  color: #6c5377;
   font-weight: 600;
 }
 
@@ -538,7 +538,7 @@
 .form-group input:focus,
 .form-group select:focus,
 .continue-button:focus {
-  outline: 2px solid #00a884;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }
 

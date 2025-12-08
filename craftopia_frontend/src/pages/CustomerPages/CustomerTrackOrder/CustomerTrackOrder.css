@@ -65,7 +65,7 @@
 
 .customertrackorder-input:focus {
   outline: none;
-  border-color: #00b894;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
 }
 
@@ -75,7 +75,7 @@
 }
 
 .customertrackorder-track-btn {
-  background: #00b894;
+  background: #6c5377;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -92,7 +92,7 @@
 }
 
 .customertrackorder-track-btn:hover:not(:disabled) {
-  background: #00a085;
+  background:#9672a5;
 }
 
 .customertrackorder-track-btn:disabled {
@@ -174,7 +174,7 @@
 }
 
 .customertrackorder-status-badge.delivered {
-  background-color: #00b894;
+  background-color: #6c5377;
 }
 
 .customertrackorder-status-badge.shipped {
@@ -230,7 +230,7 @@
 }
 
 .customertrackorder-total-amount {
-  color: #00b894;
+  color:#6c5377;
   font-size: 1.1rem;
 }
 
@@ -325,7 +325,7 @@
 
 .customertrackorder-address-icon {
   font-size: 1.5rem;
-  color: #00b894;
+  color: #6c5377;
   margin-top: 4px;
   flex-shrink: 0;
 }
@@ -392,7 +392,7 @@
 }
 
 .customertrackorder-timeline-item.completed:not(:last-child)::after {
-  background: #00b894;
+  background: #d3ade4;
 }
 
 .customertrackorder-timeline-icon {
@@ -410,12 +410,12 @@
 }
 
 .customertrackorder-timeline-item.completed .customertrackorder-timeline-icon {
-  background: #00b894;
+  background: #af90bd;
   color: white;
 }
 
 .customertrackorder-status-icon.delivered {
-  color: #00b894;
+  color: #bc9fc9;
 }
 
 .customertrackorder-status-icon.out-for-delivery {
@@ -528,7 +528,7 @@
 }
 
 .customertrackorder-available-btn {
-  background: linear-gradient(90deg, #00c08b, #00a77a);
+  background: #6c5377;
   color: #ffffff;
   border: none;
   padding: 10px 14px;
@@ -643,7 +643,7 @@
 .customertrackorder-input:focus,
 .customertrackorder-track-btn:focus,
 .customertrackorder-available-btn:focus {
-  outline: 2px solid #00b894;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }
 

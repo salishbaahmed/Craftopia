@@ -33,25 +33,7 @@
   margin: 0;
 }
 
-.share-wishlist-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: white;
-  border: 1px solid #e2e8f0;
-  color: #64748b;
-  padding: 10px 20px;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-size: 0.9rem;
-  font-weight: 500;
-}
 
-.share-wishlist-btn:hover {
-  border-color: #14B8A6;
-  color: #14B8A6;
-}
 
 /* Summary Cards */
 .summary-cards {
@@ -80,12 +62,12 @@
 .card-icon {
   width: 48px;
   height: 48px;
-  background: #f0fdfa;
+  background: #6c5377;
   border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #14B8A6;
+  color: #6c5377;
   font-size: 1.5rem;
 }
 
@@ -127,7 +109,7 @@
 }
 
 .search-input:focus {
-  border-color: #14B8A6;
+  border-color: #6c5377;
 }
 
 .search-icon {
@@ -267,12 +249,12 @@
 }
 
 .checkbox-btn.checked {
-  background: #14B8A6;
-  border-color: #14B8A6;
+  background:#6c5377;
+  border-color:#6c5377;
 }
 
 .checkbox-btn:hover {
-  border-color: #14B8A6;
+  border-color: #6c5377;
 }
 
 .customer-product-image-placeholder1 {
@@ -357,12 +339,12 @@
   font-size: 0.9rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  background: #14B8A6;
+  background: #6c5377;
   color: white;
 }
 
 .add-to-cart-btn:hover {
-  background: #0d9488;
+  background: #a185ad;
   transform: translateY(-1px);
 }
 
@@ -442,7 +424,7 @@
 }
 
 .shop-now-btn {
-  background: #14B8A6;
+  background: #6c5377;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -454,7 +436,7 @@
 }
 
 .shop-now-btn:hover {
-  background: #0d9488;
+  background: #937b9e;
   transform: translateY(-2px);
 }
 
@@ -502,8 +484,8 @@
 }
 
 .back-button:hover {
-  border-color: #14B8A6;
-  color: #14B8A6;
+  border-color:#6c5377;
+  color:#6c5377;
 }
 
 /* Responsive Design */
@@ -556,11 +538,11 @@
 .delete-btn:focus,
 .shop-now-btn:focus,
 .back-button:focus {
-  outline: 2px solid #14B8A6;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }
 
 .select-all-checkbox:focus {
-  outline: 2px solid #14B8A6;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }

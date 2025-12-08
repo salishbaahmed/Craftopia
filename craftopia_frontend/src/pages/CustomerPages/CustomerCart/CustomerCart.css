@@ -13,7 +13,7 @@
 
 /* NEW HEADER STYLES */
 .cart-header {
-  background: linear-gradient(135deg, #00a884 0%, #008f70 100%);
+  background: #6c5377;
   color: white;
   padding: 40px 0;
   margin-bottom: 40px;
@@ -92,12 +92,12 @@
   padding: 60px 20px;
   background: linear-gradient(135deg, #f8fafc 0%, #f0fdfa 100%);
   border-radius: 12px;
-  border: 2px dashed #14B8A6;
+  border: 2px dashed #e2d1d1;
 }
 
 .empty-cart-icon {
   font-size: 4rem;
-  color: #14B8A6;
+  color: #e2d1d1;
   opacity: 0.3;
   margin-bottom: 20px;
 }
@@ -116,7 +116,7 @@
 
 .continue-shopping-btn {
   padding: 12px 30px;
-  background: linear-gradient(135deg, #14B8A6, #0D9488);
+  background: linear-gradient(135deg,#e2d1d1, #bfa1b9);
   color: white;
   border: none;
   border-radius: 25px;
@@ -127,7 +127,7 @@
 }
 
 .continue-shopping-btn:hover {
-  background: linear-gradient(135deg, #0D9488, #099268);
+  background: #6c5377;
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(20, 184, 166, 0.3);
 }
@@ -149,7 +149,7 @@
 }
 
 .item-count {
-  background: #00a884;
+  background: #6c5377;
   color: white;
   padding: 4px 12px;
   border-radius: 20px;
@@ -169,7 +169,7 @@
 
 /* LEFT SECTION: ITEMS */
 .cart-list-section {
-  background: white;
+  background: #f7f2f2;
   border-radius: 12px;
   padding: 25px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.06);
@@ -221,7 +221,7 @@
 
 .cart-category {
   font-size: 0.75rem;
-  color: #00a884;
+  color:#6c5377;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -406,7 +406,7 @@
 }
 
 .free {
-  color: #00a884;
+  color:#000000;
   font-weight: 700;
 }
 
@@ -414,7 +414,7 @@
 .checkout-btn {
   width: 100%;
   padding: 15px;
-  background: #00a884;
+  background: #6c5377;
   color: white;
   border: none;
   border-radius: 8px;
@@ -426,7 +426,7 @@
 }
 
 .checkout-btn:hover {
-  background: #008f70;
+  background: #bea4c9;
 }
 
 /* BENEFIT BOXES */
@@ -446,7 +446,7 @@
 }
 
 .benefits svg {
-  color: #00a884;
+  color: #6c5377;
 }
 
 /* Responsive Design */

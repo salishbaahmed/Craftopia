@@ -15,7 +15,7 @@
 }
 
 .hero-section {
-  background: radial-gradient( #14B8A6, #F9A8D4);
+  background: radial-gradient(#14B8A6, #F9A8D4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -64,12 +64,12 @@
 }
 
 .search-input:focus { 
-  border-color: #14B8A6; 
+  border-color: #ac9de2; 
 }
 
 .search-button {
   padding: 15px 25px;
-  background: #14B8A6;
+  background: #ac9de2;
   color: white;
   border: none;
   border-radius: 0 25px 25px 0;
@@ -79,7 +79,7 @@
 }
 
 .search-button:hover { 
-  background: #0d9488; 
+  background: #bc9de7;
 }
 
 /* Grid */
@@ -102,7 +102,7 @@
 }
 
 .filter-sidebar-content {
-  background: #f8f9fa; 
+  background: #f4f6f7; 
   padding: 25px; 
   border-radius: 15px; 
   box-shadow: 0 4px 15px rgba(0,0,0,0.08);
@@ -115,7 +115,7 @@
 }
 
 .filter-sidebar::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f4f6f7;
   border-radius: 3px;
 }
 
@@ -150,7 +150,7 @@
 }
 
 .filter-active-tag {
-  background: #14B8A6;
+  background: #ac9de2;
   color: white;
   padding: 6px 12px;
   border-radius: 20px;
@@ -206,7 +206,7 @@
   color: #2c3e50; 
   margin-bottom: 15px; 
   font-size: 1.1rem; 
-  border-bottom: 2px solid #14B8A6; 
+  border-bottom: 2px solid #ac9de2; 
   padding-bottom: 5px; 
   font-weight: 600;
 }
@@ -246,13 +246,13 @@
 .filter-category-button:hover,
 .filter-price-button:hover {
   background: #e9ecef;
-  color: #14B8A6;
+  color: #ac9de2;
   padding-left: 15px;
 }
 
 .filter-category-active,
 .filter-price-active {
-  background: #14B8A6;
+  background: #ac9de2;
   color: white;
   padding-left: 15px;
 }
@@ -277,7 +277,7 @@
 .filter-show-all {
   width: 100%;
   padding: 12px;
-  background: #AD46FF;
+  background: #ac9de2;
   color: white;
   border: none;
   border-radius: 25px;
@@ -289,7 +289,7 @@
 }
 
 .filter-show-all:hover { 
-  background: #9a36e5; 
+  background: #9a8acc;
   transform: translateY(-1px);
 }
 
@@ -337,7 +337,7 @@
 
 .reset-filters-btn {
   padding: 10px 20px;
-  background: #14B8A6;
+  background: #ac9de2;
   color: white;
   border: none;
   border-radius: 25px;
@@ -347,7 +347,7 @@
 }
 
 .reset-filters-btn:hover {
-  background: #0d9488;
+  background: #9a8acc;
 }
 
 /* Loading State */
@@ -359,7 +359,7 @@
 
 .loading-spinner {
   border: 4px solid #f3f4f6;
-  border-top: 4px solid #14B8A6;
+  border-top: 4px solid #ac9de2;
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -396,7 +396,7 @@
 
 .retry-btn {
   padding: 10px 20px;
-  background: #14B8A6;
+  background: #ac9de2;
   color: white;
   border: none;
   border-radius: 25px;
@@ -406,7 +406,7 @@
 }
 
 .retry-btn:hover {
-  background: #0d9488;
+  background: #9a8acc;
 }
 
 /* Products Grid */
@@ -470,7 +470,7 @@
 }
 
 .product-badge.limited { 
-  background: linear-gradient(135deg, #AD46FF, #8B5CF6); 
+  background: linear-gradient(135deg, #ac9de2, #8B5CF6); 
 }
 
 .product-badge.sale { 
@@ -478,7 +478,7 @@
 }
 
 .product-badge.popular { 
-  background: linear-gradient(135deg, #14B8A6, #0D9488); 
+  background: linear-gradient(135deg, #c1caeb, #ac9de2); 
 }
 
 .product-badge.custom { 
@@ -524,7 +524,7 @@
 
 .product-category { 
   font-size: 0.75rem; 
-  color: #14B8A6; 
+  color: #ac9de2; 
   margin-bottom: 8px; 
   text-transform: uppercase; 
   font-weight: 600;
@@ -596,7 +596,7 @@
 .add-to-cart-btn {
   width: 100%;
   padding: 12px;
-  background: linear-gradient(135deg, #AD46FF, #8B5CF6);
+  background: #ac9de2;
   color: white;
   border: none;
   border-radius: 25px;
@@ -610,14 +610,13 @@
 }
 
 .add-to-cart-btn:hover { 
-  background: linear-gradient(135deg, #9a36e5, #7c3aed);
-  transform: translateY(-2px);
+  background: #9a8acc;
 }
 
 .send-gift-btn {
   width: 100%;
   padding: 12px;
-  background: linear-gradient(135deg, #EF4444, #DC2626);
+  background: linear-gradient(135deg, #5a225f, #6c9bd2);
   color: white;
   border: none;
   border-radius: 25px;
@@ -631,7 +630,7 @@
 }
 
 .send-gift-btn:hover { 
-  background: linear-gradient(135deg, #DC2626, #B91C1C);
+  background: linear-gradient(135deg, #cb3bd8, #82bcff);
   transform: translateY(-2px);
 }
 
@@ -640,8 +639,8 @@
   position: fixed;
   top: 100px;
   right: 20px;
-  background: #14B8A6;
-  color: white;
+  background: #ac9de2;
+  color: #000000;
   padding: 15px 20px;
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0,0,0,0.2);

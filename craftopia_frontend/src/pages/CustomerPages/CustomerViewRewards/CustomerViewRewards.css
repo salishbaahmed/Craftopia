@@ -26,7 +26,7 @@
   width: 50px;
   height: 50px;
   border: 4px solid #e2e8f0;
-  border-top: 4px solid #00a884;
+  border-top: 4px solid #6c5377;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
@@ -85,7 +85,7 @@
   width: 60px;
   height: 60px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #00a884, #059669);
+  background: #6c5377;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -105,7 +105,7 @@
   font-weight: 800;
   margin: 0 0 4px 0;
   line-height: 1;
-  color: #00a884;
+  color:#6c5377;
 }
 
 .points-info p {
@@ -141,7 +141,7 @@
 }
 
 .breakdown-item .available {
-  color: #059669;
+  color: #6c5377;
 }
 
 /* Quick Actions Card */
@@ -174,12 +174,12 @@
 }
 
 .action-btn.primary {
-  background: #00a884;
+  background:#6c5377;
   color: white;
 }
 
 .action-btn.primary:hover {
-  background: #008f70;
+  background: #8d7597;
   transform: translateY(-2px);
 }
 
@@ -192,7 +192,7 @@
 
 .points-info-text p {
   margin: 8px 0;
-  color: #047857;
+  color: #641188;
   font-size: 0.9rem;
 }
 
@@ -230,12 +230,12 @@
 }
 
 .tab-btn:hover {
-  color: #00a884;
+  color: #6c5377;
   background: #f0fdfa;
 }
 
 .tab-btn.active {
-  color: #00a884;
+  color: #6c5377;
   background: #f0fdfa;
   box-shadow: 0 2px 8px rgba(0, 168, 132, 0.1);
 }
@@ -282,7 +282,7 @@
   height: 40px;
   border-radius: 50%;
   background: #dcfce7;
-  color: #16a34a;
+  color: #bfa1b9;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -430,12 +430,12 @@
 }
 
 .redeem-btn.available {
-  background: #00a884;
+  background:#6c5377;
   color: white;
 }
 
 .redeem-btn.available:hover {
-  background: #008f70;
+  background: #6c5377;
 }
 
 .redeem-btn.insufficient {
@@ -512,6 +512,6 @@
 .tab-btn:focus,
 .action-btn:focus,
 .redeem-btn:focus {
-  outline: 2px solid #00a884;
+  outline: 2px solid #550a75;
   outline-offset: 2px;
 }

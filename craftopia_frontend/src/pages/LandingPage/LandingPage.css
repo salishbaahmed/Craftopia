@@ -17,7 +17,7 @@
 
 /* Header Styles */
 .header {
-  background:#c1caeb; /* Light blue navbar */
+  background: linear-gradient(135deg, #bfa1b9 0%, #ac9de2 100%);/* Light blue navbar */
   box-shadow: 0 2px 8px rgba(155, 123, 199, 0.15);
   padding: 1.2rem 1.5rem;
   position: sticky;
@@ -68,7 +68,7 @@
 }
 
 .nav-link {
-  color: #9b7bc7;
+  color: #010002;
   text-decoration: none;
   transition: all 0.3s ease;
   font-weight: 600;
