@@ -251,8 +251,12 @@ async def update_order_status(
         raise HTTPException(status_code=404, detail=str(e))
 
 
+@router.patch("/admin/{order_id}/delivery-status/")
+@router.patch("/admin/{order_id}/delivery-status")
 @router.put("/{order_id}/delivery/")
 @router.put("/{order_id}/delivery")
+@router.patch("/{order_id}/delivery/")
+@router.patch("/{order_id}/delivery")
 async def update_delivery_status(
     order_id: str,
     delivery_data: UpdateDeliveryRequest,
