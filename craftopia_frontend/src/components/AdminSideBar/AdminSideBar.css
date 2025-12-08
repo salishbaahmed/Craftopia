@@ -2,7 +2,7 @@
 
 .sidebar {
   width: 240px;
-  background-color: #ffffff;
+  background-color: #f0e8e8;
   border-right: 1px solid #e5e7eb;
   padding: 1.5rem 1rem;
   display: flex;
@@ -30,7 +30,7 @@
 .sidebar-logo h2 {
   font-size: 1.25rem;
   font-weight: 700;
-  color: #14B8A6;
+  color: #49294c;
 }
 
 .sidebar-nav {
@@ -53,13 +53,13 @@
 
 .nav-link:hover {
   background-color: #f0fdfa;
-  color: #14B8A6;
+  color: #49294c;
 }
 
 .nav-link.active {
   background-color: #f0fdfa;
-  color: #14B8A6;
-  border-left: 3px solid #14B8A6;
+  color: #49294c;
+  border-left: 3px solid #49294c;
 }
 
 .sidebar-icon {

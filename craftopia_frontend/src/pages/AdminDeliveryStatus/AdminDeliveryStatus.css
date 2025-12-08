@@ -37,7 +37,7 @@
 }
 
 .logout-btn1 {
-  background-color: #14B8A6;
+  background-color: #6c5377;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -48,7 +48,7 @@
 }
 
 .logout-btn1:hover {
-  background-color: #0d9488;
+  background-color: #bfa1b9;
 }
 
 /* Delivery Status Layout */
@@ -92,7 +92,7 @@
 
 .search-input1:focus {
   outline: none;
-  border-color: #14B8A6;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
 }
 
@@ -124,12 +124,12 @@
 }
 
 .order-item1:hover {
-  border-color: #14B8A6;
+  border-color: #6c5377;
   background-color: #f8fafc;
 }
 
 .order-item1.selected1 {
-  border-color: #14B8A6;
+  border-color: #6c5377;
   background-color: #f0fdfa;
 }
 
@@ -383,7 +383,7 @@
   width: 8px;
   height: 8px;
   border-radius: 50%;
-  background-color: #14B8A6;
+  background-color: #6c5377;
 }
 
 .history-status1 .status-badge1 {
@@ -440,7 +440,7 @@
 
 .status-select1:focus {
   outline: none;
-  border-color: #14B8A6;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
 }
 
@@ -460,7 +460,7 @@
   align-items: center;
   gap: 0.5rem;
   padding: 0.75rem 2rem;
-  background-color: #14B8A6;
+  background-color: #6c5377;
   color: white;
   border: none;
   border-radius: 6px;
@@ -471,7 +471,7 @@
 }
 
 .update-btn1:hover:not(:disabled) {
-  background-color: #0d9488;
+  background-color: #bfa1b9;
 }
 
 .update-btn1:disabled {

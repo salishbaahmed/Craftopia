@@ -17,7 +17,9 @@
 
 /* Header Styles */
 .header {
-  background: linear-gradient(135deg, #bfa1b9 0%, #ac9de2 100%);/* Light blue navbar */
+  width: 100%;
+  padding: 12px;
+  background: linear-gradient(135deg, #5a225f, #6c9bd2);
   box-shadow: 0 2px 8px rgba(155, 123, 199, 0.15);
   padding: 1.2rem 1.5rem;
   position: sticky;
@@ -50,9 +52,9 @@
 
 .logo-name {
   font-family: 'Rouge Script', cursive; /* really cursive */
-  font-weight: 400;  /* keeps it natural */
-  font-style: normal; /* normal style of the font */
-  font-size: 1.8rem; 
+  font-weight: 500;  /* keeps it natural */
+  font-style: normal; 
+  font-size: 2rem; 
   color: rgb(37, 36, 37);
   text-shadow: 0 1px 2px rgba(155, 123, 199, 0.1);
 }
@@ -234,6 +236,9 @@
   color: #9b7bc7;
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
 }
+
+
+
 
 .mobile-login-btn.admin:hover {
   background-color: #f4f6f7;

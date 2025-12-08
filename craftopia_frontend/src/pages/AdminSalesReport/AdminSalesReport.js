@@ -224,62 +224,6 @@ const AdminSalesReport = () => {
             </div>
           </div>
 
-          <div className="charts-grid">
-            <div className="chart-card">
-              <div className="chart-header">
-                <h3>Revenue Trend</h3>
-                <span className="chart-period">{getDateRangeLabel()} Overview</span>
-              </div>
-              <div className="chart-container">
-                <ResponsiveContainer width="100%" height={300}>
-                  <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey={dateRange === 'yearly' ? 'year' : dateRange === 'monthly' ? 'month' : 'week'}
-                    />
-                    <YAxis />
-                    <Tooltip
-                      formatter={(value) => [`Rs ${value.toLocaleString()}`, 'Revenue']}
-                      labelFormatter={(label) => `${getDateRangeLabel()} ${label}`}
-                    />
-                    <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="revenue"
-                      name="Revenue"
-                      stroke="#14B8A6"
-                      strokeWidth={3}
-                      dot={{ fill: '#14B8A6', strokeWidth: 2, r: 4 }}
-                      activeDot={{ r: 6, fill: '#0d9488' }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-
-            <div className="chart-card">
-              <div className="chart-header">
-                <h3>Orders Analysis</h3>
-                <span className="chart-period">{getDateRangeLabel()} Comparison</span>
-              </div>
-              <div className="chart-container">
-                <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis
-                      dataKey={dateRange === 'yearly' ? 'year' : dateRange === 'monthly' ? 'month' : 'week'}
-                    />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="orders" name="Total Orders" fill="#f59e0b" />
-                    <Bar dataKey="delivered" name="Delivered" fill="#14B8A6" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
-          </div>
-
           <div className="data-sections">
             <div className="data-section">
               <div className="section-header">

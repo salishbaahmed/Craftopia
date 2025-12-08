@@ -37,7 +37,7 @@
 }
 
 .logout-btn1 {
-  background-color: #14B8A6;
+  background-color: #6c5377;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -48,7 +48,7 @@
 }
 
 .logout-btn1:hover {
-  background-color: #0d9488;
+  background-color: #bfa1b9;
 }
 
 /* Feedback Content */
@@ -134,7 +134,7 @@
 .stat-value1 {
   font-size: 2rem;
   font-weight: 700;
-  color: #14B8A6;
+  color: #6c5377;
   margin-bottom: 0.5rem;
 }
 
@@ -210,7 +210,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #14B8A6;
+  color: #6c5377;
 }
 
 .customer-details1 {
@@ -318,7 +318,7 @@
 
 .status-published1 {
   background-color: #d1fae5;
-  color: #059669;
+  color: #302036;
 }
 
 .status-pending1 {
@@ -348,12 +348,12 @@
 
 .reply-btn1 {
   background: white;
-  color: #14B8A6;
-  border-color: #14B8A6;
+  color: #6c5377;
+  border-color: #6c5377;
 }
 
 .reply-btn1:hover {
-  background: #14B8A6;
+  background: #6c5377;
   color: white;
 }
 

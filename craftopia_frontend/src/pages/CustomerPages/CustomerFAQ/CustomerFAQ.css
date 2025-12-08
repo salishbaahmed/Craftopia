@@ -22,7 +22,7 @@
 .customerfaq-icon-circle {
   width: 80px;
   height: 80px;
-  background: #00b894;
+  background: #6c5377;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -74,7 +74,7 @@
 
 .customerfaq-search:focus-within {
   background: white;
-  border-color: #00b894;
+  border-color: #6c5377;
   box-shadow: 0 4px 15px rgba(0, 184, 148, 0.1);
 }
 
@@ -129,7 +129,7 @@
 }
 
 .customerfaq-clear-search {
-  background: #00b894;
+  background:#6c5377;
   color: white;
   border: none;
   padding: 10px 25px;
@@ -159,12 +159,12 @@
 
 /* FAQ Section Cards */
 .customerfaq-section-card {
-  background: white;
+  background:#f3ecec;
   border-radius: 12px;
   padding: 30px;
   margin-bottom: 30px;
   box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
-  border-top: 4px solid #00b894;
+  border-top: 4px solid #6c5377;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
@@ -189,7 +189,7 @@
   padding: 15px 20px;
   background: #e0f7f4;
   border-radius: 8px;
-  border-left: 4px solid #00b894;
+  border-left: 4px solid #6c5377;
 }
 
 .customerfaq-popular-questions .customerfaq-section-header {
@@ -198,7 +198,7 @@
 
 .customerfaq-section-icon {
   font-size: 1.5rem;
-  color: #00b894;
+  color: #6c5377;
   stroke-width: 1.5;
   display: flex;
   align-items: center;
@@ -231,7 +231,7 @@
 }
 
 .customerfaq-accordion-item:hover {
-  border-color: #00b894;
+  border-color: #6c5377;
   box-shadow: 0 2px 10px rgba(0, 184, 148, 0.1);
 }
 
@@ -253,12 +253,12 @@
 
 .customerfaq-accordion-header:hover {
   background: #f8fcfd;
-  border-left-color: #00b894;
+  border-left-color: #6c5377;
 }
 
 .customerfaq-accordion-header.customerfaq-active {
   background: #f8fcfd;
-  border-left-color: #00b894;
+  border-left-color: #6c5377;
   border-bottom: 1px solid #e0f7f4;
 }
 
@@ -274,7 +274,7 @@
 
 .customerfaq-accordion-icon {
   font-size: 1.3rem;
-  color: #00b894;
+  color: #6c5377;
   transition: transform 0.3s ease;
   min-width: 20px;
   text-align: center;
@@ -310,7 +310,7 @@
 
 /* Contact Section */
 .customerfaq-contact-section {
-  background: #00b894;
+  background: #6c5377;
   border-radius: 12px;
   padding: 50px 30px;
   text-align: center;
@@ -361,7 +361,7 @@
 
 .customerfaq-contact-button {
   background: white;
-  color: #00b894;
+  color: #6c5377;
   border: none;
   padding: 15px 40px;
   font-size: 1.1rem;
@@ -500,7 +500,7 @@
 .customerfaq-search-input:focus,
 .customerfaq-contact-button:focus,
 .customerfaq-clear-search:focus {
-  outline: 2px solid #00b894;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }
 

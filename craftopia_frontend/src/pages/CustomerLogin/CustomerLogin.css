@@ -58,7 +58,7 @@
 
 .input-field1:focus {
   outline: none;
-  border-color: #14B8A6;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
 }
 
@@ -92,13 +92,13 @@
 }
 
 .forgot-password-link:hover {
-  color: #14B8A6;
+  color: #6c5377;
   text-decoration: underline;
 }
 
 /* Login Button */
 .login-button {
-  background-color: #14B8A6;
+  background-color: #6c5377;
   color: white;
   border: none;
   border-radius: 0.75rem;
@@ -111,7 +111,7 @@
 }
 
 .login-button:hover {
-  background-color: #0D9488;
+  background-color: #6c5377;
   transform: translateY(-1px);
 }
 
@@ -135,8 +135,8 @@
 .signup-button {
   display: inline-block;
   background-color: white;
-  color: #14B8A6;
-  border: 2px solid #14B8A6;
+  color: #6c5377;
+  border: 2px solid #6c5377;
   border-radius: 0.75rem;
   padding: 0.7rem !important;
   font-size: 0.85rem !important;
@@ -148,7 +148,7 @@
 }
 
 .signup-button:hover {
-  background-color: #14B8A6;
+  background-color: #6c5377;
   color: white;
   transform: translateY(-1px);
 }

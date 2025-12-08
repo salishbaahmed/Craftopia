@@ -65,7 +65,7 @@
 
 .input-field1:focus {
   outline: none;
-  border-color: #14B8A6;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
 }
 
@@ -98,7 +98,7 @@
 }
 
 .signup-button:hover {
-  background-color: #af7fc4;
+  background-color: #9267a5;
   transform: translateY(-1px);
 }
 

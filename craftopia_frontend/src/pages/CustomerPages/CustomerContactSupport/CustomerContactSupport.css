@@ -9,7 +9,7 @@
   max-width: 1200px;
   margin: 0 auto;
   padding: 40px 20px;
-  background: #f8fcfd;
+  background: f7f3f3;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
@@ -50,7 +50,7 @@
 .customercontactsupport-user-avatar {
   width: 50px;
   height: 50px;
-  background: #00b894;
+  background: #6c5377;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -121,14 +121,14 @@
 .customercontactsupport-form-input:focus,
 .customercontactsupport-form-textarea:focus {
   outline: none;
-  border-color: #00b894;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
 }
 
 .customercontactsupport-form-select:hover,
 .customercontactsupport-form-input:hover,
 .customercontactsupport-form-textarea:hover {
-  border-color: #00b894;
+  border-color: #6c5377;
 }
 
 .customercontactsupport-form-textarea {
@@ -185,9 +185,9 @@
 }
 
 .customercontactsupport-submit-btn {
-  background: #00b894;
+  background: #6c5377;
   color: white;
-  border: 1px solid #00b894;
+  border: 1px solid #6c5377;
 }
 
 .customercontactsupport-submit-btn:hover {
@@ -207,7 +207,7 @@
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 30px;
-  border-left: 4px solid #00b894;
+  border-left: 4px solid #6c5377;
 }
 
 .customercontactsupport-privacy-text {
@@ -253,13 +253,13 @@
 
 .customercontactsupport-quick-help-item:hover {
   transform: translateY(-2px);
-  border-color: #00b894;
+  border-color: #6c5377;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .customercontactsupport-quick-help-icon {
   font-size: 1.5rem;
-  color: #00b894;
+  color: #6c5377;
   stroke-width: 1.5;
   flex-shrink: 0;
   margin-top: 2px;
@@ -313,7 +313,7 @@
 
 .customercontactsupport-contact-icon {
   font-size: 1.3rem;
-  color: #00b894;
+  color: #6c5377;
   stroke-width: 1.5;
   flex-shrink: 0;
 }
@@ -337,7 +337,7 @@
 
 /* Bottom Banner */
 .customercontactsupport-bottom-banner {
-  background: #00b894;
+  background: #6c5377;
   border-radius: 12px;
   padding: 40px 30px;
   text-align: center;
@@ -471,7 +471,7 @@
 .customercontactsupport-clear-btn:focus,
 .customercontactsupport-submit-btn:focus,
 .customercontactsupport-banner-link:focus {
-  outline: 2px solid #00b894;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }
 

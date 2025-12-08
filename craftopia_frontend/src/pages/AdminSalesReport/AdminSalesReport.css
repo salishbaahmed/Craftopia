@@ -48,8 +48,8 @@
   gap: 0.5rem;
   padding: 0.5rem 1rem;
   background-color: white;
-  color: #14B8A6;
-  border: 2px solid #14B8A6;
+  color: #6c5377;
+  border: 2px solid #6c5377;
   border-radius: 6px;
   font-weight: 500;
   cursor: pointer;
@@ -57,12 +57,12 @@
 }
 
 .export-btn:hover {
-  background-color: #14B8A6;
+  background-color: #6c5377;
   color: white;
 }
 
 .logout-btn {
-  background-color: #14B8A6;
+  background-color: #6c5377;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -73,7 +73,7 @@
 }
 
 .logout-btn:hover {
-  background-color: #0d9488;
+  background-color: #bfa1b9;
 }
 
 /* Sales Report Content */
@@ -129,7 +129,7 @@
 
 .filter-select:focus {
   outline: none;
-  border-color: #14B8A6;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
 }
 
@@ -282,13 +282,13 @@
 
 .product-item:hover {
   transform: translateX(4px);
-  border-color: #14B8A6;
+  border-color: #6c5377;
 }
 
 .product-rank {
   width: 32px;
   height: 32px;
-  background: #14B8A6;
+  background: #6c5377;
   color: white;
   border-radius: 6px;
   display: flex;
@@ -350,7 +350,7 @@
 .metric-value {
   font-size: 1.1rem;
   font-weight: 600;
-  color: #14B8A6;
+  color: #6c5377;
 }
 
 /* Empty State */

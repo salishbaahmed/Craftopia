@@ -36,7 +36,7 @@
 }
 
 .logout-btn1 {
-  background-color: #14B8A6;
+  background-color: #6c5377;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -83,7 +83,7 @@
 
 .search-input1:focus {
   outline: none;
-  border-color: #14B8A6;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
 }
 
@@ -184,7 +184,7 @@
 }
 
 .product-card1:hover {
-  border-color: #14B8A6;
+  border-color: #6c5377;
   background-color: #f8fafc;
 }
 
@@ -232,7 +232,7 @@
 
 .product-category1 {
   font-size: 0.875rem;
-  color: #14B8A6;
+  color: #6c5377;
   font-weight: 500;
   margin-bottom: 0.5rem;
 }

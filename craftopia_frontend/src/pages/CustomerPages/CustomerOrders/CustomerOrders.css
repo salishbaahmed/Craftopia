@@ -94,7 +94,7 @@
 }
 
 .customer-status-delivered {
-  background-color: #00b894;
+  background-color: #6c5377;
 }
 
 .customer-status-shipped {
@@ -186,12 +186,12 @@
 
 .customer-view-details-btn:hover {
   background: #f8f9fa;
-  border-color: #00b894;
-  color: #00b894;
+  border-color: #6c5377;
+  color: #6c5377;
 }
 
 .customer-rate-product-btn {
-  background: #00b894;
+  background: #6c5377;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -205,7 +205,7 @@
 }
 
 .customer-rate-product-btn:hover {
-  background: #00a085;
+  background: #6c5377;
 }
 
 .customer-track-order-btn {
@@ -387,7 +387,7 @@
 }
 
 .customer-timeline-item.customer-timeline-completed:not(:last-child)::after {
-  background: #00b894;
+  background: #6c5377;
 }
 
 .customer-timeline-icon {
@@ -405,7 +405,7 @@
 }
 
 .customer-timeline-item.customer-timeline-completed .customer-timeline-icon {
-  background: #00b894;
+  background: #6c5377;
   color: white;
 }
 
@@ -510,7 +510,7 @@
 .customer-view-details-btn:focus,
 .customer-rate-product-btn:focus,
 .customer-track-order-btn:focus {
-  outline: 2px solid #00b894;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }
 

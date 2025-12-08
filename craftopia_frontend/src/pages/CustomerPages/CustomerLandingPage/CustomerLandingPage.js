@@ -233,9 +233,9 @@ const CustomerLandingPage = () => {
       <main className="main-content">
         <section className="hero-section" id="home">
           <div className="hero-content">
-            <h1 className="hero-title">Welcome Back!</h1>
+            <h1 className="hero-title">Welcome To Craftopia!</h1>
             <p className="hero-subtitle">
-              Discover unique handmade resin and clay crafts by artisans
+              Making the World a Cuter Place With Every Handcrafted Piece
             </p>
           </div>
         </section>

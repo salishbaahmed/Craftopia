@@ -15,7 +15,6 @@ const Footer = () => {
             <ul>
               <li><Link to="/customer">Home</Link></li>
               <li><Link to="/customer-my-account">My Account</Link></li>
-              <li><Link to="/customer-funds-returns">Funds & Returns</Link></li>
               <li><Link to="/customer-quiz">Quiz</Link></li>
             </ul>
           </div>
@@ -37,7 +36,7 @@ const Footer = () => {
               <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
                 <FiFacebook size={20} />
               </a>
-              <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <a href="https://www.instagram.com/alishba__artistry?igsh=azQxemZocGo2azI4" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
                 <FiInstagram size={20} />
               </a>
               <a href="https://www.twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter">

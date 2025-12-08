@@ -40,7 +40,7 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #00C78B, #00B6C8);
+  background: #6c5377;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -92,8 +92,8 @@
 
 .customer-nav-active {
   background-color: #E8FFF4;
-  color: #00C78B;
-  border-left: 4px solid #00C78B;
+  color: #6c5377;
+  border-left: 4px solid #6c5377;
   font-weight: 500;
 }
 
@@ -198,7 +198,7 @@
 .customer-view-all-btn {
   background: none;
   border: none;
-  color: #00C78B;
+  color: #6c5377;
   font-weight: 500;
   cursor: pointer;
   font-size: 0.95rem;
@@ -229,7 +229,7 @@
 }
 
 .customer-order-card:hover {
-  border-color: #00C78B;
+  border-color: #6c5377;
 }
 
 .customer-product-image-placeholder {
@@ -267,7 +267,7 @@
 .customer-view-details-btn {
   background: none;
   border: none;
-  color: #00C78B;
+  color: #6c5377;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
@@ -513,7 +513,7 @@
 }
 
 .customer-order-product-item:hover {
-  border-color: #00C78B;
+  border-color: #6c5377;
 }
 
 .customer-order-product-image {
@@ -537,7 +537,7 @@
 
 .customer-order-product-price {
   font-size: 0.95rem;
-  color: #00C78B;
+  color: #6c5377;
   font-weight: 600;
   margin: 0 0 4px;
 }
@@ -607,7 +607,7 @@
 }
 
 .customer-order-modal-support-btn {
-  background: #00C78B;
+  background: #6c5377;
   color: white;
 }
 
@@ -748,7 +748,7 @@
 .customer-cta-button:focus,
 .customer-order-modal-close:focus,
 .customer-order-modal-button:focus {
-  outline: 2px solid #00C78B;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }
 

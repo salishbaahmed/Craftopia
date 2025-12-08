@@ -26,7 +26,7 @@
   width: 50px;
   height: 50px;
   border: 4px solid #e2e8f0;
-  border-top: 4px solid #00a884;
+  border-top: 4px solid #6c5377;
   border-radius: 50%;
   animation: spin 1s linear infinite;
   margin-bottom: 20px;
@@ -52,7 +52,7 @@
   width: 80px;
   height: 80px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #10b981, #059669);
+  background: linear-gradient(135deg, #10b981, #6c5377);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -83,7 +83,7 @@
 .success-content h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #059669;
+  color: #6c5377;
   margin: 0 0 12px 0;
 }
 
@@ -97,7 +97,7 @@
 .order-id {
   display: inline-block;
   background: #f0fdf4;
-  color: #059669;
+  color: #6c5377;
   padding: 8px 16px;
   border-radius: 20px;
   font-weight: 600;
@@ -297,7 +297,7 @@
 .item-price {
   font-size: 0.95rem;
   font-weight: 600;
-  color: #059669;
+  color: #6c5377;
 }
 
 /* Order Total */
@@ -316,7 +316,7 @@
 }
 
 .total-amount {
-  color: #059669;
+  color: #6c5377;
   font-size: 1.4rem;
 }
 
@@ -330,7 +330,7 @@
 
 .card-icon {
   font-size: 1.3rem;
-  color: #00a884;
+  color: #6c5377;
 }
 
 /* Info Items */
@@ -395,7 +395,7 @@
 }
 
 .timeline-item.completed::before {
-  background: #00a884;
+  background: #6c5377;
 }
 
 .timeline-dot {
@@ -410,11 +410,11 @@
 }
 
 .timeline-item.completed .timeline-dot {
-  background: #00a884;
+  background: #6c5377;
 }
 
 .timeline-item.active .timeline-dot {
-  background: #00a884;
+  background: #6c5377;
   animation: pulseDot 2s infinite;
 }
 
@@ -474,7 +474,7 @@
 }
 
 .status-success {
-  color: #059669 !important;
+  color: #6c5377 !important;
 }
 
 /* Action Buttons */
@@ -501,7 +501,7 @@
 }
 
 .btn-primary {
-  background: #00a884;
+  background: #6c5377;
   color: white;
 }
 
@@ -529,13 +529,13 @@
 }
 
 .btn-outline:hover {
-  border-color: #00a884;
-  color: #00a884;
+  border-color: #6c5377;
+  color: #6c5377;
   transform: translateY(-2px);
 }
 
 .btn-continue {
-  background: linear-gradient(135deg, #00a884, #059669);
+  background: linear-gradient(135deg, #6c5377, #6c5377);
   color: white;
   margin-top: 8px;
 }
@@ -609,7 +609,7 @@
   width: 50px;
   height: 50px;
   border-radius: 50%;
-  background: #00a884;
+  background: #6c5377;
   color: white;
   display: flex;
   align-items: center;
@@ -719,6 +719,6 @@
 
 /* Focus styles for accessibility */
 .action-buttons button:focus {
-  outline: 2px solid #00a884;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }

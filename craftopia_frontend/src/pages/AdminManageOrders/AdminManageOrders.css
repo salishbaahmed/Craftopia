@@ -36,7 +36,7 @@
 }
 
 .logout-btn1 {
-  background-color: #14B8A6;
+  background-color: #6c5377;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -47,7 +47,7 @@
 }
 
 .logout-btn1:hover {
-  background-color: #0d9488;
+  background-color: #bfa1b9;
 }
 
 /* Manage Orders Layout */
@@ -91,7 +91,7 @@
 
 .search-input1:focus {
   outline: none;
-  border-color: #14B8A6;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.1);
 }
 
@@ -123,12 +123,12 @@
 }
 
 .order-item1:hover {
-  border-color: #14B8A6;
+  border-color: #6c5377;
   background-color: #f8fafc;
 }
 
 .order-item1.selected1 {
-  border-color: #14B8A6;
+  border-color: #6c5377;
   background-color: #f0fdfa;
 }
 

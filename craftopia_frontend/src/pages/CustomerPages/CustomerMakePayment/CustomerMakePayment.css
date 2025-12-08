@@ -35,7 +35,7 @@
 }
 
 .back-button:hover {
-  color: #00a884;
+  color: #6c5377;
   background: #f0fdfa;
 }
 
@@ -84,13 +84,13 @@
 }
 
 .progress-step.active .step-icon {
-  background: #00a884;
+  background: #6c5377;
   color: white;
   box-shadow: 0 4px 12px rgba(0, 168, 132, 0.3);
 }
 
 .progress-step.completed .step-icon {
-  background: #00a884;
+  background: #6c5377;
   color: white;
 }
 
@@ -103,7 +103,7 @@
 
 .progress-step.active .step-label,
 .progress-step.completed .step-label {
-  color: #00a884;
+  color: #6c5377;
 }
 
 .progress-line {
@@ -115,7 +115,7 @@
 }
 
 .progress-line.completed {
-  background: #00a884;
+  background: #6c5377;
 }
 
 /* Payment Content Layout */
@@ -165,13 +165,13 @@
 }
 
 .method-card:hover {
-  border-color: #00a884;
+  border-color: #6c5377;
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .method-card.selected {
-  border-color: #00a884;
+  border-color: #6c5377;
   background: #f0fdfa;
 }
 
@@ -189,7 +189,7 @@
 }
 
 .method-card.selected .method-icon {
-  background: #00a884;
+  background: #6c5377;
   color: white;
 }
 
@@ -225,8 +225,8 @@
 }
 
 .radio-dot.active {
-  border-color: #00a884;
-  background: #00a884;
+  border-color: #6c5377;
+  background: #6c5377;
   box-shadow: inset 0 0 0 3px white;
 }
 
@@ -246,7 +246,7 @@
 
 .form-icon {
   font-size: 1.3rem;
-  color: #00a884;
+  color: #6c5377;
 }
 
 .form-header h3 {
@@ -287,7 +287,7 @@
 
 .form-group input:focus {
   outline: none;
-  border-color: #00a884;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(0, 168, 132, 0.1);
 }
 
@@ -338,7 +338,7 @@
   align-items: center;
   justify-content: center;
   font-size: 2rem;
-  color: #00a884;
+  color: #6c5377;
   margin: 0 auto 20px;
 }
 
@@ -407,7 +407,7 @@
 
 .pay-button {
   flex: 2;
-  background: #00a884;
+  background: #6c5377;
   color: white;
   border: none;
   padding: 16px 24px;
@@ -507,7 +507,7 @@
 }
 
 .security-notice svg {
-  color: #00a884;
+  color: #6c5377;
 }
 
 /* Order Summary (Right Section) */
@@ -939,6 +939,6 @@
 .form-group input:focus,
 .cancel-button:focus,
 .pay-button:focus {
-  outline: 2px solid #00a884;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }

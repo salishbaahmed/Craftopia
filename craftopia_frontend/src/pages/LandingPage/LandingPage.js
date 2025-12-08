@@ -69,8 +69,6 @@ const LandingPage = () => {
           <nav className="desktop-navigation">
             <a href="#home" className="nav-link">Home</a>
             <a href="#about" className="nav-link">About</a>
-            <a href="#features" className="nav-link">Features</a>
-            <a href="#creators" className="nav-link">Creators</a>
           </nav>
 
           {/* Login Section */}
@@ -112,8 +110,6 @@ const LandingPage = () => {
             <nav className="mobile-navigation">
               <a href="#home" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Home</a>
              //<a href="#about" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>About</a>
-              <a href="#features" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Features</a>
-              <a href="#creators" className="mobile-nav-link" onClick={() => setIsMobileMenuOpen(false)}>Creators</a>
               <div className="mobile-login-options">
                 <a href="/admin-login" className="mobile-login-btn admin">Admin Login</a>
                 <a href="/customer-login" className="mobile-login-btn customer">Customer Login</a>
@@ -122,7 +118,6 @@ const LandingPage = () => {
           </div>
         )}
       </header>
-
 
 
       {/* Middle Section */}
@@ -244,11 +239,7 @@ const LandingPage = () => {
               functionality with personal connection. We're building a platform where every
               purchase tells a story and supports creative communities worldwide.
             </p>
-            <div className="footer-links">
-              <a href="#privacypolicy" className="footer-link">Privacy Policy</a>
-              <a href="#terms" className="footer-link">Terms of Service</a>
-              <a href="#contact" className="footer-link">Contact Us</a>
-            </div>
+            
             <p className="footer-copyright">
               © 2024 Craftopia. All rights reserved.
             </p>

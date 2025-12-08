@@ -36,7 +36,7 @@
 }
 
 .customermanageaddress-add-btn {
-  background: #00b894;
+  background: #6c5377;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -125,7 +125,7 @@
 
 .customermanageaddress-form-input:focus {
   outline: none;
-  border-color: #00b894;
+  border-color: #6c5377;
   box-shadow: 0 0 0 3px rgba(0, 184, 148, 0.1);
 }
 
@@ -166,8 +166,8 @@
 }
 
 .customermanageaddress-checkbox:checked + .customermanageaddress-checkbox-custom {
-  background: #00b894;
-  border-color: #00b894;
+  background: #6c5377;
+  border-color: #6c5377;
 }
 
 .customermanageaddress-checkbox:checked + .customermanageaddress-checkbox-custom::after {
@@ -202,7 +202,7 @@
 }
 
 .customermanageaddress-save-btn {
-  background: #00b894;
+  background: #6c5377;
   color: white;
   border: none;
   padding: 10px 20px;
@@ -266,7 +266,7 @@
 }
 
 .customermanageaddress-default-badge {
-  background: #00b894;
+  background: #6c5377;
   color: white;
   padding: 4px 8px;
   border-radius: 12px;
@@ -372,8 +372,8 @@
 
 .customermanageaddress-set-default-btn {
   background: transparent;
-  color: #00b894;
-  border: 1px solid #00b894;
+  color: #6c5377;
+  border: 1px solid #6c5377;
   padding: 8px 16px;
   border-radius: 6px;
   font-weight: 600;
@@ -384,7 +384,7 @@
 }
 
 .customermanageaddress-set-default-btn:hover:not(:disabled) {
-  background: #00b894;
+  background: #6c5377;
   color: white;
 }
 
@@ -424,7 +424,7 @@
 }
 
 .customermanageaddress-empty-btn {
-  background: #00b894;
+  background: #6c5377;
   color: white;
   border: none;
   padding: 12px 30px;
@@ -499,7 +499,7 @@
 .customermanageaddress-delete-btn:focus,
 .customermanageaddress-set-default-btn:focus,
 .customermanageaddress-empty-btn:focus {
-  outline: 2px solid #00b894;
+  outline: 2px solid #6c5377;
   outline-offset: 2px;
 }
 

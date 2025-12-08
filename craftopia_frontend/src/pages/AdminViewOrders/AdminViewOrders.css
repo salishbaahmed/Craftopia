@@ -20,7 +20,7 @@
 }
 
 .logout-btn {
-  background-color: #14B8A6;
+  background-color: #6c5377;
   color: white;
   border: none;
   padding: 0.5rem 1rem;
@@ -31,7 +31,7 @@
 }
 
 .logout-btn:hover {
-  background-color: #0d9488;
+  background-color: #bfa1b9;
 }
 
 .orders-content {
@@ -131,7 +131,7 @@
 
 .order-id {
   font-weight: 600;
-  color: #14B8A6;
+  color: #6c5377;
   font-family: 'Courier New', monospace;
 }
 
