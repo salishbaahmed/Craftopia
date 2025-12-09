@@ -19,7 +19,7 @@
 .header {
   width: 100%;
   padding: 12px;
-  background: linear-gradient(135deg, #5a225f, #6c9bd2);
+  background: linear-gradient(160deg, #6c9bd2,#5a225f);
   box-shadow: 0 2px 8px rgba(155, 123, 199, 0.15);
   padding: 1.2rem 1.5rem;
   position: sticky;
