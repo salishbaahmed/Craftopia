@@ -7,9 +7,6 @@ import {
   FiFilter, FiDownload, FiTrendingUp, FiDollarSign,
   FiShoppingBag, FiUsers, FiCalendar
 } from 'react-icons/fi';
-import {
-  LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar
-} from 'recharts';
 import api from '../../api/axios';
 
 const AdminSalesReport = () => {

@@ -1,9 +1,9 @@
 """
-User Model - Consolidated Version
+ 
 File: app/models/user.py
 """
 from sqlmodel import Field, SQLModel, Column, JSON
-from sqlalchemy import String  # Added import
+from sqlalchemy import String  
 from typing import Optional, List, Dict
 from datetime import datetime
 import uuid
@@ -23,13 +23,12 @@ class Address(SQLModel):
 
 class User(SQLModel, table=True):
     """User model for customer accounts"""
-    __tablename__ = "user"  # Changed from "users" to match existing data
-    
-    # Explicitly use String type to prevent SQLAlchemy from using Integer
+    __tablename__ = "user"  
+     
     id: str = Field(
         default_factory=lambda: str(uuid.uuid4()), 
         primary_key=True, 
-        sa_type=String  # ✅ Fix: Explicitly tell SQLAlchemy it's a String
+        sa_type=String   
     )
     email: str = Field(unique=True, index=True)
     password_hash: str

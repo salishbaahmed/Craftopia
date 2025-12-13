@@ -20,7 +20,7 @@
   width: 100%;
   padding: 12px;
   background: linear-gradient(160deg, #6c9bd2,#5a225f);
-  box-shadow: 0 2px 8px rgba(155, 123, 199, 0.15);
+  box-shadow: 0 2px 8px rgb(234, 234, 235);
   padding: 1.2rem 1.5rem;
   position: sticky;
   top: 0;
@@ -47,7 +47,7 @@
   height: 2.8rem;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+  filter: drop-shadow(0 2px 4px rgb(255, 255, 255));
 }
 
 .logo-name {
@@ -55,8 +55,8 @@
   font-weight: 500;  /* keeps it natural */
   font-style: normal; 
   font-size: 2rem; 
-  color: rgb(37, 36, 37);
-  text-shadow: 0 1px 2px rgba(155, 123, 199, 0.1);
+  color: rgb(255, 254, 255);
+  text-shadow: 0 1px 2px rgb(232, 230, 235);
 }
 
 
@@ -70,7 +70,7 @@
 }
 
 .nav-link {
-  color: #010002;
+  color: #fdfcfd;
   text-decoration: none;
   transition: all 0.3s ease;
   font-weight: 600;
@@ -115,7 +115,7 @@
 
 .login-btn {
   background-color: rgb(223, 195, 235);
-  color: hsl(0, 1%, 27%);
+  color: hsl(0, 0%, 0%);
   padding: 0.65rem 1.8rem;
   border: none;
   border-radius: 25px;
@@ -150,7 +150,7 @@
 .dropdown-item {
   display: block;
   padding: 0.75rem 1.25rem;
-  color: #374151;
+  color: #000000;
   text-decoration: none;
   font-size: 0.95rem;
   font-weight: 500;
@@ -185,7 +185,7 @@
   left: 0;
   right: 0;
   background: linear-gradient(90deg, #9b7bc7 0%, #ac9de2 100%);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 8px 16px rgb(255, 255, 255);
   z-index: 20;
 }
 
@@ -199,13 +199,13 @@
   padding: 1rem;
   color: white;
   text-decoration: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 1px solid rgb(245, 239, 239);
   transition: all 0.3s ease;
   font-weight: 600;
 }
 
 .mobile-nav-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgb(255, 254, 254);
   padding-left: 1.5rem;
 }
 
@@ -219,7 +219,7 @@
   gap: 0.75rem;
   margin-top: 1rem;
   padding-top: 1rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  border-top: 1px solid rgb(255, 255, 255);
 }
 
 .mobile-login-btn {
@@ -277,7 +277,7 @@
   height: 13rem;
   width: auto;
   object-fit: contain;
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
+  filter: drop-shadow(0 4px 12px rgb(236, 233, 233));
 }
 
 .middle-title {
@@ -312,7 +312,7 @@
 
 .feature-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 8px 24px rgba(155, 123, 199, 0.15);
+  box-shadow: 0 8px 24px rgb(255, 255, 255);
   border-color: #ac9de2;
 }
 
@@ -343,7 +343,7 @@
   font-size: 1.25rem;
   font-weight: 700;
   margin-bottom: 0.75rem;
-  color: #2d3748;
+  color: #ffffff;
 }
 
 .feature-description {

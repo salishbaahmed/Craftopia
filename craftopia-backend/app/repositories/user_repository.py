@@ -1,5 +1,4 @@
-"""
-User Repository - Complete Updated Version
+""" 
 File: app/repositories/user_repository.py
 
 SRP: Handles ONLY User-specific database operations

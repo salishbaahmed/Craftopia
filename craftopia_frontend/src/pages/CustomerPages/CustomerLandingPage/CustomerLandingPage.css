@@ -33,19 +33,23 @@
 
 .hero-content {
   text-align: center;
+  font-family: "Dancing Script", cursive;
+  font-optical-sizing: auto;
+  font-weight: 600;
+  font-style: normal;
   color: white;
   max-width: 64rem;
 }
 
 .hero-title { 
-  font-size: 3rem; 
+  font-size: 5rem; 
   font-weight: bold; 
   margin-bottom: 1.5rem; 
   line-height: 1.2; 
 }
 
 .hero-subtitle { 
-  font-size: 1.5rem; 
+  font-size: 2rem; 
   margin-bottom: 2rem; 
   opacity: 0.9; 
 }

@@ -3,18 +3,20 @@ from sqlmodel import SQLModel, Field, Relationship
 from datetime import datetime
 from sqlalchemy import Column, JSON
 import uuid
-from .user import Address 
+from .user import Address
+
 
 class OrderItem(SQLModel, table=True):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
     order_id: Optional[str] = Field(default=None, foreign_key="order.id")
-    productId: str # Changed to str
+    productId: str  
     name: str
     price: float
     quantity: int
     image: Optional[str] = None
     
     order: Optional["Order"] = Relationship(back_populates="items")
+
 
 class Order(SQLModel, table=True):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()), primary_key=True)
@@ -33,12 +35,14 @@ class Order(SQLModel, table=True):
     deliveryDate: Optional[str] = None
     createdAt: datetime = Field(default_factory=datetime.now)
 
+
 class OrderItemCreate(SQLModel):
     productId: str
     name: str
     price: float
     quantity: int
     image: Optional[str] = None
+
 
 class OrderCreate(SQLModel):
     items: List[OrderItemCreate]
@@ -49,6 +53,7 @@ class OrderCreate(SQLModel):
     total: float
     paymentStatus: str = "Pending"
 
+
 class OrderItemResponse(SQLModel):
     id: str
     productId: str
@@ -56,6 +61,7 @@ class OrderItemResponse(SQLModel):
     price: float
     quantity: int
     image: Optional[str] = None
+
 
 class OrderResponse(SQLModel):
     id: str
@@ -74,3 +80,48 @@ class OrderResponse(SQLModel):
     deliveryDate: Optional[str]
     createdAt: datetime
 
+
+# Factory Pattern Implementation
+class OrderFactory:
+    """Factory for creating Order and OrderItem objects."""
+    
+    @staticmethod
+    def create_order(order_data: OrderCreate, user_id: str) -> Order:
+        """Creates an Order object and calculates subtotal, discount, tax, and total."""
+        
+        # Step 1: Create OrderItems from the input data
+        items = [OrderItem(
+                    productId=item.productId,
+                    name=item.name,
+                    price=item.price,
+                    quantity=item.quantity,
+                    image=item.image
+                ) for item in order_data.items]
+        
+        # Step 2: Calculate subtotal (sum of item prices * quantities)
+        subtotal = sum(item.price * item.quantity for item in items)
+
+        # Step 3: Calculate discount, tax, and total (simple example, could be extended)
+        discount = order_data.discount
+        tax = order_data.tax
+        total = subtotal - discount + tax
+        
+        # Step 4: Create and return the Order object
+        order = Order(
+            userId=user_id,
+            items=items,
+            shippingAddress=order_data.shippingAddress,
+            subtotal=subtotal,
+            discount=discount,
+            tax=tax,
+            total=total,
+            paymentStatus=order_data.paymentStatus,
+            status="Pending",  # Default status is Pending
+        )
+        
+        return order
+
+# Example usage of the Factory
+def create_new_order(order_data: OrderCreate, user_id: str):
+    order = OrderFactory.create_order(order_data, user_id)
+    return order

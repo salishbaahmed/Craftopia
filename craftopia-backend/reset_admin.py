@@ -15,7 +15,7 @@ async def reset_admin():
     async for session in get_session():
         try:
             # Delete existing admin
-            print("\n🗑️  Deleting existing admin accounts...")
+            print("\n Deleting existing admin accounts...")
             await session.execute(
                 delete(Admin).where(Admin.email == "admin@craftopia.com")
             )
@@ -23,13 +23,13 @@ async def reset_admin():
             print("✓ Deleted old admin accounts")
             
             # Create new admin
-            print("\n🔐 Creating new admin user...")
+            print("\n Creating new admin user...")
             password = "admin123"
             hashed_password = password_handler.hash_password(password)
             
             # Verify hash works
             if not password_handler.verify_password(password, hashed_password):
-                print("❌ Password verification failed!")
+                print(" Password verification failed!")
                 break
             
             print("✓ Password hashed and verified successfully")

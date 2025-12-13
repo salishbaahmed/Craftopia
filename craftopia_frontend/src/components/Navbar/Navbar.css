@@ -53,7 +53,7 @@
   font-weight: 500;  /* keeps it natural */
   font-style: normal; /* normal style of the font */
   font-size: 1.8rem; 
-  color: rgb(0, 0, 0);
+  color: rgb(255, 252, 252);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
@@ -76,7 +76,7 @@
   gap: 8px;
   background: none;
   border: none;
-  color: #000000;
+  color: #ffffff;
   font-weight: 500;
   font-size: 0.95rem;
   padding: 8px 16px;
@@ -132,7 +132,7 @@
 
 .navbar-icon svg {
   font-size: 1.3rem;
-  color: #000000;
+  color: #ffffff;
   transition: color 0.3s ease;
 }
 
@@ -182,7 +182,7 @@
 
 .navbar-icon-label {
   font-size: 0.75rem;
-  color: #000000;
+  color: #ffffff;
   font-weight: 500;
   transition: color 0.3s ease;
 }

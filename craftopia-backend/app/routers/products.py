@@ -41,8 +41,7 @@ class ProductUpdate(BaseModel):
     careInstructions: Optional[str] = None
     artistStory: Optional[str] = None
     limitedEdition: Optional[bool] = None
-
-# GET all products - support both with and without trailing slash
+ 
 @router.get("/")
 @router.get("")
 async def get_all_products(

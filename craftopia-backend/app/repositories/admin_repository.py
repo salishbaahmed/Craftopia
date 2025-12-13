@@ -10,7 +10,6 @@ from app.repositories.base_repository import BaseRepository
 
 class AdminRepository(BaseRepository[Admin]):
     """
-    Concrete implementation for Admin data access
     SRP: Responsible ONLY for Admin database operations
     """
     

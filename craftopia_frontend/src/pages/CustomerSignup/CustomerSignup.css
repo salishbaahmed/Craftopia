@@ -84,7 +84,7 @@
 
 /* Signup Button */
 .signup-button {
-  background-color:#dfc3eb;
+  background-color:#6c5377;
   color: white;
   border: none;
   border-radius: 0.75rem;
@@ -122,7 +122,7 @@
 .login-link-button {
   display: inline-block;
   background-color: white;
-  color:#dfc3eb  !important;
+  color:#6c5377 !important;
   border: 2px solid #dfc3eb;
   border-radius: 0.75rem;
   padding: 0.7rem !important;

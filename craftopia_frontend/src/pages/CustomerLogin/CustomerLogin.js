@@ -23,10 +23,6 @@ const CustomerLogin = () => {
     }
   };
 
-  const handleForgotPassword = () => {
-    console.log('Forgot password clicked');
-  };
-
   return (
     <div className="customer-login-page">
       <div className="login-container">
@@ -64,15 +60,6 @@ const CustomerLogin = () => {
             <span className="input-icon1">✉</span>
           </div>
 
-          <div className="forgot-password-container">
-            <button
-              type="button"
-              onClick={handleForgotPassword}
-              className="forgot-password-link"
-            >
-              Forgot Password?
-            </button>
-          </div>
 
           <button type="submit" className="login-button">
             Login

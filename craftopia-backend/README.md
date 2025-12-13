@@ -1,6 +1,6 @@
 # Craftopia Backend
 
-FastAPI backend with MongoDB (Beanie) for Craftopia E-commerce.
+FastAPI backend with  for Craftopia E-commerce.
 
 ## Setup
 

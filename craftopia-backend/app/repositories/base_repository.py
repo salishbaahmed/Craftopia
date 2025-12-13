@@ -6,13 +6,14 @@ OCP: Open for extension (inheritance), closed for modification
 from typing import TypeVar, Generic, Optional, List, Type
 from sqlmodel import SQLModel, select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import delete as sql_delete
 
 T = TypeVar("T", bound=SQLModel)
 
 
 class BaseRepository(Generic[T]):
     """
-    Generic base repository
+      
     SRP: Responsible ONLY for basic CRUD operations
     """
     
@@ -29,7 +30,6 @@ class BaseRepository(Generic[T]):
     
     async def get_by_id(self, entity_id) -> Optional[T]:
         """Get entity by ID - handles both string and int IDs"""
-        # Don't cast the ID - use it as-is
         result = await self._session.execute(
             select(self._model).where(self._model.id == entity_id)
         )
@@ -47,9 +47,16 @@ class BaseRepository(Generic[T]):
         await self._session.refresh(entity)
         return entity
     
-    async def delete(self, entity: T) -> None:
-        """Delete entity"""
-        await self._session.delete(entity)
+    async def delete(self, entity_id) -> None:
+        """Delete entity by ID"""
+        # Use direct SQL delete statement for efficiency
+        stmt = sql_delete(self._model).where(self._model.id == entity_id)
+        result = await self._session.execute(stmt)
+        
+        # Check if anything was deleted
+        if result.rowcount == 0:
+            raise ValueError(f"{self._model.__name__} with id {entity_id} not found")
+        
         await self._session.commit()
     
     async def exists(self, entity_id) -> bool:
